@@ -36,16 +36,23 @@ Currently support apps
 
    ```json
    {
-   	"name": "TIM",      //display name
-   	"rules": [          //rules or just keep empty for debugging
+   	"name": "TIM", 
+   	"rules": [          
    		{
-   			"extra-key": "url",    // load url from extra which is key
-   			"ignore-url": ".*bilibili\\.com.*",  //ignore apply url regex
-   			"force-url": ""   //force apply url regex
+   			"extra-key": "url",   
+   			"ignore-url": ".*bilibili\\.com.*",
+   			"force-url": "" 
    		}
    	]
    } 
    ```
+   | key        | value                                  |
+   | ---------- | -------------------------------------- |
+   | name       | logcat display name                    |
+   | rules      | rules or just keep empty for debugging |
+   | extra-key  | load url from extra which is key       |
+   | ignore-url | ignore apply url regex                 |
+   | force-url  | force apply url regex                  |
 
 3. logcat to check it work (TAG: **InternalBrowserRedirect**)
 
