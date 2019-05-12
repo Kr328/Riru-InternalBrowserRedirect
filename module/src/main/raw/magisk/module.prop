@@ -3,4 +3,4 @@ name=Riru - InternalBrowserRedirect
 version=v6
 versionCode=6
 author=Kr328
-description=Internal Browser Redirect [( Riru - Core > 7 && API 26/27/28 ) Required]
+description=Redirect internal browser activity to ACTION_VIEW. [( Riru - Core > 19 && API 26/27/28 ) Required].
