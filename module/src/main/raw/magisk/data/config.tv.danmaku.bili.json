@@ -1,0 +1,10 @@
+{
+	"name": "TIM",
+	"rules": [
+		{
+			"extra-key": "url",
+			"ignore-url": ".*bilibili\\.com.*",
+			"force-url": ""
+		}
+	]
+} 

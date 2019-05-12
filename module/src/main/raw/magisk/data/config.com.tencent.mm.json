@@ -1,0 +1,10 @@
+{
+	"name": "WeChat",
+	"rules": [
+		{
+			"extra-key": "rawUrl",
+			"ignore-url": ".*qq\\.com.*",
+			"force-url": ""
+		}
+	]
+} 

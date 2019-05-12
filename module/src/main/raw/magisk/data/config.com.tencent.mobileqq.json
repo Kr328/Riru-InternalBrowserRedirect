@@ -1,0 +1,10 @@
+{
+	"name": "QQ",
+	"rules": [
+		{
+			"extra-key": "url",
+			"ignore-url": ".*qq\\.com.*",
+			"force-url": ""
+		}
+	]
+} 

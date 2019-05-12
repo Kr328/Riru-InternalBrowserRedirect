@@ -14,9 +14,15 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 # Ignore IDEA config
-/.idea
+.idea
 *.iml
 
 # KeyStore
 *.keystore
 *.jks
+
+# gradle
+.gradle
+
+# clion cmake build
+cmake-build-*
