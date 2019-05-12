@@ -6,8 +6,8 @@ A module of [Riru](https://github.com/RikkaApps/Riru). Redirect internal browser
 
 ## Requirements
 
-* [Riru](https://github.com/RikkaApps/Riru) > 7 installed.
-* Android 9.0 (8.0/8.1 not tested)
+* [Riru](https://github.com/RikkaApps/Riru) > 19 installed.
+* Android 8.0-9.0 (below not tests)
 
 
 
@@ -23,6 +23,33 @@ Currently support apps
 - QQ
 - TIM
 - Bilibili
+
+
+
+## Custom Rules
+
+1. Create file **/data/misc/riru/modules/ibr/config.\<package\>.json (replace \<package\> to target package name)**
+
+2. Write rule in created file 
+
+   example
+
+   ```json
+   {
+   	"name": "TIM",      //display name
+   	"rules": [          //rules or just keep empty for debugging
+   		{
+   			"extra-key": "url",    // load url from extra which is key
+   			"ignore-url": ".*bilibili\\.com.*",  //ignore apply url regex
+   			"force-url": ""   //force apply url regex
+   		}
+   	]
+   } 
+   ```
+
+3. logcat to check it work (TAG: **InternalBrowserRedirect**)
+
+4. (Optional) Share this rules by submissing on github issue
 
 
 
