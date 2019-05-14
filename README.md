@@ -72,3 +72,9 @@ Currently support apps
 ./gradlew build
 ```
   4.Pick riru-internal-browser-redirect.zip from module/build/outputs
+
+
+
+## Feedback
+
+Telegram Group [Kr328 Riru Modules](https://t.me/kr328_riru_modules)
