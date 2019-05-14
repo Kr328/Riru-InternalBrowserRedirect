@@ -70,3 +70,10 @@
 ./gradlew build
 ```
   4.从 module/build/outputs 拿取 riru-internal-browser-redirect.zip
+
+
+
+## 反馈
+
+Telegram 群组 [Kr328 Riru Modules](https://t.me/kr328_riru_modules)
+
