@@ -57,17 +57,11 @@ void nativeForkAndSpecializePre(
         jstring *instructionSet, jstring *appDataDir, jstring *packageName,
         jobjectArray *packagesForUID, jstring *sandboxId) {
 
-    on_fork(env, appDataDir, NULL);
+    //on_fork(env, appDataDir, NULL);
 }
 
 EXPORT
 int nativeForkAndSpecializePost(JNIEnv *env, jclass clazz, jint res) {
-    if ( res == 0 && config_data != NULL )
-        invoke_inject_method(env, config_data);
-
-    if ( config_data != NULL )
-        free(config_data);
-
     return 0;
 }
 
@@ -79,7 +73,6 @@ void specializeAppProcessPre(
         jstring *packageName, jobjectArray *packagesForUID, jstring *sandboxId) {
     // from Android Q beta 3
     // in zygote process
-    on_fork(env, NULL, packageName);
 }
 
 EXPORT
@@ -87,13 +80,11 @@ int specializeAppProcessPost(
         JNIEnv *env, jclass clazz) {
     // from Android Q beta 3
     // in app process
+}
 
-    if ( config_data != NULL ) {
-        invoke_inject_method(env, config_data);
-        free(config_data);
-    }
-
-    return 0;
+EXPORT int nativeForkSystemServerPost(JNIEnv *env, jclass clazz, jint res) {
+    if ( res == 0 )
+            invoke_inject_method(env, "");
 }
 
 EXPORT
