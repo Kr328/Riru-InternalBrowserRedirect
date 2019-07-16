@@ -31,4 +31,5 @@ repositories {
 }
 
 dependencies {
+    compileOnly project(":hideapi")
 }
