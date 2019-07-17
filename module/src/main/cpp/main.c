@@ -13,7 +13,7 @@
 
 #define EXPORT __attribute__((visibility("default")))
 
-#define DEX_PATH           "/system/framework/boot-ibr.jar"
+#define DEX_PATH           "/system/framework/boot-internal-browser-redirect.jar"
 
 EXPORT int nativeForkSystemServerPost(JNIEnv *env, jclass clazz, jint res) {
     if ( res == 0 )

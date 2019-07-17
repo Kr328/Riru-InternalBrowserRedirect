@@ -53,6 +53,9 @@ public class StoreManager {
     private Timer saveTimer = new Timer();
 
     private synchronized void load() {
+        cache.ruleSets = new HashMap<>();
+        cache.changedRuleSets = new HashMap<>();
+
         try {
             cache.general = General.parseFromJson(new JSONObject(FileUtils.readLines(Constants.DATA_STORE_DIRECTORY + "/general.json")));
         } catch (IOException|JSONException e) {
@@ -63,9 +66,6 @@ public class StoreManager {
         File[] files = new File(Constants.DATA_STORE_DIRECTORY).listFiles();
         if ( files == null )
             return;
-
-        cache.ruleSets = new HashMap<>();
-        cache.changedRuleSets = new HashMap<>();
 
         for ( File f : files ) {
             Matcher matcher = Constants.PATTERN_CONFIG_FILE.matcher(f.getName());
@@ -78,6 +78,8 @@ public class StoreManager {
                 }
             }
         }
+
+        Log.i(Constants.TAG, "Loaded RuleSet count = " + cache.ruleSets.size());
     }
 
     private void save() {

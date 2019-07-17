@@ -3,6 +3,7 @@ package com.github.kr328.ibr;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.github.kr328.ibr.model.Rule;
 import com.github.kr328.ibr.model.RuleSet;
@@ -21,6 +22,7 @@ class RuleSetMatcher {
             this.matches = matches;
             this.ruleSetTag = ruleSetTag;
             this.ruleTag = ruleTag;
+            this.uri = uri;
         }
 
         Result() {
@@ -30,7 +32,9 @@ class RuleSetMatcher {
     static Result matches(RuleSet ruleSet, Intent intent) {
         for (Rule rule : ruleSet.getRules()) {
             Uri uri = parseIntentUrl(intent, rule.getUrlPath());
-            if ( Uri.EMPTY.equals(uri) )
+            if ( uri == null )
+                continue;
+            if ( uri.equals(Uri.EMPTY) )
                 continue;
             if ( !"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme()) )
                 continue;

@@ -2,6 +2,7 @@ package com.github.kr328.ibr;
 
 import android.app.IActivityManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;

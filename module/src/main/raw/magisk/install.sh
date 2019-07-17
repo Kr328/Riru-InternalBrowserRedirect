@@ -120,6 +120,11 @@ REPLACE="
 ##########################################################################################
 
 RIRU_PATH="/data/misc/riru"
+MODULE_NAME="internal_browser_redirect"
+
+remove_deprecated_config() {
+  rm -rf "$RIRU_PATH/modules/ibr"
+}
 
 print_modname() {
   ui_print "*******************************"
@@ -146,6 +151,8 @@ on_install() {
   check_architecture
   check_riru_version
 
+  remove_deprecated_config
+
   ui_print "- Extracting arm/arm64 libraries & dex"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
   rm "$MODPATH/system/placeholder"
@@ -155,7 +162,7 @@ on_install() {
 	rm -rf "$MODPATH/system/lib64"
   fi
 
-  TARGET="$RIRU_PATH/modules/ibr"
+  TARGET="$RIRU_PATH/modules/$MODULE_NAME"
 
   ui_print "- Extracting extra files"
   unzip -o "$ZIPFILE" 'data/*' -d "$TMPDIR" >&2
