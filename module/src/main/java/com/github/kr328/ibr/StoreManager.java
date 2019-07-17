@@ -19,6 +19,8 @@ import java.util.regex.Matcher;
 
 public class StoreManager {
     public static StoreManager getInstance() {
+        if ( INSTANCE == null )
+            INSTANCE = new StoreManager();
         return INSTANCE;
     }
 
@@ -46,9 +48,9 @@ public class StoreManager {
         }, 1000);
     }
 
-    private static StoreManager INSTANCE;
     private StoreManager() { load(); }
 
+    private static StoreManager INSTANCE;
     private Cache cache = new Cache();
     private Timer saveTimer = new Timer();
 
@@ -79,11 +81,11 @@ public class StoreManager {
             }
         }
 
-        Log.i(Constants.TAG, "Loaded RuleSet count = " + cache.ruleSets.size());
+        Log.i(Constants.TAG, "Loaded RuleSet " + cache.ruleSets.keySet());
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void save() {
-        //noinspection ResultOfMethodCallIgnored
         new File(Constants.DATA_STORE_DIRECTORY).mkdirs();
 
         Set<Map.Entry<String, RuleSet>> changed;
@@ -95,7 +97,12 @@ public class StoreManager {
 
         for ( Map.Entry<String, RuleSet> entry : changed ) {
             try {
-                FileUtils.writeLines(new File(Constants.DATA_STORE_DIRECTORY, String.format(Constants.TEMPLATE_CONFIG_FILE, entry.getKey())), entry.getValue().toJson().toString());
+                if ( entry.getValue().getRules().size() > 0 )
+                    FileUtils.writeLines(new File(Constants.DATA_STORE_DIRECTORY,
+                            String.format(Constants.TEMPLATE_CONFIG_FILE, entry.getKey())),
+                            entry.getValue().toJson().toString());
+                else
+                    new File(String.format(Constants.TEMPLATE_CONFIG_FILE, entry.getKey())).delete();
             } catch (IOException|JSONException e) {
                 Log.w(Constants.TAG, "Save config " + entry.getKey() + " failure", e);
             }
@@ -106,9 +113,5 @@ public class StoreManager {
         General general;
         HashMap<String, RuleSet> ruleSets;
         HashMap<String, RuleSet> changedRuleSets;
-    }
-
-    static {
-        INSTANCE = new StoreManager();
     }
 }
