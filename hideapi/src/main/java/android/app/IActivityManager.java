@@ -5,6 +5,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.IInterface;
+import android.os.RemoteException;
 
 public interface IActivityManager extends IInterface {
     abstract class Stub extends Binder implements IActivityManager {
@@ -20,5 +21,5 @@ public interface IActivityManager extends IInterface {
 
     int startActivity(IApplicationThread caller, String callingPackage, Intent intent,
                       String resolvedType, IBinder resultTo, String resultWho, int requestCode,
-                      int flags, ProfilerInfo profilerInfo, Bundle options);
+                      int flags, ProfilerInfo profilerInfo, Bundle options) throws RemoteException;
 }

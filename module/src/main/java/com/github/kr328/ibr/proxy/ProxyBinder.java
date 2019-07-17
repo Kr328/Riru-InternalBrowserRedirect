@@ -4,8 +4,6 @@ import android.os.Binder;
 import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
-import android.util.Log;
-import com.github.kr328.ibr.Constants;
 
 public class ProxyBinder extends Binder {
     private Binder original;

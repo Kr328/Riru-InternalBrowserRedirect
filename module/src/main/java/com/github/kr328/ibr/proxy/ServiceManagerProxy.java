@@ -1,6 +1,10 @@
 package com.github.kr328.ibr.proxy;
 
-import android.os.*;
+import android.os.IBinder;
+import android.os.IPermissionController;
+import android.os.IServiceManager;
+import android.os.RemoteException;
+import android.os.ServiceManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

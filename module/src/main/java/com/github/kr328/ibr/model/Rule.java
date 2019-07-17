@@ -1,5 +1,7 @@
 package com.github.kr328.ibr.model;
 
+import android.net.Uri;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class Rule {
     private String tag;
-    private String urlPath;
+    private Uri urlPath;
     private Pattern regexIgnore;
     private Pattern regexForce;
 
@@ -15,9 +17,12 @@ public class Rule {
         Rule result = new Rule();
 
         result.tag = jsonObject.getString("tag");
-        result.urlPath = jsonObject.getString("url-path");
+        result.urlPath = Uri.parse(jsonObject.getString("url-path"));
         result.regexForce = Pattern.compile(jsonObject.optString("regex-force", ""));
         result.regexIgnore = Pattern.compile(jsonObject.optString("regex-ignore", ""));
+
+        if ( result.urlPath.equals(Uri.EMPTY) )
+            throw new JSONException("Invalid url path");
 
         return result;
     }
@@ -26,7 +31,7 @@ public class Rule {
         JSONObject result = new JSONObject();
 
         result.put("tag", tag);
-        result.put("url-path", urlPath);
+        result.put("url-path", urlPath.toString());
         result.put("regex-force", regexForce);
         result.put("regex-ignore", regexIgnore);
 
@@ -41,11 +46,11 @@ public class Rule {
         this.tag = tag;
     }
 
-    public String getUrlPath() {
+    public Uri getUrlPath() {
         return urlPath;
     }
 
-    public void setUrlPath(String urlPath) {
+    public void setUrlPath(Uri urlPath) {
         this.urlPath = urlPath;
     }
 

@@ -1,6 +1,5 @@
 package com.github.kr328.ibr;
 
-import android.util.JsonReader;
 import android.util.Log;
 
 import com.github.kr328.ibr.model.General;
@@ -9,16 +8,14 @@ import com.github.kr328.ibr.model.RuleSet;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class StoreManager {
     public static StoreManager getInstance() {
@@ -40,12 +37,20 @@ public class StoreManager {
 
     public synchronized void updateRuleSet(String pkg, RuleSet ruleSet) {
         cache.changedRuleSets.put(pkg, ruleSet);
+        saveTimer.cancel();
+        saveTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                save();
+            }
+        }, 1000);
     }
 
     private static StoreManager INSTANCE;
     private StoreManager() { load(); }
 
     private Cache cache = new Cache();
+    private Timer saveTimer = new Timer();
 
     private synchronized void load() {
         try {
