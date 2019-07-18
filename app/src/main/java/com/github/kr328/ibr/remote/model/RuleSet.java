@@ -1,4 +1,7 @@
-package com.github.kr328.ibr.model;
+package com.github.kr328.ibr.remote.model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -7,15 +10,47 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RuleSet {
+public class RuleSet implements Parcelable {
     private String tag;
     private List<Rule> rules;
+
+    public RuleSet() {
+        tag = "";
+        rules = new ArrayList<>();
+    }
+
+    private RuleSet(Parcel in) {
+        tag = in.readString();
+        rules = in.createTypedArrayList(Rule.CREATOR);
+    }
+
+    public static final Creator<RuleSet> CREATOR = new Creator<RuleSet>() {
+        @Override
+        public RuleSet createFromParcel(Parcel in) {
+            return new RuleSet(in);
+        }
+
+        @Override
+        public RuleSet[] newArray(int size) {
+            return new RuleSet[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return "RuleSet".hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(tag);
+        parcel.writeTypedList(rules);
+    }
 
     public static RuleSet readFromJson(JSONObject jsonObject) throws JSONException {
         RuleSet result = new RuleSet();
 
         result.tag = jsonObject.getString("tag");
-        result.rules = new ArrayList<>();
 
         JSONArray array = jsonObject.getJSONArray("rules");
         for ( int i = 0 ; i < array.length() ; i++ )

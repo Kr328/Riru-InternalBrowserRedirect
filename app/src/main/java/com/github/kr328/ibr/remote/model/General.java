@@ -1,4 +1,4 @@
-package com.github.kr328.ibr.model;
+package com.github.kr328.ibr.remote.model;
 
 import org.json.JSONObject;
 

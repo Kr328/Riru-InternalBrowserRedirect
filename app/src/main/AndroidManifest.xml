@@ -17,15 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RedirectActivity"
-            android:label="@string/activity_redirect_name">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.github.kr328.ibr.REDIRECT" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

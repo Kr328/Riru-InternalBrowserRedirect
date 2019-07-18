@@ -1,10 +1,10 @@
-package com.github.kr328.ibr.proxy;
+package com.github.kr328.ibr.remote.proxy;
 
 import android.os.IBinder;
 import android.os.IInterface;
 import android.util.Log;
 
-import com.github.kr328.ibr.Constants;
+import com.github.kr328.ibr.remote.Constants;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

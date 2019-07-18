@@ -1,4 +1,4 @@
-package com.github.kr328.ibr;
+package com.github.kr328.ibr.remote;
 
 import java.io.BufferedReader;
 import java.io.File;

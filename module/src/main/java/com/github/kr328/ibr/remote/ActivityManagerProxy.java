@@ -1,4 +1,4 @@
-package com.github.kr328.ibr;
+package com.github.kr328.ibr.remote;
 
 import android.app.IActivityManager;
 import android.app.IApplicationThread;
@@ -7,14 +7,14 @@ import android.content.Intent;
 import android.content.pm.LabeledIntent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.github.kr328.ibr.model.RuleSet;
-import com.github.kr328.ibr.proxy.ProxyBinderFactory;
-import com.github.kr328.ibr.proxy.ProxyBinderFactory.CustomTransact;
-import com.github.kr328.ibr.proxy.ProxyBinderFactory.ReplaceTransact;
+import com.github.kr328.ibr.remote.model.RuleSet;
+import com.github.kr328.ibr.remote.proxy.ProxyBinderFactory.CustomTransact;
+import com.github.kr328.ibr.remote.proxy.ProxyBinderFactory.ReplaceTransact;
 
 import java.util.Objects;
 
@@ -55,5 +55,17 @@ public class ActivityManagerProxy extends IActivityManager.Stub {
         }
 
         return original.startActivity(caller, callingPackage, intent, resolvedType, resultTo, resultWho, requestCode, flags, profilerInfo, options);
+    }
+
+    @Override
+    protected boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
+        if ( code == Constants.ACTIVITY_CONNECT_TRANSACT_CODE ) {
+            RemoteService.INSTANCE.enforcePermission();
+            data.enforceInterface(Constants.APPLICATION_ID);
+
+            reply.writeStrongBinder(RemoteService.INSTANCE);
+        }
+
+        return super.onTransact(code, data, reply, flags);
     }
 }

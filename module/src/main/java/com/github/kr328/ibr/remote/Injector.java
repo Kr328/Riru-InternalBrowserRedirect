@@ -1,17 +1,13 @@
-package com.github.kr328.ibr;
+package com.github.kr328.ibr.remote;
 
 import android.app.IActivityManager;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.Parcel;
-import android.os.RemoteException;
 import android.util.Log;
 
-import com.github.kr328.ibr.proxy.ProxyBinder;
-import com.github.kr328.ibr.proxy.ProxyBinderFactory;
-import com.github.kr328.ibr.proxy.ServiceManagerProxy;
+import com.github.kr328.ibr.remote.proxy.ProxyBinderFactory;
+import com.github.kr328.ibr.remote.proxy.ServiceManagerProxy;
 
 @SuppressWarnings("unused")
 public class Injector {

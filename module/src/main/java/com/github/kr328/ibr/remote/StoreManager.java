@@ -1,9 +1,9 @@
-package com.github.kr328.ibr;
+package com.github.kr328.ibr.remote;
 
 import android.util.Log;
 
-import com.github.kr328.ibr.model.General;
-import com.github.kr328.ibr.model.RuleSet;
+import com.github.kr328.ibr.remote.model.General;
+import com.github.kr328.ibr.remote.model.RuleSet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +31,15 @@ public class StoreManager {
         if ((ruleSet = cache.ruleSets.get(pkg)) != null)
             return ruleSet;
         return null;
+    }
+
+    public synchronized Map<String, RuleSet> getRuleSets() {
+        HashMap<String, RuleSet> result = new HashMap<>();
+
+        result.putAll(cache.ruleSets);
+        result.putAll(cache.changedRuleSets);
+
+        return result;
     }
 
     public synchronized General getGeneral() {

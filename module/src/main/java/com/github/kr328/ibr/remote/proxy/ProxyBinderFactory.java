@@ -1,10 +1,9 @@
-package com.github.kr328.ibr.proxy;
+package com.github.kr328.ibr.remote.proxy;
 
-import android.content.Context;
 import android.os.Binder;
 import android.util.Log;
 
-import com.github.kr328.ibr.Constants;
+import com.github.kr328.ibr.remote.Constants;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

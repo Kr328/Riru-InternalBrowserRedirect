@@ -1,4 +1,4 @@
-package com.github.kr328.ibr.proxy;
+package com.github.kr328.ibr.remote.proxy;
 
 import android.os.Binder;
 import android.os.IBinder;

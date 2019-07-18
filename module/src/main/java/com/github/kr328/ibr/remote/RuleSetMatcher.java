@@ -1,12 +1,11 @@
-package com.github.kr328.ibr;
+package com.github.kr328.ibr.remote;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.github.kr328.ibr.model.Rule;
-import com.github.kr328.ibr.model.RuleSet;
+import com.github.kr328.ibr.remote.model.Rule;
+import com.github.kr328.ibr.remote.model.RuleSet;
 
 import java.util.Collections;
 import java.util.Map;
@@ -34,7 +33,7 @@ class RuleSetMatcher {
             Uri uri = parseIntentUrl(intent, rule.getUrlPath());
             if ( uri == null )
                 continue;
-            if ( uri.equals(Uri.EMPTY) )
+            if ( uri == Uri.EMPTY )
                 continue;
             if ( !"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme()) )
                 continue;

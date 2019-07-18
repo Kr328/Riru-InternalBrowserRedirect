@@ -1,17 +1,54 @@
-package com.github.kr328.ibr.model;
+package com.github.kr328.ibr.remote.model;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
-public class Rule {
+public class Rule implements Parcelable {
     private String tag;
     private Uri urlPath;
     private Pattern regexIgnore;
     private Pattern regexForce;
+
+    public Rule() {}
+
+    private Rule(Parcel in) {
+        tag = in.readString();
+        urlPath = Uri.parse(in.readString());
+        regexIgnore = Pattern.compile(in.readString());
+        regexForce = Pattern.compile(in.readString());
+    }
+
+    public static final Creator<Rule> CREATOR = new Creator<Rule>() {
+        @Override
+        public Rule createFromParcel(Parcel in) {
+            return new Rule(in);
+        }
+
+        @Override
+        public Rule[] newArray(int size) {
+            return new Rule[size];
+        }
+    };
+
+
+    @Override
+    public int describeContents() {
+        return "Rule".hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(tag);
+        parcel.writeString(urlPath.toString());
+        parcel.writeString(regexIgnore.pattern());
+        parcel.writeString(regexForce.pattern());
+    }
 
     public static Rule parseFromJson(JSONObject jsonObject) throws JSONException {
         Rule result = new Rule();
@@ -21,7 +58,7 @@ public class Rule {
         result.regexForce = Pattern.compile(jsonObject.optString("regex-force", ""));
         result.regexIgnore = Pattern.compile(jsonObject.optString("regex-ignore", ""));
 
-        if ( result.urlPath.equals(Uri.EMPTY) )
+        if ( result.urlPath == Uri.EMPTY )
             throw new JSONException("Invalid url path");
 
         return result;

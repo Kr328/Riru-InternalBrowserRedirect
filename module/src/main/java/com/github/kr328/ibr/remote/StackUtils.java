@@ -1,4 +1,4 @@
-package com.github.kr328.ibr.proxy;
+package com.github.kr328.ibr.remote.proxy;
 
 public class StackUtils {
     public static boolean hasMethodOnStack(Thread thread, String method) {
