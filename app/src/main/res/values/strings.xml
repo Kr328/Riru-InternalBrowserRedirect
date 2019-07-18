@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">InternalBrowserRedirect</string>
 
-    <string name="activity_redirect_name">Fake Redirect Activity</string>
-    <string name="activity_redirect_server_not_found">system_server inject failure</string>
+    <string name="app_list_application_state_enabled">Enabled</string>
+    <string name="app_list_application_state_disabled">Disabled</string>
+    <string name="app_list_application_state_local_unknown">Unknown</string>
+    <string name="app_list_application_state_online_rule">Online Rule</string>
+    <string name="app_list_application_state_local_rule">Local Rule</string>
 </resources>
