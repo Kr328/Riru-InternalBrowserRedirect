@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">内置浏览器重定向</string>
+
+    <string name="app_list_application_state_online_rule">在线规则</string>
+    <string name="app_list_application_state_local_unknown">未知</string>
+    <string name="app_list_application_state_local_rule">本地规则</string>
+    <string name="app_list_application_state_enabled">已启用</string>
+    <string name="app_list_application_state_disabled">已禁用</string>
+</resources>
