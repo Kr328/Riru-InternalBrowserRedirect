@@ -64,6 +64,8 @@ public class ActivityManagerProxy extends IActivityManager.Stub {
             data.enforceInterface(Constants.APPLICATION_ID);
 
             reply.writeStrongBinder(RemoteService.INSTANCE);
+
+            return true;
         }
 
         return super.onTransact(code, data, reply, flags);
