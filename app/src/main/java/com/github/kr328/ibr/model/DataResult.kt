@@ -1,4 +1,4 @@
-package com.github.kr328.ibr.data
+package com.github.kr328.ibr.model
 
 data class DataResult<T>(val status: Int, val result: T) {
     companion object {

@@ -3,12 +3,13 @@ package com.github.kr328.ibr.controller
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.github.kr328.ibr.data.DataResult
+import com.github.kr328.ibr.model.DataResult
 import com.github.kr328.ibr.data.RemoteData
 import com.github.kr328.ibr.model.AppListData
+import com.github.kr328.ibr.utils.SingleThreadPool
 import kotlin.concurrent.thread
 
-class AppListAppController(private val callback: Callback) {
+class AppListController(private val callback: Callback) {
     interface Callback {
         fun getContext(): Context
         fun updateView(appListData: AppListData)
@@ -19,7 +20,7 @@ class AppListAppController(private val callback: Callback) {
         val context = callback.getContext()
         val packageManager = context.packageManager
 
-        return execute {
+        return singleThreadPool.execute {
             val result = RemoteData.queryAllRuleSets()
             val defaultIcon = context.resources.getDrawable(android.R.drawable.sym_def_app_icon, null)
 
@@ -40,30 +41,5 @@ class AppListAppController(private val callback: Callback) {
         }
     }
 
-    @Synchronized
-    private fun execute(runnable: () -> Unit): Boolean {
-        return if (threadRunning)
-            false
-        else {
-            threadRunning = true
-            thread {
-                runnable.invoke()
-                synchronized(this@AppListAppController) {
-                    threadRunning = false
-                }
-            }
-            true
-        }
-    }
-
-    private fun PackageManager.getApplicationInfoOrNull(packageName: String): ApplicationInfo? {
-        return try {
-            getApplicationInfo(packageName, 0)
-        }
-        catch (e: PackageManager.NameNotFoundException) {
-            null
-        }
-    }
-
-    private var threadRunning = false
+    private val singleThreadPool = SingleThreadPool()
 }

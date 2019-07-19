@@ -6,4 +6,6 @@
     <string name="app_list_application_state_local_unknown">Unknown</string>
     <string name="app_list_application_state_online_rule">Online Rule</string>
     <string name="app_list_application_state_local_rule">Local Rule</string>
+
+    <string name="edit_app_application_enable">Enable</string>
 </resources>

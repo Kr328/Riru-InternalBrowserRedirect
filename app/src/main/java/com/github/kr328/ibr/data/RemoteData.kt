@@ -2,6 +2,7 @@ package com.github.kr328.ibr.data
 
 import android.os.RemoteException
 import com.github.kr328.ibr.Constants
+import com.github.kr328.ibr.model.DataResult
 import com.github.kr328.ibr.remote.model.RuleSet
 import com.github.kr328.ibr.remote.openRemoteConnection
 
@@ -27,6 +28,18 @@ object RemoteData {
             when (e.message) {
                 "error_invalid_remote_version" -> DataResult(STATUS_REMOTE_VERSION_INVALID, emptyMap())
                 else -> DataResult(STATUS_CONNECT_REMOTE_FAILURE, emptyMap())
+            }
+        }
+    }
+
+    fun queryAppRuleSet(packageName: String): DataResult<RuleSet?> {
+        return try {
+            DataResult(DataResult.STATUS_SUCCESS, remoteConnection.queryRuleSet(packageName))
+        }
+        catch (e: RemoteException) {
+            when (e.message) {
+                "error_invalid_remote_version" -> DataResult(STATUS_REMOTE_VERSION_INVALID, null)
+                else -> DataResult(STATUS_CONNECT_REMOTE_FAILURE, null)
             }
         }
     }
