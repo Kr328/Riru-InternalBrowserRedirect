@@ -1,9 +1,15 @@
 package com.github.kr328.ibr
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.kr328.ibr.controller.AppListController
 import com.github.kr328.ibr.controller.EditAppController
@@ -20,15 +26,25 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_edit_app)
+        intent.data?.authority?.also { pkg ->
+            setContentView(R.layout.activity_edit_app)
 
-        icon = findViewById(R.id.activity_edit_app_app_icon)
-        name = findViewById(R.id.activity_edit_app_app_name)
-        version = findViewById(R.id.activity_edit_app_app_version)
-        packageName = findViewById(R.id.activity_edit_app_app_package)
+            with ( findViewById<ViewGroup>(R.id.activity_edit_app_info) ) {
+                icon = findViewById(R.id.module_app_info_icon)
+                name = findViewById(R.id.module_app_info_name)
+                version = findViewById(R.id.module_app_info_version)
+                packageName = findViewById(R.id.module_app_info_package)
 
-        intent.data?.also {
-            controller.refresh(it.host ?: "")
+                findViewById<View>(R.id.module_app_info_view_info).setOnClickListener {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                            .addCategory(Intent.CATEGORY_DEFAULT)
+                            .setData(Uri.parse("package:$pkg"))
+
+                    startActivity(intent)
+                }
+            }
+
+            controller.refresh(pkg)
         } ?: finish()
     }
 

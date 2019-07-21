@@ -12,7 +12,7 @@ ndk {
 
 dex {
     platform = "android-29"
-    buildTools = "29.0.0"
+    buildTools = "29.0.1"
     
     exclude "android"
 }
