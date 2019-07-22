@@ -8,4 +8,9 @@
     <string name="app_list_application_state_enabled">已启用</string>
     <string name="app_list_application_state_disabled">已禁用</string>
     <string name="edit_app_application_enable">启用</string>
+    <string name="edit_app_application_rule_set">策略组</string>
+    <string name="edit_app_application_rule_set_author">作者</string>
+    <string name="edit_app_application_rule_set_last_update">最后更新</string>
+    <string name="edit_app_application_rule_set_tag">标签</string>
+    <string name="edit_app_application_rule">策略</string>
 </resources>

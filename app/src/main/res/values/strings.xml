@@ -8,4 +8,11 @@
     <string name="app_list_application_state_local_rule">Local Rule</string>
 
     <string name="edit_app_application_enable">Enable</string>
+
+    <string name="edit_app_application_rule_set">Rule Set</string>
+    <string name="edit_app_application_rule_set_tag">TAG</string>
+    <string name="edit_app_application_rule_set_author">Authors</string>
+    <string name="edit_app_application_rule_set_last_update">Latest Update</string>
+
+    <string name="edit_app_application_rule">Rule</string>
 </resources>

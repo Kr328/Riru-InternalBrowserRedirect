@@ -11,8 +11,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
+import androidx.fragment.app.transaction
 import com.github.kr328.ibr.controller.AppListController
 import com.github.kr328.ibr.controller.EditAppController
+import com.github.kr328.ibr.fragment.EditAppFragment
 import com.github.kr328.ibr.model.AppData
 
 class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
@@ -26,36 +29,25 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        intent.data?.authority?.also { pkg ->
-            setContentView(R.layout.activity_edit_app)
+        val pkg = intent.data?.authority
 
-            with ( findViewById<ViewGroup>(R.id.activity_edit_app_info) ) {
-                icon = findViewById(R.id.module_app_info_icon)
-                name = findViewById(R.id.module_app_info_name)
-                version = findViewById(R.id.module_app_info_version)
-                packageName = findViewById(R.id.module_app_info_package)
+        if ( pkg == null ) {
+            finish()
+            return
+        }
 
-                findViewById<View>(R.id.module_app_info_view_info).setOnClickListener {
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                            .addCategory(Intent.CATEGORY_DEFAULT)
-                            .setData(Uri.parse("package:$pkg"))
+        setContentView(R.layout.activity_edit_app)
 
-                    startActivity(intent)
-                }
-            }
-
-            controller.refresh(pkg)
-        } ?: finish()
+        controller.refresh(pkg)
     }
 
     override fun getContext(): Context = this
 
     override fun updateAppData(appData: AppData) {
         runOnUiThread {
-            icon.setImageDrawable(appData.icon)
-            name.text = appData.name
-            version.text = appData.version
-            packageName.text = appData.packageName
+            supportFragmentManager.commit {
+                replace(R.id.activity_edit_app_enable_app_info, EditAppFragment(appData))
+            }
         }
     }
 

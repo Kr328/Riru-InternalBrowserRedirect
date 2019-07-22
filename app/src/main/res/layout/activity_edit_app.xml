@@ -28,13 +28,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/module_app_info"
-                android:id="@+id/activity_edit_app_info"/>
-
-            <View
+            <fragment
+                android:name="com.github.kr328.ibr.fragment.EmptyFragment"
+                android:id="@+id/activity_edit_app_enable_app_info"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
