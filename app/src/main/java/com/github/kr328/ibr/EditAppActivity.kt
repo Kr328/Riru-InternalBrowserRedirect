@@ -21,11 +21,6 @@ import com.github.kr328.ibr.model.AppData
 class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
     private val controller = EditAppController(this)
 
-    private lateinit var icon: ImageView
-    private lateinit var name: TextView
-    private lateinit var version: TextView
-    private lateinit var packageName: TextView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
