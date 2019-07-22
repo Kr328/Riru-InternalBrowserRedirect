@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Settings>
-    <AppInfo id="app_info" info_icon="@drawable/ic_info" />
-    <Title title="@string/edit_app_application_rule_set" color="@color/colorAccent" />
-    <ClickableItem id="tag" icon="@drawable/ic_label" title="@string/edit_app_application_rule_set_tag"/>
-    <ClickableItem id="author" icon="@drawable/ic_person" title="@string/edit_app_application_rule_set_author" />
-    <ClickableItem id="last_update" icon="@drawable/ic_update" title="@string/edit_app_application_rule_set_last_update" />
-    <Title title="@string/edit_app_application_rule" color="@color/colorAccent" />
-    <ClickableItem id="rule" />
+    <app-info id="app_info" info_icon="@drawable/ic_info" />
+    <title title="@string/edit_app_application_rule_set" color="@color/colorAccent" />
+    <button id="tag" icon="@drawable/ic_label" title="@string/edit_app_application_rule_set_tag"/>
+    <button id="author" icon="@drawable/ic_person" title="@string/edit_app_application_rule_set_author" />
+    <button id="last_update" icon="@drawable/ic_update" title="@string/edit_app_application_rule_set_last_update" />
+    <title title="@string/edit_app_application_rule" color="@color/colorAccent" />
+    <button id="rule" />
 </Settings>

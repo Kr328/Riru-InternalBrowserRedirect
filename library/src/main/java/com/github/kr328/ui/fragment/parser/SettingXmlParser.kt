@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.github.kr328.ui.R
 import com.github.kr328.ui.fragment.holder.AppInfoSettingHolder
-import com.github.kr328.ui.fragment.holder.ClickableItemSettingHolder
+import com.github.kr328.ui.fragment.holder.ButtonSettingHolder
 import com.github.kr328.ui.fragment.holder.SettingHolder
 import com.github.kr328.ui.fragment.holder.TitleSettingHolder
 import org.xmlpull.v1.XmlPullParser
@@ -37,9 +37,9 @@ fun parseSettingXml(context: Context, inflater: LayoutInflater, parent: ViewGrou
             continue
 
         val child: Pair<View, SettingHolder> = when (xml.name) {
-            "AppInfo" -> parseSettingAppInfoXml(context, inflater, parent, xml)
-            "Title" -> parseSettingTitleXml(context, inflater, parent, xml)
-            "ClickableItem" -> parseSettingClickableItemXml(context, inflater, parent, xml)
+            "app-info" -> parseSettingAppInfoXml(context, inflater, parent, xml)
+            "title" -> parseSettingTitleXml(context, inflater, parent, xml)
+            "button" -> parseSettingClickableItemXml(context, inflater, parent, xml)
             else -> throw SettingXmlParseResult.SettingXmlParseException("Unsupported settings element ${xml.name}")
         }
 
@@ -109,7 +109,7 @@ private fun parseSettingClickableItemXml(context: Context, inflater: LayoutInfla
     val summary = xml.getAttributeValue(null, "summary")
 
     val view = inflater.inflate(R.layout.module_settings_fragment_clickable_item, parent, false)
-    val holder = ClickableItemSettingHolder(id = id,
+    val holder = ButtonSettingHolder(id = id,
             icon = view.findViewById(R.id.module_settings_fragment_clickable_item_icon),
             title = view.findViewById(R.id.module_settings_fragment_clickable_item_title),
             summary = view.findViewById(R.id.module_settings_fragment_clickable_item_summary),
