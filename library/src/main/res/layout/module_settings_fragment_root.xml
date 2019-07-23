@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/module_settings_fragment_root"
+        android:id="@+id/module_settings_fragment_root_root"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
