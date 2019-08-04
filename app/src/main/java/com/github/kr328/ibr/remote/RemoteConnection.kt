@@ -14,8 +14,9 @@ fun openRemoteConnection(): IRemoteService {
     try {
         data.writeInterfaceToken(BuildConfig.APPLICATION_ID)
         activity.transact(Constants.ACTIVITY_CONNECT_TRANSACT_CODE, data, reply, 0)
+
         return IRemoteService.Stub.asInterface(reply.readStrongBinder())
-                ?: throw RemoteException("Unable to connect RemoteServer")
+                ?: throw RemoteException("Unable to connect RemoteService")
     } finally {
         data.recycle()
         reply.recycle()

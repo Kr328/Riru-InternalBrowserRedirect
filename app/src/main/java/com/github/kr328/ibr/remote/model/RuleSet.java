@@ -12,15 +12,18 @@ import java.util.List;
 
 public class RuleSet implements Parcelable {
     private String tag;
+    private String token;
     private List<Rule> rules;
 
     public RuleSet() {
         tag = "";
+        token = "";
         rules = new ArrayList<>();
     }
 
     private RuleSet(Parcel in) {
         tag = in.readString();
+        token = in.readString();
         rules = in.createTypedArrayList(Rule.CREATOR);
     }
 
@@ -44,6 +47,7 @@ public class RuleSet implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(tag);
+        parcel.writeString(token);
         parcel.writeTypedList(rules);
     }
 
@@ -51,6 +55,7 @@ public class RuleSet implements Parcelable {
         RuleSet result = new RuleSet();
 
         result.tag = jsonObject.getString("tag");
+        result.token = jsonObject.getString("token");
 
         JSONArray array = jsonObject.getJSONArray("rules");
         for ( int i = 0 ; i < array.length() ; i++ )
@@ -68,8 +73,17 @@ public class RuleSet implements Parcelable {
 
         result.put("tag", tag);
         result.put("rules", array);
+        result.put("token", token);
 
         return result;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getTag() {

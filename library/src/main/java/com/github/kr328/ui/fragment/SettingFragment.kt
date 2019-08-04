@@ -9,11 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import android.widget.Adapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.github.kr328.ui.R
+import kotlin.concurrent.thread
 
 abstract class SettingFragment : Fragment() {
     protected abstract class Setting
@@ -32,11 +34,17 @@ abstract class SettingFragment : Fragment() {
     }
 
     protected fun updateSettings(settings: List<Setting>) {
-        layout.removeAllViews()
-        settings.map(this::createSettingView).forEach(layout::addView)
-        layout.startAnimation(AlphaAnimation(0.5f, 1.0f).apply {
-            duration = 500
-        })
+        thread {
+            val views = settings.map(this::createSettingView)
+
+            requireActivity().runOnUiThread {
+                layout.removeAllViews()
+                views.forEach(layout::addView)
+                layout.startAnimation(AlphaAnimation(0.5f, 1.0f).apply {
+                    duration = 500
+                })
+            }
+        }
     }
 
     private fun createSettingView(setting: Setting): View {

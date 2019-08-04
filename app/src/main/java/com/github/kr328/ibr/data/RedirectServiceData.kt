@@ -6,7 +6,7 @@ import com.github.kr328.ibr.model.DataResult
 import com.github.kr328.ibr.remote.model.RuleSet
 import com.github.kr328.ibr.remote.openRemoteConnection
 
-object RemoteData {
+object RedirectServiceData {
     const val STATUS_CONNECT_REMOTE_FAILURE = 1
     const val STATUS_REMOTE_VERSION_INVALID = 2
 

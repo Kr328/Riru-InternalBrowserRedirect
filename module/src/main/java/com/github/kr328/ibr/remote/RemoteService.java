@@ -5,6 +5,7 @@ import android.os.Binder;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 
+import com.github.kr328.ibr.remote.data.StoreManager;
 import com.github.kr328.ibr.remote.model.RuleSet;
 
 import java.util.Map;
@@ -49,7 +50,7 @@ public class RemoteService extends IRemoteService.Stub {
     }
 
     @Override
-    public void remoteRuleSet(String packageName) throws RemoteException {
+    public void removeRuleSet(String packageName) throws RemoteException {
         StoreManager.getInstance().updateRuleSet(packageName, new RuleSet());
     }
 }

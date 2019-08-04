@@ -1,7 +1,9 @@
-package com.github.kr328.ibr.remote;
+package com.github.kr328.ibr.remote.data;
 
 import android.util.Log;
 
+import com.github.kr328.ibr.remote.Constants;
+import com.github.kr328.ibr.remote.FileUtils;
 import com.github.kr328.ibr.remote.model.General;
 import com.github.kr328.ibr.remote.model.RuleSet;
 

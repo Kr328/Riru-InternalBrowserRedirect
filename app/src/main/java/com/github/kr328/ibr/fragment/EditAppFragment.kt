@@ -6,8 +6,6 @@ import android.os.Handler
 import com.github.kr328.ibr.R
 import com.github.kr328.ibr.model.AppData
 import com.github.kr328.ui.fragment.SettingFragment
-import com.github.kr328.ui.fragment.holder.AppInfoSettingHolder
-import com.github.kr328.ui.fragment.holder.ButtonSettingHolder
 import java.util.*
 
 class EditAppFragment(private val appData: AppData) : SettingFragment() {

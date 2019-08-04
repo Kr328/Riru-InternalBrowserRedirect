@@ -10,7 +10,7 @@ public interface IRemoteService extends android.os.IInterface {
     void updateRuleSet(String packageName, com.github.kr328.ibr.remote.model.RuleSet ruleSet) throws android.os.RemoteException;
     //Map<String, RuleSet>
 
-    void remoteRuleSet(String packageName) throws android.os.RemoteException;
+    void removeRuleSet(String packageName) throws android.os.RemoteException;
 
     /**
      * Default implementation for IRemoteService.
@@ -37,7 +37,7 @@ public interface IRemoteService extends android.os.IInterface {
         }
 
         @Override
-        public void remoteRuleSet(String packageName) throws android.os.RemoteException {
+        public void removeRuleSet(String packageName) throws android.os.RemoteException {
         }
 
         @Override
@@ -150,7 +150,7 @@ public interface IRemoteService extends android.os.IInterface {
                     data.enforceInterface(descriptor);
                     String _arg0;
                     _arg0 = data.readString();
-                    this.remoteRuleSet(_arg0);
+                    this.removeRuleSet(_arg0);
                     reply.writeNoException();
                     return true;
                 }
@@ -270,7 +270,7 @@ public interface IRemoteService extends android.os.IInterface {
             }
 
             @Override
-            public void remoteRuleSet(String packageName) throws android.os.RemoteException {
+            public void removeRuleSet(String packageName) throws android.os.RemoteException {
                 android.os.Parcel _data = android.os.Parcel.obtain();
                 android.os.Parcel _reply = android.os.Parcel.obtain();
                 try {
@@ -278,7 +278,7 @@ public interface IRemoteService extends android.os.IInterface {
                     _data.writeString(packageName);
                     boolean _status = mRemote.transact(Stub.TRANSACTION_remoteRuleSet, _data, _reply, 0);
                     if (!_status && getDefaultImpl() != null) {
-                        getDefaultImpl().remoteRuleSet(packageName);
+                        getDefaultImpl().removeRuleSet(packageName);
                         return;
                     }
                     _reply.readException();

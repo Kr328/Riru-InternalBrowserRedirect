@@ -12,6 +12,7 @@ import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.github.kr328.ibr.remote.data.StoreManager;
 import com.github.kr328.ibr.remote.model.RuleSet;
 import com.github.kr328.ibr.remote.proxy.ProxyBinderFactory.CustomTransact;
 import com.github.kr328.ibr.remote.proxy.ProxyBinderFactory.ReplaceTransact;

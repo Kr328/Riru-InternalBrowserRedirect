@@ -6,6 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.github.kr328.ibr.remote.data.StoreManager;
 import com.github.kr328.ibr.remote.proxy.ProxyBinderFactory;
 import com.github.kr328.ibr.remote.proxy.ServiceManagerProxy;
 
