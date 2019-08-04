@@ -7,6 +7,8 @@ import kotlinx.serialization.json.JsonConfiguration
 import java.io.File
 
 class LocalRepoSource(private val baseDir: File) : BaseSource {
+    fun getLastUpdate(): Long = baseDir.resolve("packages.json").takeIf(File::exists)?.lastModified() ?: -1
+
     @Synchronized
     override fun queryAllPackages(): PackagesMetadata? {
         try {

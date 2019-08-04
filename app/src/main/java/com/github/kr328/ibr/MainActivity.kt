@@ -14,7 +14,7 @@ import com.github.kr328.ibr.controller.AppListController
 import com.github.kr328.ibr.model.AppListData
 
 class MainActivity : AppCompatActivity(), AppListController.Callback {
-    private val controller = AppListController(this)
+    private val controller = AppListController(this, this)
     private lateinit var appList: ListView
     private lateinit var progress: ProgressBar
 
@@ -34,34 +34,22 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
     override fun onResume() {
         super.onResume()
 
-        progress {
-            controller.refreshList()
-        }
     }
 
-    override fun getContext(): Context = this
-
-    override fun updateView(appListData: AppListData) {
+    override fun showProgress() {
         runOnUiThread {
-            appList.adapter = AppListAdapter(this, appListData)
-
-            clearProgress()
-        }
-    }
-
-    override fun onError(statusCode: Int) {
-        runOnUiThread {
-            clearProgress()
-        }
-    }
-
-    private fun progress(task: () -> Boolean) {
-        if ( task.invoke() )
             progress.visibility = View.VISIBLE
+        }
     }
 
-    private fun clearProgress() {
-        progress.visibility = View.INVISIBLE
+    override fun closeProgress() {
+        runOnUiThread {
+            progress.visibility = View.INVISIBLE
+        }
+    }
+
+    override fun updateAppList(data: AppListData) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 

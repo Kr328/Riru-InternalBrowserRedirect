@@ -25,7 +25,13 @@ class RuleData(cache: File, user: String, repo: String) {
     fun enablePackage(pkg: String) = local.queryPackage(pkg)?.let { service.savePackage(pkg, it) }
     fun disablePackage(pkg: String) = service.removePackage(pkg)
 
+    fun registerCallback(callback: RuleDataCallback) = updater.registerCallback(callback)
+    fun unregisterCallback(callback: RuleDataCallback) = updater.unregisterCallback(callback)
+    fun refresh(force: Boolean = false) = updater.refresh(force)
+    fun currentState(): RuleDataState = updater.getCurrentState()
+
     interface RuleDataCallback {
-        fun onStateChanged(state: RuleDataState, result: RuleDataStateResult)
+        fun onStateChanged(state: RuleDataState)
+        fun onStateResult(result: RuleDataStateResult)
     }
 }

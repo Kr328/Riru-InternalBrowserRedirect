@@ -19,5 +19,8 @@ class SingleThreadPool {
         }
     }
 
+    @Synchronized
+    fun isRunning(): Boolean = running
+
     private var running: Boolean = false
 }

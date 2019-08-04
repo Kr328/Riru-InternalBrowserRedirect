@@ -1,48 +1,67 @@
 package com.github.kr328.ibr.controller
 
+import android.content.ComponentCallbacks
 import android.content.Context
+import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.data.RedirectServiceData
+import com.github.kr328.ibr.data.RuleData
+import com.github.kr328.ibr.data.RuleDataUpdater
+import com.github.kr328.ibr.data.state.RuleDataState
+import com.github.kr328.ibr.data.state.RuleDataStateResult
 import com.github.kr328.ibr.model.AppListData
 import com.github.kr328.ibr.model.DataResult
 import com.github.kr328.ibr.utils.SingleThreadPool
+import java.util.concurrent.Executors
 
-class AppListController(private val callback: Callback) {
-    enum class Status {
-        UNKNOWN, SUCCESS,
-        REDIRECT_SERVICE_INVALID,
-        ONLINE_RULE_UPDATE_FAILURE
+class AppListController(private val context: Context, private val callback: Callback) : RuleData.RuleDataCallback {
+    enum class ErrorType {
+
     }
 
     interface Callback {
-        fun getContext(): Context
-        fun updateView(appListData: AppListData)
-        fun onError(statusCode: Int)
+        fun showProgress()
+        fun closeProgress()
+        fun updateAppList(data: AppListData)
+        fun onError(error: ErrorType)
     }
 
-    fun refreshList(): Boolean {
-        val context = callback.getContext()
-        val packageManager = context.packageManager
+    private val application = MainApplication.fromContext(context)
+    private val executor = Executors.newSingleThreadExecutor()
 
-        return singleThreadPool.execute {
-            val result = RedirectServiceData.queryAllRuleSets()
-            val defaultIcon = context.resources.getDrawable(android.R.drawable.sym_def_app_icon, null)
+    override fun onStateChanged(state: RuleDataState) {
+        if ( application.ruleData.currentState() == RuleDataState.IDLE )
+            callback.closeProgress()
+        else
+            callback.showProgress()
+    }
 
-            if (result.status == DataResult.STATUS_SUCCESS) {
-                val applications = result.result
-                        .mapValues { packageManager.getApplicationInfoOrNull(it.key) }
-                        .map {
-                            it.value?.run {
-                                AppListData.Element(it.key, loadLabel(packageManager).toString(),
-                                        AppListData.AppState(true, AppListData.AppState.RULE_TYPE_LOCAL), loadIcon(packageManager))
-                            }
-                                    ?: AppListData.Element(it.key, it.key, AppListData.AppState(true, AppListData.AppState.RULE_TYPE_LOCAL), defaultIcon)
-                        }
-                callback.updateView(AppListData(applications))
-            } else {
-                callback.onError(result.status)
-            }
+    override fun onStateResult(result: RuleDataStateResult) {
+        if ( result.state == RuleDataState.UPDATE_PACKAGES && result.success )
+            updateList()
+    }
+
+    fun forceRefresh() {
+        application.ruleData.refresh(true)
+    }
+
+    fun onStart() {
+        application.ruleData.registerCallback(this)
+
+        if ( application.ruleData.currentState() == RuleDataState.IDLE )
+            callback.closeProgress()
+        else
+            callback.showProgress()
+
+        application.ruleData.refresh()
+    }
+
+    fun onStop() {
+        application.ruleData.unregisterCallback(this)
+    }
+
+    private fun updateList() {
+        executor.submit {
+
         }
     }
-
-    private val singleThreadPool = SingleThreadPool()
 }
