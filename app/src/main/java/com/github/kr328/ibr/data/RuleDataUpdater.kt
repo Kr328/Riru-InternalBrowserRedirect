@@ -8,10 +8,8 @@ import com.github.kr328.ibr.data.sources.ServiceSource
 import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
 import com.github.kr328.ibr.model.PackagesMetadata
-import com.github.kr328.ibr.utils.ExceptionUtils
 import com.github.kr328.ibr.utils.SingleThreadPool
 import java.util.*
-import java.util.concurrent.PriorityBlockingQueue
 
 class RuleDataUpdater(private val service: ServiceSource,
                       private val local: LocalRepoSource,
@@ -20,30 +18,38 @@ class RuleDataUpdater(private val service: ServiceSource,
     private val pool = SingleThreadPool()
     private val priorityUpdate = Collections.synchronizedList(mutableListOf<String>())
 
-    fun getCurrentState(): RuleDataState = if ( pool.isRunning() ) RuleDataState.UPDATE_PACKAGES else RuleDataState.IDLE
+    var currentState = RuleDataState.IDLE
+        private set(value) {
+            callbacks.forEach { it.onStateChanged(value) }
+            field = value
+        }
+
 
     fun refresh(force: Boolean) {
         pool.execute {
             try {
+                currentState = RuleDataState.UPDATE_PACKAGES
+
                 if ( !force ) {
-                    if ( System.currentTimeMillis() - local.getLastUpdate() < Constants.DEFAULT_RULE_INVALIDATE )
+                    if ( System.currentTimeMillis() - local.getLastUpdate() < Constants.DEFAULT_RULE_INVALIDATE ) {
+                        callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true, emptyMap())) }
+                        currentState = RuleDataState.IDLE
                         return@execute
+                    }
                 }
 
-                callbacks.forEach { it.onStateChanged(RuleDataState.UPDATE_PACKAGES) }
-
-                val servicePackages = service.queryAllPackages()?.packages?.map(PackagesMetadata.Package::pkg)?.toSet() ?: emptySet()
+                val servicePackages = service.queryAllPackages()?.packages?.map(PackagesMetadata.Package::packageName)?.toSet() ?: emptySet()
 
                 val remotePackages = remote.queryAllPackages()
-                val remotePackagesMap = remotePackages.packages.map { it.pkg to it }.toMap()
+                val remotePackagesMap = remotePackages.packages.map { it.packageName to it }.toMap()
 
                 val requireUpdate = ((local.queryAllPackages()?.packages?.filter {
-                    remotePackagesMap[it.pkg]?.version != it.version
-                } ?: remotePackages.packages).map(PackagesMetadata.Package::pkg) ).toMutableSet()
+                    remotePackagesMap[it.packageName]?.version != it.version
+                } ?: remotePackages.packages).map(PackagesMetadata.Package::packageName) ).toMutableSet()
 
                 callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true, emptyMap())) }
 
-                callbacks.forEach { it.onStateChanged(RuleDataState.UPDATE_SINGLE_PACKAGE) }
+                currentState = RuleDataState.UPDATE_SINGLE_PACKAGE
 
                 while ( requireUpdate.isNotEmpty() ) {
                     val pkg = if ( priorityUpdate.isNotEmpty() )
@@ -68,13 +74,15 @@ class RuleDataUpdater(private val service: ServiceSource,
                     }
                 }
 
+                local.saveAllPackages(remotePackages)
+
                 priorityUpdate.clear()
             }
             catch (e: BaseSource.SourceException) {
                 callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, false, emptyMap())) }
             }
 
-            callbacks.forEach { it.onStateChanged(RuleDataState.IDLE) }
+            currentState = RuleDataState.IDLE
         }
     }
 

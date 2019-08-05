@@ -19,8 +19,9 @@ class RuleData(cache: File, user: String, repo: String) {
     private val updater = RuleDataUpdater(service, local, remote)
 
     fun isValidService(): Boolean = ExceptionUtils.fallback({ service.connection.version == Constants.REMOTE_SERVICE_VERSION }, false)
-    fun queryAllMetadata(): PackagesMetadata = local.queryAllPackages() ?: PackagesMetadata(emptyList())
-    fun queryPackage(pkg: String): PackageRuleSet? = local.queryPackage(pkg)
+    fun queryPreloadMetadata(): PackagesMetadata = service.queryAllPackages() ?: PackagesMetadata(emptyList())
+    fun queryLocalMetadata(): PackagesMetadata = local.queryAllPackages() ?: PackagesMetadata(emptyList())
+    fun queryPackage(pkg: String): PackageRuleSet? = local.queryPackage(pkg) ?: service.queryPackage(pkg)
     fun isPackageEnabled(pkg: String): Boolean = service.queryPackage(pkg) != null
     fun enablePackage(pkg: String) = local.queryPackage(pkg)?.let { service.savePackage(pkg, it) }
     fun disablePackage(pkg: String) = service.removePackage(pkg)
@@ -28,7 +29,7 @@ class RuleData(cache: File, user: String, repo: String) {
     fun registerCallback(callback: RuleDataCallback) = updater.registerCallback(callback)
     fun unregisterCallback(callback: RuleDataCallback) = updater.unregisterCallback(callback)
     fun refresh(force: Boolean = false) = updater.refresh(force)
-    fun currentState(): RuleDataState = updater.getCurrentState()
+    fun currentState(): RuleDataState = updater.currentState
 
     interface RuleDataCallback {
         fun onStateChanged(state: RuleDataState)

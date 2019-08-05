@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PackagesMetadata(val packages: List<Package>) {
     @Serializable
-    data class Package(val pkg: String, val version: Int)
+    data class Package(val packageName: String, val version: Int)
 }

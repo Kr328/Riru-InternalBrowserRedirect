@@ -11,32 +11,32 @@ class LocalRepoSource(private val baseDir: File) : BaseSource {
 
     @Synchronized
     override fun queryAllPackages(): PackagesMetadata? {
-        try {
-            return baseDir.resolve("packages.json").takeIf(File::exists)?.let {
+        return try {
+            baseDir.resolve("packages.json").takeIf(File::exists)?.let {
                 Json(JsonConfiguration.Stable).parse(PackagesMetadata.serializer(), it.readText())
             }
         }
         catch (e: Exception) {
-            throw BaseSource.SourceException("queryAllPackages", e)
+            null
         }
     }
 
     @Synchronized
     override fun queryPackage(pkg: String): PackageRuleSet? {
-        try {
-            return baseDir.resolve("rules/$pkg.json").takeIf(File::exists)?.let {
+        return try {
+            baseDir.resolve("rules/$pkg.json").takeIf(File::exists)?.let {
                 Json(JsonConfiguration.Stable).parse(PackageRuleSet.serializer(), it.readText())
             }
         }
         catch (e: Exception) {
-            throw BaseSource.SourceException("queryPackage $pkg", e)
+            null
         }
     }
 
     @Synchronized
     override fun saveAllPackages(data: PackagesMetadata) {
         try {
-            baseDir.also(File::mkdirs).resolve("packages.json")
+            baseDir.apply { mkdirs() }.resolve("packages.json")
                     .writeText(Json(JsonConfiguration.Stable).stringify(PackagesMetadata.serializer(), data))
         }
         catch (e: Exception) {
@@ -47,7 +47,7 @@ class LocalRepoSource(private val baseDir: File) : BaseSource {
     @Synchronized
     override fun savePackage(pkg: String, data: PackageRuleSet) {
         try {
-            baseDir.resolve("rules").also(File::mkdirs).resolve("$pkg.json").let {
+            baseDir.resolve("rules").apply { mkdirs() }.resolve("$pkg.json").let {
                 it.writeText(Json(JsonConfiguration.Stable).stringify(PackageRuleSet.serializer(), data))
             }
         }

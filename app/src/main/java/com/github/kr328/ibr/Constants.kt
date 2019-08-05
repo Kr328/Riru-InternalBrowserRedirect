@@ -11,5 +11,5 @@ object Constants {
     const val REMOTE_SERVICE_VERSION = 1
     const val ACTIVITY_CONNECT_TRANSACT_CODE = 24519
 
-    const val CACHE_ONLINE_RULE_PATH = "/online-rule/"
+    const val CACHE_ONLINE_RULE_PATH = "online-rules"
 }

@@ -1,35 +1,49 @@
 package com.github.kr328.ibr.adapters
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.github.kr328.ibr.R
 import com.github.kr328.ibr.model.AppListData
 
-class AppListAdapter(private val context: Context, private val appListData: AppListData) : BaseAdapter() {
-    override fun getView(index: Int, cache: View?, parent: ViewGroup?): View {
-        return (cache ?: LayoutInflater.from(context).inflate(R.layout.adapter_app_list, parent, false)).also { view ->
-            with (appListData.elements[index]) {
-                view.findViewById<TextView>(R.id.adapter_app_list_name).text = this.name
-                view.findViewById<ImageView>(R.id.adapter_app_list_icon).setImageDrawable(this.icon)
-                view.findViewById<TextView>(R.id.adapter_app_list_description).also {
-                    it.text = this.appState.toI18nString()
-                    it.setTextColor(if ( this.appState.enabled ) context.getColor(R.color.colorAccent) else Color.BLACK)
-                }
-            }
-        }
+class AppListAdapter(private val context: Context, val onClickListener: (pkg: String) -> Unit) : RecyclerView.Adapter<AppListAdapter.AppListViewHolder>() {
+    data class AppListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        val name: TextView = view.findViewById(R.id.adapter_app_list_name)
+        val icon: ImageView = view.findViewById(R.id.adapter_app_list_icon)
+        val description: TextView = view.findViewById(R.id.adapter_app_list_description)
     }
 
-    override fun getItem(index: Int): Any = appListData.elements[index]
+    var appListData: AppListData = AppListData(emptyList())
 
-    override fun getItemId(index: Int): Long = appListData.elements[index].hashCode().toLong()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppListViewHolder {
+        return AppListViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_app_list, parent, false).also {
+            it.setOnClickListener { view ->
+                onClickListener.invoke(view.tag as String? ?: "")
+            }
+        })
+    }
+    override fun getItemCount(): Int {
+        return appListData.elements.size
+    }
 
-    override fun getCount(): Int = appListData.elements.size
+    override fun onBindViewHolder(holder: AppListViewHolder, position: Int) {
+        val data = appListData.elements[position]
+
+        holder.view.tag = data.packageName
+
+        holder.name.text = data.name
+        holder.icon.setImageDrawable(data.icon)
+        holder.description.text = data.appState.toI18nString()
+
+        if ( data.appState.enabled )
+            holder.description.setTextColor(context.getColor(R.color.colorAccent))
+        else
+            holder.description.setTextColor(0x808080)
+    }
 
     private fun AppListData.AppState.toI18nString(): String {
         val sb = StringBuilder()
@@ -40,10 +54,9 @@ class AppListAdapter(private val context: Context, private val appListData: AppL
         sb.append(" (")
         sb.append(context.getString(
                 when (ruleType) {
-                    AppListData.AppState.RULE_TYPE_LOCAL -> R.string.app_list_application_state_local_rule
-                    AppListData.AppState.RULE_TYPE_ONLINE -> R.string.app_list_application_state_online_rule
-                    AppListData.AppState.RULE_TYPE_UNKNOWN -> R.string.app_list_application_state_local_unknown
-                    else -> R.string.app_list_application_state_local_unknown
+                    AppListData.RuleType.ONLINE -> R.string.app_list_application_state_online_rule
+                    AppListData.RuleType.PRELOAD -> R.string.app_list_application_state_preload_rule
+                    AppListData.RuleType.UNKNOWN -> R.string.app_list_application_state_unknown_rule
                 }
         ))
         sb.append(")")

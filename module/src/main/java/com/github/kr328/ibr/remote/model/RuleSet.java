@@ -55,7 +55,7 @@ public class RuleSet implements Parcelable {
         RuleSet result = new RuleSet();
 
         result.tag = jsonObject.getString("tag");
-        result.token = jsonObject.getString("token");
+        result.token = jsonObject.optString("token", "");
 
         JSONArray array = jsonObject.getJSONArray("rules");
         for ( int i = 0 ; i < array.length() ; i++ )
