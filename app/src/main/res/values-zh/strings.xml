@@ -15,9 +15,11 @@
     <string name="app_list_application_error_invalid_service_message">无法连接到重定向服务. 请检查 Riru - Core 和 Riru - InternalBrowserRedirect 是否被安装</string>
     <string name="app_list_application_error_invalid_service_title">无效的重定向服务</string>
     <string name="app_list_application_error_invalid_service_button_ok">确认</string>
-    <string name="app_list_application_error_update_failure">远程规则同步失败</string>
+    <string name="app_list_application_error_update_failure">在线规则同步失败</string>
     <string name="app_list_application_menu_about">关于</string>
     <string name="app_list_application_menu_refresh">刷新</string>
     <string name="app_list_application_menu_settings">设置</string>
     <string name="edit_app_application_updating">在线规则正在更新</string>
+    <string name="edit_app_application_update_failure">在线规则同步失败</string>
+    <string name="edit_app_application_unknown_app">未知应用</string>
 </resources>

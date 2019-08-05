@@ -17,7 +17,7 @@ class EditAppController(private val context: Context,val pkg: String, private va
     }
 
     enum class ErrorType {
-        UNKNOWN_APPLICATION, UPDATE_PACKAGE_FAILURE
+        UNKNOWN_APPLICATION, UPDATE_PACKAGES_FAILURE
     }
 
     private val ruleData = MainApplication.fromContext(context).ruleData
@@ -43,18 +43,17 @@ class EditAppController(private val context: Context,val pkg: String, private va
 
     override fun onStateChanged(state: RuleDataState) {
         when ( state ) {
-            RuleDataState.IDLE -> {
-                callback.closeUpdating()
-                updateView()
-            }
+            RuleDataState.IDLE -> callback.closeUpdating()
             RuleDataState.UPDATE_SINGLE_PACKAGE -> callback.showUpdating()
             else -> {}
         }
     }
 
     override fun onStateResult(result: RuleDataStateResult) {
-        if ( result.state == RuleDataState.UPDATE_SINGLE_PACKAGE && !result.success && result.packageName == pkg)
-            callback.onError(ErrorType.UPDATE_PACKAGE_FAILURE)
+        if ( result.state == RuleDataState.UPDATE_SINGLE_PACKAGE && result.success && result.packageName == pkg )
+            updateView()
+        else if ( result.state == RuleDataState.UPDATE_PACKAGES && !result.success )
+            callback.onError(ErrorType.UPDATE_PACKAGES_FAILURE)
     }
 
     private fun updateView() {

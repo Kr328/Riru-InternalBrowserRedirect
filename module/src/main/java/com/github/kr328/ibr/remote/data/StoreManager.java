@@ -21,37 +21,21 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 
 public class StoreManager {
     public static StoreManager getInstance() {
-        if ( INSTANCE == null )
-            INSTANCE = new StoreManager();
         return INSTANCE;
     }
 
     public synchronized RuleSet getRuleSet(String pkg) {
-        RuleSet ruleSet;
-        if ((ruleSet = cache.changedRuleSets.get(pkg)) != null )
-            return ruleSet;
-        if ((ruleSet = cache.ruleSets.get(pkg)) != null)
-            return ruleSet;
-        return null;
+        return cache.ruleSets.get(pkg);
     }
 
     public synchronized Map<String, RuleSet> getRuleSets() {
-        HashMap<String, RuleSet> result = new HashMap<>();
-
-        result.putAll(cache.ruleSets);
-        result.putAll(cache.changedRuleSets);
-
-        Iterator<Map.Entry<String, RuleSet>> iterable = result.entrySet().iterator();
-        while ( iterable.hasNext() ) {
-            if ( iterable.next().getValue().getRules().isEmpty() )
-                iterable.remove();
-        }
-
-        return result;
+        return cache.ruleSets;
     }
 
     public synchronized General getGeneral() {
@@ -59,32 +43,26 @@ public class StoreManager {
     }
 
     public synchronized void updateRuleSet(String pkg, RuleSet ruleSet) {
-        cache.changedRuleSets.put(pkg, ruleSet);
-        saveTimer.cancel();
-        saveTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                save();
+        cache.ruleSets.put(pkg, ruleSet);
+        background.execute(() -> {
+            try {
+                FileUtils.writeLines(new File(Constants.DATA_STORE_DIRECTORY, String.format(Constants.TEMPLATE_CONFIG_FILE, pkg)), ruleSet.toJson().toString());
+            } catch (Exception e) {
+                Log.d(Constants.TAG, "Save data failure pkg = " + pkg, e);
             }
-        }, 1000);
+        });
     }
 
-    private void cancelTimer() {
-        try {
-            saveTimer.cancel();
-        }
-        catch (Exception ignored) {}
+    public synchronized void removeRuleSet(String pkg) {
+        cache.ruleSets.remove(pkg);
+        background.execute(() -> {
+            //noinspection ResultOfMethodCallIgnored
+            new File(Constants.DATA_STORE_DIRECTORY, String.format(Constants.TEMPLATE_CONFIG_FILE, pkg)).delete();
+        });
     }
-
-    private StoreManager() { load(); }
-
-    private static StoreManager INSTANCE;
-    private Cache cache = new Cache();
-    private Timer saveTimer = new Timer();
 
     private synchronized void load() {
         cache.ruleSets = new HashMap<>();
-        cache.changedRuleSets = new HashMap<>();
 
         try {
             cache.general = General.parseFromJson(new JSONObject(FileUtils.readLines(Constants.DATA_STORE_DIRECTORY + "/general.json")));
@@ -112,40 +90,14 @@ public class StoreManager {
         Log.i(Constants.TAG, "Loaded RuleSet " + cache.ruleSets.keySet());
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void save() {
-        new File(Constants.DATA_STORE_DIRECTORY).mkdirs();
-
-        ArrayList<Map.Entry<String, RuleSet>> changed;
-        synchronized (this) {
-            changed = new ArrayList<>(cache.changedRuleSets.entrySet());
-            cache.ruleSets.putAll(cache.changedRuleSets);
-            cache.changedRuleSets.clear();
-
-            Iterator<Map.Entry<String, RuleSet>> iterable = cache.ruleSets.entrySet().iterator();
-            while ( iterable.hasNext() ) {
-                if ( iterable.next().getValue().getRules().isEmpty() )
-                    iterable.remove();
-            }
-        }
-
-        for ( Map.Entry<String, RuleSet> entry : changed ) {
-            try {
-                if ( entry.getValue().getRules().size() > 0 )
-                    FileUtils.writeLines(new File(Constants.DATA_STORE_DIRECTORY,
-                            String.format(Constants.TEMPLATE_CONFIG_FILE, entry.getKey())),
-                            entry.getValue().toJson().toString());
-                else
-                    new File(String.format(Constants.TEMPLATE_CONFIG_FILE, entry.getKey())).delete();
-            } catch (IOException|JSONException e) {
-                Log.w(Constants.TAG, "Save config " + entry.getKey() + " failure", e);
-            }
-        }
-    }
-
     private class Cache {
         General general;
         HashMap<String, RuleSet> ruleSets;
-        HashMap<String, RuleSet> changedRuleSets;
     }
+
+    private StoreManager() { load(); }
+
+    private static StoreManager INSTANCE = new StoreManager();
+    private Cache cache = new Cache();
+    private Executor background = Executors.newSingleThreadExecutor();
 }

@@ -51,6 +51,6 @@ public class RemoteService extends IRemoteService.Stub {
 
     @Override
     public void removeRuleSet(String packageName) throws RemoteException {
-        StoreManager.getInstance().updateRuleSet(packageName, new RuleSet());
+        StoreManager.getInstance().removeRuleSet(packageName);
     }
 }

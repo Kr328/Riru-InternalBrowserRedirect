@@ -45,10 +45,7 @@ class RuleDataUpdater(private val service: ServiceSource,
 
                 val requireUpdate = ((local.queryAllPackages()?.packages?.filter {
                     remotePackagesMap[it.packageName]?.version != it.version
-                }
-                        ?: remotePackages.packages).map(Packages.Package::packageName)).toMutableSet()
-
-                callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true, emptyMap())) }
+                } ?: remotePackages.packages).map(Packages.Package::packageName)).toMutableSet()
 
                 currentState = RuleDataState.UPDATE_SINGLE_PACKAGE
 
@@ -59,24 +56,22 @@ class RuleDataUpdater(private val service: ServiceSource,
                         requireUpdate.first()
 
                     if (requireUpdate.remove(pkg)) {
-                        try {
-                            val data = remote.queryPackage(pkg)
+                        val data = remote.queryPackage(pkg)
 
-                            local.savePackage(pkg, data)
+                        local.savePackage(pkg, data)
 
-                            if (servicePackages.contains(pkg))
-                                service.savePackage(pkg, data)
+                        if (servicePackages.contains(pkg))
+                            service.savePackage(pkg, data)
 
-                            callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_SINGLE_PACKAGE, true, pkg)) }
-                        } catch (e: BaseSource.SourceException) {
-                            callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_SINGLE_PACKAGE, false, pkg)) }
-                        }
+                        callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_SINGLE_PACKAGE, true, pkg)) }
                     }
                 }
 
                 local.saveAllPackages(remotePackages)
 
                 priorityUpdate.clear()
+
+                callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true, emptyMap())) }
             } catch (e: BaseSource.SourceException) {
                 callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, false, emptyMap())) }
             }

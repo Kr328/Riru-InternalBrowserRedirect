@@ -114,6 +114,9 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
     }
 
     override fun onError(error: EditAppController.ErrorType) {
-
+        when ( error ) {
+            EditAppController.ErrorType.UNKNOWN_APPLICATION -> Snackbar.make(root, R.string.edit_app_application_unknown_app, Snackbar.LENGTH_LONG).show()
+            EditAppController.ErrorType.UPDATE_PACKAGES_FAILURE -> Snackbar.make(root, R.string.edit_app_application_update_failure, Snackbar.LENGTH_LONG).show()
+        }
     }
 }

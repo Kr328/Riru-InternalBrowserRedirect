@@ -4,7 +4,7 @@
     <string name="app_list_application_error_invalid_service_title">Redirect Service Invalid</string>
     <string name="app_list_application_error_invalid_service_message">Unable to connect Redirect Service. Please check Riru - Core and Riru - InternalBrowserRedirect have installed on Magisk</string>
     <string name="app_list_application_error_invalid_service_button_ok">OK</string>
-    <string name="app_list_application_error_update_failure">Remote Rule Sync Failure</string>
+    <string name="app_list_application_error_update_failure">Online Rule Sync Failure</string>
 
     <string name="app_list_application_state_enabled">Enabled</string>
     <string name="app_list_application_state_disabled">Disabled</string>
@@ -22,6 +22,8 @@
     <string name="edit_app_application_rule_set_tag">TAG</string>
     <string name="edit_app_application_rule_set_author">Authors</string>
     <string name="edit_app_application_updating">Online Rule Updating</string>
+    <string name="edit_app_application_update_failure">Online Rule Sync Failure</string>
+    <string name="edit_app_application_unknown_app">Unknown App</string>
 
     <string name="edit_app_application_rule">Rule</string>
 </resources>
