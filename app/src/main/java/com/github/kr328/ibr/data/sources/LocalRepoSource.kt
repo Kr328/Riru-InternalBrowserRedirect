@@ -7,7 +7,8 @@ import kotlinx.serialization.json.JsonConfiguration
 import java.io.File
 
 class LocalRepoSource(private val baseDir: File) : BaseSource {
-    fun getLastUpdate(): Long = baseDir.resolve("packages.json").takeIf(File::exists)?.lastModified() ?: -1
+    fun getLastUpdate(): Long = baseDir.resolve("packages.json").takeIf(File::exists)?.lastModified()
+            ?: -1
 
     @Synchronized
     override fun queryAllPackages(): PackagesMetadata? {
@@ -15,8 +16,7 @@ class LocalRepoSource(private val baseDir: File) : BaseSource {
             baseDir.resolve("packages.json").takeIf(File::exists)?.let {
                 Json(JsonConfiguration.Stable).parse(PackagesMetadata.serializer(), it.readText())
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             null
         }
     }
@@ -27,8 +27,7 @@ class LocalRepoSource(private val baseDir: File) : BaseSource {
             baseDir.resolve("rules/$pkg.json").takeIf(File::exists)?.let {
                 Json(JsonConfiguration.Stable).parse(PackageRuleSet.serializer(), it.readText())
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             null
         }
     }
@@ -38,8 +37,7 @@ class LocalRepoSource(private val baseDir: File) : BaseSource {
         try {
             baseDir.apply { mkdirs() }.resolve("packages.json")
                     .writeText(Json(JsonConfiguration.Stable).stringify(PackagesMetadata.serializer(), data))
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw BaseSource.SourceException("saveAllPackages", e)
         }
     }
@@ -50,8 +48,7 @@ class LocalRepoSource(private val baseDir: File) : BaseSource {
             baseDir.resolve("rules").apply { mkdirs() }.resolve("$pkg.json").let {
                 it.writeText(Json(JsonConfiguration.Stable).stringify(PackageRuleSet.serializer(), data))
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw BaseSource.SourceException("savePackage $pkg", e)
         }
     }

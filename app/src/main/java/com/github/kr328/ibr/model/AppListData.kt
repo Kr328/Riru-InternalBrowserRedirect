@@ -7,8 +7,9 @@ data class AppListData(val elements: List<Element>) {
         fun equalsBase(other: Element) =
                 packageName == other.packageName && name == other.name && appState == other.appState
     }
+
     data class AppState(val enabled: Boolean, val ruleType: RuleType)
     enum class RuleType {
-        UNKNOWN,ONLINE,PRELOAD
+        UNKNOWN, ONLINE, PRELOAD
     }
 }

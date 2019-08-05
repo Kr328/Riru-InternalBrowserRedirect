@@ -1,16 +1,10 @@
 package com.github.kr328.ibr
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
 import android.widget.LinearLayout
-import android.widget.ListView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -50,7 +44,7 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when ( item.itemId ) {
+        when (item.itemId) {
             R.id.activity_main_menu_refresh -> controller.forceRefresh()
             else -> return super.onOptionsItemSelected(item)
         }
@@ -86,7 +80,7 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
         val adapter = appList.adapter as AppListAdapter
         val oldData = adapter.appListData
 
-        val result = DiffUtil.calculateDiff(object: DiffUtil.Callback() {
+        val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
                     oldData.elements[oldItemPosition].packageName == data.elements[newItemPosition].packageName
 
@@ -105,12 +99,12 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
     }
 
     override fun onError(error: AppListController.ErrorType) {
-        when ( error ) {
+        when (error) {
             AppListController.ErrorType.INVALID_SERVICE -> AlertDialog.Builder(this)
                     .setTitle(R.string.app_list_application_error_invalid_service_title)
                     .setMessage(R.string.app_list_application_error_invalid_service_message)
                     .setCancelable(false)
-                    .setPositiveButton(R.string.app_list_application_error_invalid_service_button_ok) { _, _ -> finish()}
+                    .setPositiveButton(R.string.app_list_application_error_invalid_service_button_ok) { _, _ -> finish() }
                     .show()
             AppListController.ErrorType.UPDATE_FAILURE -> Snackbar.make(root, R.string.app_list_application_error_update_failure, Snackbar.LENGTH_LONG).show()
         }

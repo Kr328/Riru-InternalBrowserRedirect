@@ -1,6 +1,7 @@
 package com.github.kr328.ibr.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ class AppListAdapter(private val context: Context, val onClickListener: (pkg: St
             }
         })
     }
+
     override fun getItemCount(): Int {
         return appListData.elements.size
     }
@@ -39,10 +41,10 @@ class AppListAdapter(private val context: Context, val onClickListener: (pkg: St
         holder.icon.setImageDrawable(data.icon)
         holder.description.text = data.appState.toI18nString()
 
-        if ( data.appState.enabled )
+        if (data.appState.enabled)
             holder.description.setTextColor(context.getColor(R.color.colorAccent))
         else
-            holder.description.setTextColor(0x808080)
+            holder.description.setTextColor(Color.GRAY)
     }
 
     private fun AppListData.AppState.toI18nString(): String {

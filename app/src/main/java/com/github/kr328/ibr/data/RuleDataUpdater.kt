@@ -30,45 +30,46 @@ class RuleDataUpdater(private val service: ServiceSource,
             try {
                 currentState = RuleDataState.UPDATE_PACKAGES
 
-                if ( !force ) {
-                    if ( System.currentTimeMillis() - local.getLastUpdate() < Constants.DEFAULT_RULE_INVALIDATE ) {
+                if (!force) {
+                    if (System.currentTimeMillis() - local.getLastUpdate() < Constants.DEFAULT_RULE_INVALIDATE) {
                         callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true, emptyMap())) }
                         currentState = RuleDataState.IDLE
                         return@execute
                     }
                 }
 
-                val servicePackages = service.queryAllPackages()?.packages?.map(PackagesMetadata.Package::packageName)?.toSet() ?: emptySet()
+                val servicePackages = service.queryAllPackages()?.packages?.map(PackagesMetadata.Package::packageName)?.toSet()
+                        ?: emptySet()
 
                 val remotePackages = remote.queryAllPackages()
                 val remotePackagesMap = remotePackages.packages.map { it.packageName to it }.toMap()
 
                 val requireUpdate = ((local.queryAllPackages()?.packages?.filter {
                     remotePackagesMap[it.packageName]?.version != it.version
-                } ?: remotePackages.packages).map(PackagesMetadata.Package::packageName) ).toMutableSet()
+                }
+                        ?: remotePackages.packages).map(PackagesMetadata.Package::packageName)).toMutableSet()
 
                 callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true, emptyMap())) }
 
                 currentState = RuleDataState.UPDATE_SINGLE_PACKAGE
 
-                while ( requireUpdate.isNotEmpty() ) {
-                    val pkg = if ( priorityUpdate.isNotEmpty() )
+                while (requireUpdate.isNotEmpty()) {
+                    val pkg = if (priorityUpdate.isNotEmpty())
                         priorityUpdate.removeAt(0)
                     else
                         requireUpdate.first()
 
-                    if ( requireUpdate.remove(pkg) ) {
+                    if (requireUpdate.remove(pkg)) {
                         try {
                             val data = remote.queryPackage(pkg)
 
                             local.savePackage(pkg, data)
 
-                            if ( servicePackages.contains(pkg) )
+                            if (servicePackages.contains(pkg))
                                 service.savePackage(pkg, data)
 
                             callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_SINGLE_PACKAGE, true, pkg)) }
-                        }
-                        catch (e: BaseSource.SourceException) {
+                        } catch (e: BaseSource.SourceException) {
                             callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_SINGLE_PACKAGE, false, pkg)) }
                         }
                     }
@@ -77,8 +78,7 @@ class RuleDataUpdater(private val service: ServiceSource,
                 local.saveAllPackages(remotePackages)
 
                 priorityUpdate.clear()
-            }
-            catch (e: BaseSource.SourceException) {
+            } catch (e: BaseSource.SourceException) {
                 callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, false, emptyMap())) }
             }
 
@@ -87,7 +87,7 @@ class RuleDataUpdater(private val service: ServiceSource,
     }
 
     fun requestPriority(pkg: String) {
-        if ( !pool.isRunning() )
+        if (!pool.isRunning())
             return
 
         priorityUpdate.add(pkg)

@@ -16,7 +16,7 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
 
         val pkg = intent.data?.authority
 
-        if ( pkg == null ) {
+        if (pkg == null) {
             finish()
             return
         }

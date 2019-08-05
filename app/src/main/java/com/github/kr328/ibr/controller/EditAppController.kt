@@ -21,7 +21,8 @@ class EditAppController(private val callback: Callback) {
                 RedirectServiceData.queryAppRuleSet(pkg)
                         .takeIf { dataResult -> dataResult.status == DataResult.STATUS_SUCCESS }?.also {
                             callback.updateAppData(AppData(packageInfo.packageName, packageInfo.applicationInfo.loadLabel(packageManager).toString(),
-                                     packageInfo.versionName ,packageInfo.applicationInfo.loadIcon(packageManager), it.result!!)) } ?: callback.onError(2)
+                                    packageInfo.versionName, packageInfo.applicationInfo.loadIcon(packageManager), it.result!!))
+                        } ?: callback.onError(2)
             } ?: callback.onError(1)
         }
     }

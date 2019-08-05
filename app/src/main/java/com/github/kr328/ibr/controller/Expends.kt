@@ -8,8 +8,8 @@ import android.content.pm.PackageManager.NameNotFoundException
 fun PackageManager.getApplicationInfoOrNull(packageName: String): ApplicationInfo? {
     return try {
         getApplicationInfo(packageName, 0)
-    }
-    catch (e: NameNotFoundException) {
+
+    } catch (e: NameNotFoundException) {
         null
     }
 }
@@ -17,8 +17,7 @@ fun PackageManager.getApplicationInfoOrNull(packageName: String): ApplicationInf
 fun PackageManager.getPackageInfoOrNull(packageName: String): PackageInfo? {
     return try {
         this.getPackageInfo(packageName, 0)
-    }
-    catch (e : NameNotFoundException) {
+    } catch (e: NameNotFoundException) {
         null
     }
 }

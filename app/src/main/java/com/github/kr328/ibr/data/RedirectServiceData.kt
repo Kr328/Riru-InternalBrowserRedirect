@@ -12,7 +12,7 @@ object RedirectServiceData {
 
     private val remoteConnection by lazy {
         openRemoteConnection().also {
-            if ( it.version != Constants.REMOTE_SERVICE_VERSION )
+            if (it.version != Constants.REMOTE_SERVICE_VERSION)
                 throw RemoteException("error_invalid_remote_version")
         }
     }
@@ -23,8 +23,7 @@ object RedirectServiceData {
                     .mapKeys { it.key as String }
                     .mapValues { it.value as RuleSet }
             DataResult(DataResult.STATUS_SUCCESS, ruleSets)
-        }
-        catch (e: RemoteException) {
+        } catch (e: RemoteException) {
             when (e.message) {
                 "error_invalid_remote_version" -> DataResult(STATUS_REMOTE_VERSION_INVALID, emptyMap())
                 else -> DataResult(STATUS_CONNECT_REMOTE_FAILURE, emptyMap())
@@ -35,8 +34,7 @@ object RedirectServiceData {
     fun queryAppRuleSet(packageName: String): DataResult<RuleSet?> {
         return try {
             DataResult(DataResult.STATUS_SUCCESS, remoteConnection.queryRuleSet(packageName))
-        }
-        catch (e: RemoteException) {
+        } catch (e: RemoteException) {
             when (e.message) {
                 "error_invalid_remote_version" -> DataResult(STATUS_REMOTE_VERSION_INVALID, null)
                 else -> DataResult(STATUS_CONNECT_REMOTE_FAILURE, null)

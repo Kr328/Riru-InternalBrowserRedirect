@@ -25,7 +25,7 @@ class AppListController(private val context: Context, private val callback: Call
     private val executor = Executors.newSingleThreadExecutor()
 
     override fun onStateChanged(state: RuleDataState) {
-        if ( state == RuleDataState.UPDATE_PACKAGES )
+        if (state == RuleDataState.UPDATE_PACKAGES)
             callback.showProgress()
         else
             callback.closeProgress()
@@ -35,7 +35,7 @@ class AppListController(private val context: Context, private val callback: Call
         if (result.state == RuleDataState.UPDATE_PACKAGES) {
             updateList()
 
-            if ( !result.success )
+            if (!result.success)
                 callback.onError(ErrorType.UPDATE_FAILURE)
         }
     }
@@ -45,7 +45,7 @@ class AppListController(private val context: Context, private val callback: Call
     }
 
     fun onStart() {
-        if ( !ruleData.isValidService() ) {
+        if (!ruleData.isValidService()) {
             callback.onError(ErrorType.INVALID_SERVICE)
 
             return
@@ -53,7 +53,7 @@ class AppListController(private val context: Context, private val callback: Call
 
         ruleData.registerCallback(this)
 
-        if ( ruleData.currentState() == RuleDataState.IDLE )
+        if (ruleData.currentState() == RuleDataState.IDLE)
             callback.closeProgress()
         else
             callback.showProgress()
@@ -74,7 +74,7 @@ class AppListController(private val context: Context, private val callback: Call
             val elements = (preload + local).mapNotNull {
                 val info = pm.getApplicationInfoOrNull(it.key)
 
-                if ( info != null ) {
+                if (info != null) {
                     val l = local[it.key]
                     val p = preload[it.key]
 
@@ -87,8 +87,7 @@ class AppListController(private val context: Context, private val callback: Call
                                 AppListData.AppState(true, AppListData.RuleType.PRELOAD), info.loadIcon(pm))
                         else -> null
                     }
-                }
-                else {
+                } else {
                     val l = local[it.key]
                     val p = preload[it.key]
 
@@ -102,24 +101,20 @@ class AppListController(private val context: Context, private val callback: Call
                 }
             }
 
-            callback.updateAppList(AppListData(elements.sortedWith(compareBy({it.appState.getPriority()}, { it.name }))))
+            callback.updateAppList(AppListData(elements.sortedWith(compareBy({ it.appState.getPriority() }, { it.name }))))
         }
     }
 
     private fun AppListData.AppState.getPriority(): Int {
-        return if ( enabled ) {
-            10000 + when ( ruleType ) {
-                AppListData.RuleType.ONLINE -> 2
-                AppListData.RuleType.PRELOAD -> 1
-                AppListData.RuleType.UNKNOWN -> 0
-            }
+        val rulePriority = when (ruleType) {
+            AppListData.RuleType.ONLINE -> 0
+            AppListData.RuleType.PRELOAD -> 1
+            AppListData.RuleType.UNKNOWN -> 2
         }
-        else {
-            when ( ruleType ) {
-                AppListData.RuleType.ONLINE -> 2
-                AppListData.RuleType.PRELOAD -> 1
-                AppListData.RuleType.UNKNOWN -> 0
-            }
-        }
+
+        return if (enabled)
+            rulePriority - 10000
+        else
+            rulePriority
     }
 }

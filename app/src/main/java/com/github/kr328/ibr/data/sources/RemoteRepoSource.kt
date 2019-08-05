@@ -12,8 +12,7 @@ class RemoteRepoSource(private val user: String, private val repo: String) : Bas
         try {
             return Json(JsonConfiguration.Stable.copy(strictMode = false)).parse(PackagesMetadata.serializer(),
                     SimpleHttpClient.get(URL("https://raw.githubusercontent.com/$user/$repo/master/packages.json")))
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw BaseSource.SourceException("queryAllPackages", e)
         }
     }
@@ -22,8 +21,7 @@ class RemoteRepoSource(private val user: String, private val repo: String) : Bas
         try {
             return Json(JsonConfiguration.Stable.copy(strictMode = false)).parse(PackageRuleSet.serializer(),
                     SimpleHttpClient.get(URL("https://raw.githubusercontent.com/$user/$repo/master/rules/$pkg.json")))
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw BaseSource.SourceException("queryPackage $pkg", e)
         }
     }
