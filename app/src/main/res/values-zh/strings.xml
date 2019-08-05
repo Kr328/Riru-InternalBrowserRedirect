@@ -10,7 +10,6 @@
     <string name="edit_app_application_enable">启用</string>
     <string name="edit_app_application_rule_set">策略组</string>
     <string name="edit_app_application_rule_set_author">作者</string>
-    <string name="edit_app_application_rule_set_last_update">最后更新</string>
     <string name="edit_app_application_rule_set_tag">标签</string>
     <string name="edit_app_application_rule">策略</string>
     <string name="app_list_application_error_invalid_service_message">无法连接到重定向服务. 请检查 Riru - Core 和 Riru - InternalBrowserRedirect 是否被安装</string>
@@ -20,4 +19,5 @@
     <string name="app_list_application_menu_about">关于</string>
     <string name="app_list_application_menu_refresh">刷新</string>
     <string name="app_list_application_menu_settings">设置</string>
+    <string name="edit_app_application_updating">在线规则正在更新</string>
 </resources>

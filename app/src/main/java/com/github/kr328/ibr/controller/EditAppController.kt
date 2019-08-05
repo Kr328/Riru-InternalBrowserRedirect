@@ -1,31 +1,76 @@
 package com.github.kr328.ibr.controller
 
 import android.content.Context
-import com.github.kr328.ibr.data.RedirectServiceData
+import com.github.kr328.ibr.MainApplication
+import com.github.kr328.ibr.data.RuleData
+import com.github.kr328.ibr.data.state.RuleDataState
+import com.github.kr328.ibr.data.state.RuleDataStateResult
 import com.github.kr328.ibr.model.AppData
-import com.github.kr328.ibr.model.DataResult
-import com.github.kr328.ibr.utils.SingleThreadPool
+import java.util.concurrent.Executors
 
-class EditAppController(private val callback: Callback) {
+class EditAppController(private val context: Context,val pkg: String, private val callback: Callback) : RuleData.RuleDataCallback {
     interface Callback {
-        fun getContext(): Context
-        fun updateAppData(appData: AppData)
-        fun onError(status: Int)
+        fun showUpdating()
+        fun closeUpdating()
+        fun updateAppData(enabled: Boolean, appData: AppData)
+        fun onError(error: ErrorType)
     }
 
-    fun refresh(pkg: String): Boolean {
-        val packageManager = callback.getContext().packageManager
+    enum class ErrorType {
+        UNKNOWN_APPLICATION, UPDATE_PACKAGE_FAILURE
+    }
 
-        return singleThreadPool.execute {
-            packageManager.getPackageInfoOrNull(pkg)?.also { packageInfo ->
-                RedirectServiceData.queryAppRuleSet(pkg)
-                        .takeIf { dataResult -> dataResult.status == DataResult.STATUS_SUCCESS }?.also {
-                            callback.updateAppData(AppData(packageInfo.packageName, packageInfo.applicationInfo.loadLabel(packageManager).toString(),
-                                    packageInfo.versionName, packageInfo.applicationInfo.loadIcon(packageManager), it.result!!))
-                        } ?: callback.onError(2)
-            } ?: callback.onError(1)
+    private val ruleData = MainApplication.fromContext(context).ruleData
+    private val executor = Executors.newSingleThreadExecutor()
+
+    fun onStart() {
+        ruleData.registerCallback(this)
+        ruleData.requestPriority(pkg)
+
+        updateView()
+    }
+
+    fun onStop() {
+        ruleData.unregisterCallback(this)
+    }
+
+    fun setPackageEnabled(enabled: Boolean) {
+        if ( enabled )
+            ruleData.enablePackage(pkg)
+        else
+            ruleData.disablePackage(pkg)
+    }
+
+    override fun onStateChanged(state: RuleDataState) {
+        when ( state ) {
+            RuleDataState.IDLE -> {
+                callback.closeUpdating()
+                updateView()
+            }
+            RuleDataState.UPDATE_SINGLE_PACKAGE -> callback.showUpdating()
+            else -> {}
         }
     }
 
-    private val singleThreadPool = SingleThreadPool()
+    override fun onStateResult(result: RuleDataStateResult) {
+        if ( result.state == RuleDataState.UPDATE_SINGLE_PACKAGE && !result.success && result.packageName == pkg)
+            callback.onError(ErrorType.UPDATE_PACKAGE_FAILURE)
+    }
+
+    private fun updateView() {
+        executor.submit {
+            val pm = context.packageManager
+
+            val info = pm.getPackageInfoOrNull(pkg)
+            if ( info == null ) {
+                callback.onError(ErrorType.UNKNOWN_APPLICATION)
+                return@submit
+            }
+
+            val appData = AppData(pkg, info.applicationInfo.loadLabel(pm).toString(),
+                    info.versionName, info.applicationInfo.loadIcon(pm), ruleData.queryPackage(pkg))
+
+            callback.updateAppData(ruleData.isPackageEnabled(pkg), appData)
+        }
+    }
 }

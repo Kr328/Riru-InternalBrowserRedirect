@@ -7,7 +7,7 @@ import com.github.kr328.ibr.data.sources.RemoteRepoSource
 import com.github.kr328.ibr.data.sources.ServiceSource
 import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
-import com.github.kr328.ibr.model.PackagesMetadata
+import com.github.kr328.ibr.model.Packages
 import com.github.kr328.ibr.utils.SingleThreadPool
 import java.util.*
 
@@ -24,7 +24,6 @@ class RuleDataUpdater(private val service: ServiceSource,
             field = value
         }
 
-
     fun refresh(force: Boolean) {
         pool.execute {
             try {
@@ -38,7 +37,7 @@ class RuleDataUpdater(private val service: ServiceSource,
                     }
                 }
 
-                val servicePackages = service.queryAllPackages()?.packages?.map(PackagesMetadata.Package::packageName)?.toSet()
+                val servicePackages = service.queryAllPackages()?.packages?.map(Packages.Package::packageName)?.toSet()
                         ?: emptySet()
 
                 val remotePackages = remote.queryAllPackages()
@@ -47,7 +46,7 @@ class RuleDataUpdater(private val service: ServiceSource,
                 val requireUpdate = ((local.queryAllPackages()?.packages?.filter {
                     remotePackagesMap[it.packageName]?.version != it.version
                 }
-                        ?: remotePackages.packages).map(PackagesMetadata.Package::packageName)).toMutableSet()
+                        ?: remotePackages.packages).map(Packages.Package::packageName)).toMutableSet()
 
                 callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true, emptyMap())) }
 

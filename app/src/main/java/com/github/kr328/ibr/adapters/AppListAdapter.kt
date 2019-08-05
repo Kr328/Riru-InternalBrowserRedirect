@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.kr328.ibr.R
 import com.github.kr328.ibr.model.AppListData
 
-class AppListAdapter(private val context: Context, val onClickListener: (pkg: String) -> Unit) : RecyclerView.Adapter<AppListAdapter.AppListViewHolder>() {
-    data class AppListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+class AppListAdapter(private val context: Context, private val onClickListener: (pkg: String) -> Unit) :
+        RecyclerView.Adapter<AppListAdapter.AppListViewHolder>() {
+    class AppListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.adapter_app_list_name)
         val icon: ImageView = view.findViewById(R.id.adapter_app_list_icon)
         val description: TextView = view.findViewById(R.id.adapter_app_list_description)
@@ -35,7 +36,7 @@ class AppListAdapter(private val context: Context, val onClickListener: (pkg: St
     override fun onBindViewHolder(holder: AppListViewHolder, position: Int) {
         val data = appListData.elements[position]
 
-        holder.view.tag = data.packageName
+        holder.itemView.tag = data.packageName
 
         holder.name.text = data.name
         holder.icon.setImageDrawable(data.icon)

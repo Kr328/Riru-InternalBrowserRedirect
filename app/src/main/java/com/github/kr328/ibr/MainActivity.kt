@@ -1,5 +1,7 @@
 package com.github.kr328.ibr
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
         progress = findViewById(R.id.activity_main_progress)
 
         appList.adapter = AppListAdapter(this) {
-
+            startActivity(Intent(this, EditAppActivity::class.java).setData(Uri.parse("package://$it")))
         }
         appList.layoutManager = LinearLayoutManager(this)
 
@@ -52,14 +54,14 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
         return true
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         controller.onStart()
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
 
         controller.onStop()
     }

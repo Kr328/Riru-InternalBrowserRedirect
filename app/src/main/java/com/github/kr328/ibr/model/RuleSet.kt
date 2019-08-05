@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class PackageRuleSet(val tag: String, val authors: String, val version: Int, val rules: List<Rule>) {
+data class RuleSet(val tag: String, val authors: String, val version: Int, val rules: List<Rule>) {
     @Serializable
     data class Rule(val tag: String, @SerialName("url-source") val urlSource: Uri, @SerialName("url-filter") val urlFilters: UrlFilters)
 

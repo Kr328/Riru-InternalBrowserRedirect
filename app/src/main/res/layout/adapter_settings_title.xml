@@ -3,17 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:elevation="0dp"
-        android:background="@color/defaultDividerColor"
+        android:background="#EEEEEE"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/module_settings_fragment_title_title"
+        android:id="@+id/adapter_settings_title_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="80dp"

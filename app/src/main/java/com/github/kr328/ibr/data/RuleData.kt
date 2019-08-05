@@ -6,8 +6,8 @@ import com.github.kr328.ibr.data.sources.RemoteRepoSource
 import com.github.kr328.ibr.data.sources.ServiceSource
 import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
-import com.github.kr328.ibr.model.PackageRuleSet
-import com.github.kr328.ibr.model.PackagesMetadata
+import com.github.kr328.ibr.model.Packages
+import com.github.kr328.ibr.model.RuleSet
 import com.github.kr328.ibr.remote.openRemoteConnection
 import com.github.kr328.ibr.utils.ExceptionUtils
 import java.io.File
@@ -19,14 +19,9 @@ class RuleData(cache: File, user: String, repo: String) {
     private val updater = RuleDataUpdater(service, local, remote)
 
     fun isValidService(): Boolean = ExceptionUtils.fallback({ service.connection.version == Constants.REMOTE_SERVICE_VERSION }, false)
-    fun queryPreloadMetadata(): PackagesMetadata = service.queryAllPackages()
-            ?: PackagesMetadata(emptyList())
-
-    fun queryLocalMetadata(): PackagesMetadata = local.queryAllPackages()
-            ?: PackagesMetadata(emptyList())
-
-    fun queryPackage(pkg: String): PackageRuleSet? = local.queryPackage(pkg)
-            ?: service.queryPackage(pkg)
+    fun queryPreloadMetadata(): Packages = service.queryAllPackages() ?: Packages(emptyList())
+    fun queryLocalMetadata(): Packages = local.queryAllPackages() ?: Packages(emptyList())
+    fun queryPackage(pkg: String): RuleSet? = local.queryPackage(pkg) ?: service.queryPackage(pkg)
 
     fun isPackageEnabled(pkg: String): Boolean = service.queryPackage(pkg) != null
     fun enablePackage(pkg: String) = local.queryPackage(pkg)?.let { service.savePackage(pkg, it) }
@@ -36,6 +31,7 @@ class RuleData(cache: File, user: String, repo: String) {
     fun unregisterCallback(callback: RuleDataCallback) = updater.unregisterCallback(callback)
     fun refresh(force: Boolean = false) = updater.refresh(force)
     fun currentState(): RuleDataState = updater.currentState
+    fun requestPriority(pkg: String) = updater.requestPriority(pkg)
 
     interface RuleDataCallback {
         fun onStateChanged(state: RuleDataState)

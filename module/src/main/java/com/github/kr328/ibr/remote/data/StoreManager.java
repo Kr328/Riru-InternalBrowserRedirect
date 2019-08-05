@@ -1,6 +1,7 @@
 package com.github.kr328.ibr.remote.data;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.github.kr328.ibr.remote.Constants;
 import com.github.kr328.ibr.remote.FileUtils;
@@ -12,11 +13,14 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 
 public class StoreManager {
@@ -28,7 +32,7 @@ public class StoreManager {
 
     public synchronized RuleSet getRuleSet(String pkg) {
         RuleSet ruleSet;
-        if ((ruleSet = cache.changedRuleSets.get(pkg)) != null)
+        if ((ruleSet = cache.changedRuleSets.get(pkg)) != null )
             return ruleSet;
         if ((ruleSet = cache.ruleSets.get(pkg)) != null)
             return ruleSet;
@@ -40,6 +44,12 @@ public class StoreManager {
 
         result.putAll(cache.ruleSets);
         result.putAll(cache.changedRuleSets);
+
+        Iterator<Map.Entry<String, RuleSet>> iterable = result.entrySet().iterator();
+        while ( iterable.hasNext() ) {
+            if ( iterable.next().getValue().getRules().isEmpty() )
+                iterable.remove();
+        }
 
         return result;
     }
@@ -57,6 +67,13 @@ public class StoreManager {
                 save();
             }
         }, 1000);
+    }
+
+    private void cancelTimer() {
+        try {
+            saveTimer.cancel();
+        }
+        catch (Exception ignored) {}
     }
 
     private StoreManager() { load(); }
@@ -99,11 +116,17 @@ public class StoreManager {
     private void save() {
         new File(Constants.DATA_STORE_DIRECTORY).mkdirs();
 
-        Set<Map.Entry<String, RuleSet>> changed;
+        ArrayList<Map.Entry<String, RuleSet>> changed;
         synchronized (this) {
-            changed = cache.changedRuleSets.entrySet();
+            changed = new ArrayList<>(cache.changedRuleSets.entrySet());
             cache.ruleSets.putAll(cache.changedRuleSets);
             cache.changedRuleSets.clear();
+
+            Iterator<Map.Entry<String, RuleSet>> iterable = cache.ruleSets.entrySet().iterator();
+            while ( iterable.hasNext() ) {
+                if ( iterable.next().getValue().getRules().isEmpty() )
+                    iterable.remove();
+            }
         }
 
         for ( Map.Entry<String, RuleSet> entry : changed ) {

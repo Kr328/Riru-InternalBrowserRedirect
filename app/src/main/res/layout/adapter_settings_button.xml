@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/module_settings_fragment_clickable_item_clickable"
+    android:id="@+id/adapter_settings_button_clickable"
     android:clickable="true"
     android:focusable="true"
     android:paddingTop="15dp"
@@ -10,20 +10,20 @@
     android:paddingStart="10dp"
     android:paddingEnd="10dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="?selectableItemBackground">
 
     <ImageView
-        android:id="@+id/module_settings_fragment_button_icon"
+        android:id="@+id/adapter_settings_button_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="25dp"
-        app:layout_constraintEnd_toStartOf="@id/module_settings_fragment_button_title"
-        app:layout_constraintTop_toTopOf="@id/module_settings_fragment_button_title"
-        app:layout_constraintBottom_toBottomOf="@id/module_settings_fragment_button_data"/>
+        app:layout_constraintEnd_toStartOf="@id/adapter_settings_button_title"
+        app:layout_constraintTop_toTopOf="@id/adapter_settings_button_title"
+        app:layout_constraintBottom_toBottomOf="@id/adapter_settings_button_summary"/>
 
     <TextView
-        android:id="@+id/module_settings_fragment_button_title"
+        android:id="@+id/adapter_settings_button_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -33,11 +33,11 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/module_settings_fragment_button_data"
+        android:id="@+id/adapter_settings_button_summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        app:layout_constraintStart_toStartOf="@id/module_settings_fragment_button_title"
-        app:layout_constraintTop_toBottomOf="@id/module_settings_fragment_button_title"/>
+        app:layout_constraintStart_toStartOf="@id/adapter_settings_button_title"
+        app:layout_constraintTop_toBottomOf="@id/adapter_settings_button_title"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

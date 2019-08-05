@@ -1,13 +1,13 @@
 package com.github.kr328.ibr.data.sources
 
-import com.github.kr328.ibr.model.PackageRuleSet
-import com.github.kr328.ibr.model.PackagesMetadata
+import com.github.kr328.ibr.model.Packages
+import com.github.kr328.ibr.model.RuleSet
 
 interface BaseSource {
-    fun queryAllPackages(): PackagesMetadata?
-    fun queryPackage(pkg: String): PackageRuleSet?
-    fun saveAllPackages(data: PackagesMetadata)
-    fun savePackage(pkg: String, data: PackageRuleSet)
+    fun queryAllPackages(): Packages?
+    fun queryPackage(pkg: String): RuleSet?
+    fun saveAllPackages(data: Packages)
+    fun savePackage(pkg: String, data: RuleSet)
     fun removePackage(pkg: String)
 
     class SourceException(message: String, cause: Exception) : Exception(message, cause)
