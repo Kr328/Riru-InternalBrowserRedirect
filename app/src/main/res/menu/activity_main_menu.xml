@@ -8,5 +8,5 @@
         android:title="@string/app_list_application_menu_settings" />
     <item
         android:id="@+id/activity_main_menu_about"
-        android:title="@string/app_list_application_menu_about" />
+        android:title="@string/app_list_application_menu_help" />
 </menu>

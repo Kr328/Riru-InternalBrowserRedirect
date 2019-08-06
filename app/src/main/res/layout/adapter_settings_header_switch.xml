@@ -7,8 +7,8 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/adapter_settings_header_switch"
-        app:trackTint="@android:color/darker_gray"
         app:thumbTint="@android:color/white"
+        app:trackTint="@color/color_header_switch"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/colorAccent"

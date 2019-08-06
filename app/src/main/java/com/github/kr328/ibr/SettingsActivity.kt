@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.TwoStatePreference
 
 class SettingsActivity : AppCompatActivity() {
     companion object {
@@ -27,26 +26,27 @@ class SettingsActivity : AppCompatActivity() {
 
     class Fragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
         override fun onSharedPreferenceChanged(sp: SharedPreferences?, key: String?) {
-            val data = when ( key ) {
-                SETTING_ONLINE_RULE_USER_KEY -> sp?.getString(key, Constants.DEFAULT_RULE_GITHUB_USER)
-                SETTING_ONLINE_RULE_REPO_KEY -> sp?.getString(key, Constants.DEFAULT_RULE_REPO)
-                SETTING_ONLINE_RULE_BRANCH_KEY -> sp?.getString(key, Constants.DEFAULT_RULE_BRANCH)
-                SETTING_ONLINE_DEBUG_MODE_KEY -> sp?.getBoolean(key, false)
-                else -> null
-            }
+            if ( sp == null || key == null )
+                return
 
-            when ( data ) {
-                is String -> {
-                    key?.let(this::findPreference)?.let { it as EditTextPreference }?.also {
-                        it.text = data
-                        it.summary = data
+            when (key) {
+                SETTING_ONLINE_RULE_USER_KEY ->
+                    with ((findPreference(key) as EditTextPreference) to sp.getString(key, Constants.DEFAULT_RULE_GITHUB_USER) ) {
+                        first.text = second
+                        first.summary = second
                     }
-                }
-                is Boolean -> {
-                    key?.let(this::findPreference)?.let { it as TwoStatePreference }?.also {
-                        MainApplication.fromContext(requireContext()).ruleData.updateServiceFeature(Constants.SETTING_DEBUG_MODE, data)
+                SETTING_ONLINE_RULE_REPO_KEY ->
+                    with ((findPreference(key) as EditTextPreference) to sp.getString(key, Constants.DEFAULT_RULE_REPO) ) {
+                        first.text = second
+                        first.summary = second
                     }
-                }
+                SETTING_ONLINE_RULE_BRANCH_KEY ->
+                    with ((findPreference(key) as EditTextPreference) to sp.getString(key, Constants.DEFAULT_RULE_BRANCH) ) {
+                        first.text = second
+                        first.summary = second
+                    }
+                SETTING_ONLINE_DEBUG_MODE_KEY ->
+                    MainApplication.fromContext(requireContext()).ruleData.updateServiceFeature(Constants.SETTING_DEBUG_MODE, sp.getBoolean(key, false))
             }
         }
 

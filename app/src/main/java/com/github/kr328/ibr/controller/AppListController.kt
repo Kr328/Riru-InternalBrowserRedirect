@@ -1,6 +1,8 @@
 package com.github.kr328.ibr.controller
 
 import android.content.Context
+import android.util.Log
+import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.R
 import com.github.kr328.ibr.data.RuleData
@@ -52,6 +54,7 @@ class AppListController(private val context: Context, private val callback: Call
 
         ruleData.registerCallback(this)
 
+        updateList()
         updateProgress()
 
         ruleData.refresh()

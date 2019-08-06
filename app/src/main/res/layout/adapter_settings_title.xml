@@ -16,6 +16,7 @@
         android:id="@+id/adapter_settings_title_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
         android:paddingStart="80dp"
         android:paddingEnd="15dp"
         android:paddingTop="15dp"

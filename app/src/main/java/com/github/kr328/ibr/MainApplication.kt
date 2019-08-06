@@ -14,7 +14,7 @@ class MainApplication : Application() {
         super.onCreate()
 
         general = getSharedPreferences(BuildConfig.APPLICATION_ID + ".general", Context.MODE_PRIVATE);
-        ruleData = RuleData(this.cacheDir.resolve(Constants.CACHE_ONLINE_RULE_PATH), object : RemoteRepoSource.RemoteRepo {
+        ruleData = RuleData(this, this.cacheDir.resolve(Constants.CACHE_ONLINE_RULE_PATH), object : RemoteRepoSource.RemoteRepo {
             override fun getUser(): String = general.getString(SettingsActivity.SETTING_ONLINE_RULE_USER_KEY, Constants.DEFAULT_RULE_GITHUB_USER)!!
             override fun getRepo(): String = general.getString(SettingsActivity.SETTING_ONLINE_RULE_REPO_KEY, Constants.DEFAULT_RULE_REPO)!!
             override fun getBranch(): String = general.getString(SettingsActivity.SETTING_ONLINE_RULE_BRANCH_KEY, Constants.DEFAULT_RULE_BRANCH)!!

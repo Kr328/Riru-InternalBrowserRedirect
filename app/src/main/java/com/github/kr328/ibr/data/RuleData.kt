@@ -1,5 +1,6 @@
 package com.github.kr328.ibr.data
 
+import android.content.Context
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.data.sources.LocalRepoSource
 import com.github.kr328.ibr.data.sources.RemoteRepoSource
@@ -11,11 +12,11 @@ import com.github.kr328.ibr.model.RuleSet
 import com.github.kr328.ibr.utils.ExceptionUtils
 import java.io.File
 
-class RuleData(cache: File, repo: RemoteRepoSource.RemoteRepo) {
+class RuleData(context: Context, cache: File, repo: RemoteRepoSource.RemoteRepo) {
     private val local = LocalRepoSource(cache)
     private val remote = RemoteRepoSource(repo)
     private val service = ServiceSource()
-    private val updater = RuleDataUpdater(service, local, remote)
+    private val updater = RuleDataUpdater(context, service, local, remote)
 
     fun isValidService(): Boolean = ExceptionUtils.fallback({ service.connection.version == Constants.REMOTE_SERVICE_VERSION }, false)
     fun queryPreloadMetadata(): Packages = service.queryAllPackages() ?: Packages(emptyList())
@@ -31,7 +32,6 @@ class RuleData(cache: File, repo: RemoteRepoSource.RemoteRepo) {
     fun unregisterCallback(callback: RuleDataCallback) = updater.unregisterCallback(callback)
     fun refresh(force: Boolean = false) = updater.refresh(force)
     fun currentState(): RuleDataState = updater.currentState
-    fun requestPriority(pkg: String) = updater.requestPriority(pkg)
 
     interface RuleDataCallback {
         fun onStateChanged(state: RuleDataState)

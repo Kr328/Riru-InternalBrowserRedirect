@@ -1,6 +1,8 @@
 package com.github.kr328.ibr.controller
 
 import android.content.Context
+import android.util.Log
+import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.data.RuleData
 import com.github.kr328.ibr.data.state.RuleDataState
@@ -25,11 +27,8 @@ class EditAppController(private val context: Context,val pkg: String, private va
 
     fun onStart() {
         ruleData.registerCallback(this)
-        ruleData.requestPriority(pkg)
 
-        if ( ruleData.currentState() == RuleDataState.UPDATE_SINGLE_PACKAGE )
-            callback.showUpdating()
-
+        updateProgress()
         updateView()
     }
 
@@ -45,18 +44,21 @@ class EditAppController(private val context: Context,val pkg: String, private va
     }
 
     override fun onStateChanged(state: RuleDataState) {
-        when ( state ) {
-            RuleDataState.IDLE -> callback.closeUpdating()
-            RuleDataState.UPDATE_SINGLE_PACKAGE -> callback.showUpdating()
-            else -> {}
-        }
+        updateProgress()
     }
 
     override fun onStateResult(result: RuleDataStateResult) {
-        if ( result.state == RuleDataState.UPDATE_SINGLE_PACKAGE && result.success && result.packageName == pkg )
-            updateView()
-        else if ( result.state == RuleDataState.UPDATE_PACKAGES && !result.success )
+        if ( result.state == RuleDataState.UPDATE_PACKAGES && !result.success )
             callback.onError(ErrorType.UPDATE_PACKAGES_FAILURE)
+
+        updateView()
+    }
+
+    private fun updateProgress() {
+        if ( ruleData.currentState() == RuleDataState.UPDATE_PACKAGES )
+            callback.showUpdating()
+        else
+            callback.closeUpdating()
     }
 
     private fun updateView() {
