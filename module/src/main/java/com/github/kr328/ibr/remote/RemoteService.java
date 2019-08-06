@@ -6,8 +6,6 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 
 import com.github.kr328.ibr.remote.data.StoreManager;
-import com.github.kr328.ibr.remote.i18n.I18n;
-import com.github.kr328.ibr.remote.i18n.I18nFactory;
 import com.github.kr328.ibr.remote.model.RuleSet;
 
 import java.util.Map;

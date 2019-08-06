@@ -8,7 +8,6 @@ import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
 import com.github.kr328.ibr.model.Packages
 import com.github.kr328.ibr.model.RuleSet
-import com.github.kr328.ibr.remote.openRemoteConnection
 import com.github.kr328.ibr.utils.ExceptionUtils
 import java.io.File
 

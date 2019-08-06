@@ -1,7 +1,6 @@
 package com.github.kr328.ibr.remote.data;
 
 import android.util.Log;
-import android.util.Pair;
 
 import com.github.kr328.ibr.remote.Constants;
 import com.github.kr328.ibr.remote.FileUtils;
@@ -13,14 +12,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.TreeSet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
