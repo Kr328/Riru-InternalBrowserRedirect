@@ -38,8 +38,19 @@ public class StoreManager {
         return cache.ruleSets;
     }
 
-    public synchronized General getGeneral() {
-        return cache.general;
+    public synchronized void setDebugModeEnabled(boolean enabled) {
+        cache.general.setDebugMode(enabled);
+        background.execute(() -> {
+            try {
+                FileUtils.writeLines(new File(Constants.DATA_STORE_DIRECTORY, "general.json"), cache.general.toJson().toString());
+            } catch (JSONException|IOException e) {
+                Log.e(Constants.TAG, "Save general failure");
+            }
+        });
+    }
+
+    public synchronized boolean isDebugModeEnabled() {
+        return cache.general.isDebugMode();
     }
 
     public synchronized void updateRuleSet(String pkg, RuleSet ruleSet) {

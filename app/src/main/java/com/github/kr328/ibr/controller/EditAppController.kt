@@ -27,6 +27,9 @@ class EditAppController(private val context: Context,val pkg: String, private va
         ruleData.registerCallback(this)
         ruleData.requestPriority(pkg)
 
+        if ( ruleData.currentState() == RuleDataState.UPDATE_SINGLE_PACKAGE )
+            callback.showUpdating()
+
         updateView()
     }
 

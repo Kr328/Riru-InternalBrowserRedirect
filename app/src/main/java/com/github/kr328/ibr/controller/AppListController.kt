@@ -8,6 +8,7 @@ import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
 import com.github.kr328.ibr.model.AppListData
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 
 class AppListController(private val context: Context, private val callback: Callback) : RuleData.RuleDataCallback {
     enum class ErrorType {
@@ -23,12 +24,10 @@ class AppListController(private val context: Context, private val callback: Call
 
     private val ruleData = MainApplication.fromContext(context).ruleData
     private val executor = Executors.newSingleThreadExecutor()
+    private val running = AtomicBoolean(false)
 
     override fun onStateChanged(state: RuleDataState) {
-        if (state == RuleDataState.UPDATE_PACKAGES)
-            callback.showProgress()
-        else
-            callback.closeProgress()
+        updateProgress()
     }
 
     override fun onStateResult(result: RuleDataStateResult) {
@@ -53,10 +52,7 @@ class AppListController(private val context: Context, private val callback: Call
 
         ruleData.registerCallback(this)
 
-        if (ruleData.currentState() == RuleDataState.IDLE)
-            callback.closeProgress()
-        else
-            callback.showProgress()
+        updateProgress()
 
         ruleData.refresh()
     }
@@ -67,6 +63,8 @@ class AppListController(private val context: Context, private val callback: Call
 
     private fun updateList() {
         executor.submit {
+            running.set(true)
+
             val pm = context.packageManager
             val local = ruleData.queryLocalMetadata().packages.map { it.packageName to it }.toMap()
             val preload = ruleData.queryPreloadMetadata().packages.map { it.packageName to it }.toMap()
@@ -102,6 +100,10 @@ class AppListController(private val context: Context, private val callback: Call
             }
 
             callback.updateAppList(AppListData(elements.sortedWith(compareBy({ it.appState.getPriority() }, { it.name }))))
+
+            running.set(false)
+
+            updateProgress()
         }
     }
 
@@ -116,5 +118,12 @@ class AppListController(private val context: Context, private val callback: Call
             rulePriority - 10000
         else
             rulePriority
+    }
+
+    private fun updateProgress() {
+        if ( ruleData.currentState() == RuleDataState.IDLE && !running.get() )
+            callback.closeProgress()
+        else
+            callback.showProgress()
     }
 }

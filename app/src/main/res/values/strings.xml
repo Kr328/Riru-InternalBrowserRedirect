@@ -21,9 +21,18 @@
     <string name="edit_app_application_rule_set">Rule Set</string>
     <string name="edit_app_application_rule_set_tag">TAG</string>
     <string name="edit_app_application_rule_set_author">Authors</string>
+    <string name="edit_app_application_rule_set_version">Version</string>
+    <string name="edit_app_application_rule">Rule</string>
+
     <string name="edit_app_application_updating">Online Rule Updating</string>
     <string name="edit_app_application_update_failure">Online Rule Sync Failure</string>
     <string name="edit_app_application_unknown_app">Unknown App</string>
 
-    <string name="edit_app_application_rule">Rule</string>
+    <string name="setting_develop">Develop</string>
+    <string name="setting_develop_debug_mode">Debug Mode</string>
+    <string name="setting_develop_debug_mode_summary">Print ALL intent to log [InternalBrowserRedirect]</string>
+    <string name="setting_online_rule">Online Rule</string>
+    <string name="setting_online_rule_user">Github User</string>
+    <string name="setting_online_rule_repo">Github Repo</string>
+    <string name="setting_online_rule_branch">Repo Branch</string>
 </resources>

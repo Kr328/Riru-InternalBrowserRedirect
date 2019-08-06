@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.activity_main_menu_refresh -> controller.forceRefresh()
+            R.id.activity_main_menu_settings -> startActivity(Intent(this, SettingsActivity::class.java))
             else -> return super.onOptionsItemSelected(item)
         }
 

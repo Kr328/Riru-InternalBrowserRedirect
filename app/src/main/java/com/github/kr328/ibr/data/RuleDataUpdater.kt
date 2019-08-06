@@ -1,5 +1,6 @@
 package com.github.kr328.ibr.data
 
+import android.util.Log
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.data.sources.BaseSource
 import com.github.kr328.ibr.data.sources.LocalRepoSource
@@ -20,8 +21,8 @@ class RuleDataUpdater(private val service: ServiceSource,
 
     var currentState = RuleDataState.IDLE
         private set(value) {
-            callbacks.forEach { it.onStateChanged(value) }
             field = value
+            callbacks.forEach { it.onStateChanged(value) }
         }
 
     fun refresh(force: Boolean) {
@@ -73,6 +74,7 @@ class RuleDataUpdater(private val service: ServiceSource,
 
                 callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true, emptyMap())) }
             } catch (e: BaseSource.SourceException) {
+                Log.e(Constants.TAG, "Updating Remote Rules", e)
                 callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, false, emptyMap())) }
             }
 

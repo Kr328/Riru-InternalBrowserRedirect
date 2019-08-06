@@ -7,22 +7,28 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import java.net.URL
 
-class RemoteRepoSource(private val user: String, private val repo: String) : BaseSource {
+class RemoteRepoSource(private val repo: RemoteRepo) : BaseSource {
+    interface RemoteRepo {
+        fun getUser(): String
+        fun getRepo(): String
+        fun getBranch(): String
+    }
+
     override fun queryAllPackages(): Packages {
         try {
             return Json(JsonConfiguration.Stable.copy(strictMode = false)).parse(Packages.serializer(),
-                    SimpleHttpClient.get(URL("https://raw.githubusercontent.com/$user/$repo/master/packages.json")))
+                    SimpleHttpClient.get(URL("https://raw.githubusercontent.com/${repo.getUser()}/${repo.getRepo()}/${repo.getBranch()}/packages.json")))
         } catch (e: Exception) {
-            throw BaseSource.SourceException("queryAllPackages", e)
+            throw BaseSource.SourceException("RemoteRepoSource.queryAllPackages", e)
         }
     }
 
     override fun queryPackage(pkg: String): RuleSet {
         try {
             return Json(JsonConfiguration.Stable.copy(strictMode = false)).parse(RuleSet.serializer(),
-                    SimpleHttpClient.get(URL("https://raw.githubusercontent.com/$user/$repo/master/rules/$pkg.json")))
+                    SimpleHttpClient.get(URL("https://raw.githubusercontent.com/${repo.getUser()}/${repo.getRepo()}/${repo.getBranch()}/rules/$pkg.json")))
         } catch (e: Exception) {
-            throw BaseSource.SourceException("queryPackage $pkg", e)
+            throw BaseSource.SourceException("RemoteRepoSource.queryPackage $pkg", e)
         }
     }
 

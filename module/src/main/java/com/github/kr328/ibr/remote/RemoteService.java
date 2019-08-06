@@ -6,12 +6,14 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 
 import com.github.kr328.ibr.remote.data.StoreManager;
+import com.github.kr328.ibr.remote.i18n.I18n;
+import com.github.kr328.ibr.remote.i18n.I18nFactory;
 import com.github.kr328.ibr.remote.model.RuleSet;
 
 import java.util.Map;
 
 public class RemoteService extends IRemoteService.Stub {
-    public static RemoteService INSTANCE = new RemoteService();
+    static RemoteService INSTANCE = new RemoteService();
 
     private IPackageManager packageManager;
     private IPackageManager getPackageManager() {
@@ -52,5 +54,22 @@ public class RemoteService extends IRemoteService.Stub {
     @Override
     public void removeRuleSet(String packageName) throws RemoteException {
         StoreManager.getInstance().removeRuleSet(packageName);
+    }
+
+    @Override
+    public void updateSetting(String feature, boolean enabled) throws RemoteException {
+        switch (feature) {
+            case Constants.SETTING_DEBUG_MODE:
+                StoreManager.getInstance().setDebugModeEnabled(enabled);
+        }
+    }
+
+    @Override
+    public boolean getBooleanSetting(String feature) throws RemoteException {
+        switch (feature) {
+            case Constants.SETTING_DEBUG_MODE:
+                return StoreManager.getInstance().isDebugModeEnabled();
+        }
+        return false;
     }
 }

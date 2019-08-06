@@ -22,4 +22,12 @@
     <string name="edit_app_application_updating">在线规则正在更新</string>
     <string name="edit_app_application_update_failure">在线规则同步失败</string>
     <string name="edit_app_application_unknown_app">未知应用</string>
+    <string name="edit_app_application_rule_set_version">版本</string>
+    <string name="setting_develop">开发</string>
+    <string name="setting_develop_debug_mode">调试模式</string>
+    <string name="setting_develop_debug_mode_summary">将会打印所有的 Intent 到日志 [IntentBrowserRedirect]</string>
+    <string name="setting_online_rule">在线规则</string>
+    <string name="setting_online_rule_branch">仓库分支</string>
+    <string name="setting_online_rule_repo">Github 仓库</string>
+    <string name="setting_online_rule_user">Github 用户</string>
 </resources>

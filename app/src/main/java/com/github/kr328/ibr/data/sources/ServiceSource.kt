@@ -4,8 +4,13 @@ import com.github.kr328.ibr.model.Packages
 import com.github.kr328.ibr.remote.IRemoteService
 import com.github.kr328.ibr.remote.model.Rule
 import com.github.kr328.ibr.remote.model.RuleSet
+import com.github.kr328.ibr.remote.openRemoteConnection
 
-class ServiceSource(val connection: IRemoteService) : BaseSource {
+class ServiceSource : BaseSource {
+    val connection: IRemoteService by lazy {
+        openRemoteConnection()
+    }
+
     override fun queryAllPackages(): Packages? {
         val packages = connection.queryAllRuleSet()
                 .mapKeys { it.key as String }
@@ -48,5 +53,9 @@ class ServiceSource(val connection: IRemoteService) : BaseSource {
 
     override fun removePackage(pkg: String) {
         connection.removeRuleSet(pkg)
+    }
+
+    fun updateSetting(feature: String, enabled: Boolean) {
+        connection.updateSetting(feature, enabled)
     }
 }

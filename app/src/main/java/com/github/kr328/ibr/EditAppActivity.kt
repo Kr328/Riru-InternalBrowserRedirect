@@ -62,10 +62,11 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
                     startActivity(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.parse("package:${appData.packageName}")))
                 }
         ) + (appData.ruleSet?.let { ruleSet -> listOf(
-                    Settings.Title(getString(R.string.edit_app_application_rule_set)),
-                    Settings.Button(getDrawable(R.drawable.ic_label), getString(R.string.edit_app_application_rule_set_tag), ruleSet.tag),
-                    Settings.Button(getDrawable(R.drawable.ic_person), getString(R.string.edit_app_application_rule_set_author), ruleSet.authors),
-                    Settings.Title(getString(R.string.edit_app_application_rule))
+                Settings.Title(getString(R.string.edit_app_application_rule_set)),
+                Settings.Button(getDrawable(R.drawable.ic_label), getString(R.string.edit_app_application_rule_set_tag), ruleSet.tag),
+                Settings.Button(getDrawable(R.drawable.ic_person), getString(R.string.edit_app_application_rule_set_author), ruleSet.authors),
+                Settings.Button(getDrawable(R.drawable.ic_update), getString(R.string.edit_app_application_rule_set_version), ruleSet.version.toString()),
+                Settings.Title(getString(R.string.edit_app_application_rule))
             ) + ruleSet.rules.map { rule ->
                 Settings.Button(null, rule.tag, rule.urlSource.toString())
             }

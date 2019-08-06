@@ -155,7 +155,6 @@ on_install() {
 
   ui_print "- Extracting arm/arm64 libraries & dex"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
-  rm "$MODPATH/system/placeholder"
 
   if [[ "$IS64BIT" = false ]]; then
 	ui_print "- Removing 64-bit libraries"
@@ -167,8 +166,9 @@ on_install() {
   ui_print "- Extracting extra files"
   unzip -o "$ZIPFILE" 'data/*' -d "$TMPDIR" >&2
 
- [[ -d "$TARGET" ]] || mkdir -p "$TARGET" || abort "! Can't mkdir -p $TARGET"
+  [[ -d "$TARGET" ]] || mkdir -p "$TARGET" || abort "! Can't mkdir -p $TARGET"
   cp -af "$TMPDIR/data/." "$TARGET" || abort "! Can't cp -af $TMPDIR$TARGET/. $TARGET"
+  mkdir -p $TARGET/userdata
 
   ui_print "- Files copied"
 }
