@@ -31,7 +31,7 @@ PROPFILE=false
 POSTFSDATA=false
 
 # Set to true if you need late_start service script
-LATESTARTSERVICE=false
+LATESTARTSERVICE=true
 
 ##########################################################################################
 # Replace list
@@ -126,6 +126,10 @@ remove_deprecated_config() {
   rm -rf "$RIRU_PATH/modules/ibr"
 }
 
+remove_apk_installed_mark() {
+  rm -rf "$RIRU_PATH/modules/$MODULE_NAME/apk_installed"
+}
+
 print_modname() {
   ui_print "*******************************"
   ui_print "Riru - InternalBrowserRedirect "
@@ -152,6 +156,7 @@ on_install() {
   check_riru_version
 
   remove_deprecated_config
+  remove_apk_installed_mark
 
   ui_print "- Extracting arm/arm64 libraries & dex"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2

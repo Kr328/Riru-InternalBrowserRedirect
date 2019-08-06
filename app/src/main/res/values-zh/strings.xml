@@ -30,4 +30,9 @@
     <string name="setting_online_rule_branch">仓库分支</string>
     <string name="setting_online_rule_repo">Github 仓库</string>
     <string name="setting_online_rule_user">Github 用户</string>
+    <string name="first_install_notification_channel">首次安装通知</string>
+    <string name="first_install_notification_failure_installed_message">重定向服务未找到. 点此检查</string>
+    <string name="first_install_notification_failure_installed_title">安装失败</string>
+    <string name="first_install_notification_success_installed_title">安装成功</string>
+    <string name="first_install_notification_success_installed_message">点此配置</string>
 </resources>

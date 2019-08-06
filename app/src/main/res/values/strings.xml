@@ -35,4 +35,10 @@
     <string name="setting_online_rule_user">Github User</string>
     <string name="setting_online_rule_repo">Github Repo</string>
     <string name="setting_online_rule_branch">Repo Branch</string>
+
+    <string name="first_install_notification_channel">Install Notification</string>
+    <string name="first_install_notification_success_installed_title">Install Success</string>
+    <string name="first_install_notification_failure_installed_title">Install Failure</string>
+    <string name="first_install_notification_success_installed_message">Click here to configure</string>
+    <string name="first_install_notification_failure_installed_message">Redirect Service not found. Click here for details.</string>
 </resources>

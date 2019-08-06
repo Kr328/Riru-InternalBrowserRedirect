@@ -2,12 +2,12 @@ package com.github.kr328.ibr.remote
 
 import android.os.Parcel
 import android.os.RemoteException
-import android.os.ServiceManager
 import com.github.kr328.ibr.BuildConfig
 import com.github.kr328.ibr.Constants
+import com.github.kr328.ibr.compat.connectSystemService
 
 fun openRemoteConnection(): IRemoteService {
-    val activity = ServiceManager.getService("activity")
+    val activity = connectSystemService("activity")
     val data = Parcel.obtain()
     val reply = Parcel.obtain()
 

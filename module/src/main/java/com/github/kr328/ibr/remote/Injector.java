@@ -19,9 +19,10 @@ public class Injector {
             ServiceManagerProxy.install(new ServiceManagerProxy.Callback() {
                 @Override
                 public IBinder addService(String name, IBinder original) {
+                    Log.d(Constants.TAG, "addService " + name);
+
                     try {
                         if ( Context.ACTIVITY_SERVICE.equals(name) ) {
-                            StoreManager.getInstance();
                             originalActivityManager = (Binder) original;
                             return ProxyBinderFactory.createProxyBinder(originalActivityManager,
                                     new ActivityManagerProxy(IActivityManager.Stub.asInterface(originalActivityManager)));

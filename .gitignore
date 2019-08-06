@@ -1,5 +1,6 @@
 .gradle
 build/
+/app/release/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -29,3 +30,6 @@ cmake-build-*
 
 # local.properties
 local.properties
+
+# keystore
+keystore.properties

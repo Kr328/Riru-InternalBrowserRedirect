@@ -22,5 +22,7 @@
         </activity>
         <activity android:name=".EditAppActivity" android:exported="false"/>
         <activity android:name=".SettingsActivity" android:exported="false" />
+        <activity android:name=".FirstInstallActivity" android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay" />
     </application>
 </manifest>
