@@ -89,14 +89,11 @@ class AppListController(private val context: Context, private val callback: Call
                         else -> null
                     }
                 } else {
-                    val l = local[it.key]
                     val p = preload[it.key]
 
                     when {
-                        l != null && p != null -> AppListData.Element(it.key, it.key,
-                                AppListData.AppState(true, AppListData.RuleType.ONLINE), context.getDrawable(R.drawable.ic_unknown_app)!!)
                         p != null -> AppListData.Element(it.key, it.key,
-                                AppListData.AppState(true, AppListData.RuleType.PRELOAD), context.getDrawable(R.drawable.ic_unknown_app)!!)
+                                AppListData.AppState(true, AppListData.RuleType.PRELOAD), context.getDrawable(android.R.drawable.sym_def_app_icon)!!)
                         else -> null
                     }
                 }

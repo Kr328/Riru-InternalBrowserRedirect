@@ -12,7 +12,12 @@
     <string name="edit_app_application_rule_set_author">作者</string>
     <string name="edit_app_application_rule_set_tag">标签</string>
     <string name="edit_app_application_rule">策略</string>
-    <string name="app_list_application_error_invalid_service_message">无法连接到重定向服务. 请检查 Riru - Core 和 Riru - InternalBrowserRedirect 是否被安装</string>
+    <string name="app_list_application_error_invalid_service_message">
+        无法连接到重定向服务. \n
+        请检查以下 Magisk 模块 安装正常 \n
+        - Riru - Core \n
+        - Riru - InternalBrowserRedirect \n
+    </string>
     <string name="app_list_application_error_invalid_service_title">无效的重定向服务</string>
     <string name="app_list_application_error_invalid_service_button_ok">确认</string>
     <string name="app_list_application_error_update_failure">在线规则同步失败</string>
@@ -31,8 +36,9 @@
     <string name="setting_online_rule_repo">Github 仓库</string>
     <string name="setting_online_rule_user">Github 用户</string>
     <string name="first_install_notification_channel">首次安装通知</string>
-    <string name="first_install_notification_failure_installed_message">重定向服务未找到. 点此检查</string>
-    <string name="first_install_notification_failure_installed_title">安装失败</string>
-    <string name="first_install_notification_success_installed_title">安装成功</string>
+    <string name="first_install_notification_failure_installed_message">点此检查</string>
+    <string name="first_install_notification_failure_installed_title">内置浏览器重定向安装失败</string>
+    <string name="first_install_notification_success_installed_title">内置浏览器重定向已安装</string>
     <string name="first_install_notification_success_installed_message">点此配置</string>
+    <string name="edit_app_application_rule_set_unknown">未知</string>
 </resources>

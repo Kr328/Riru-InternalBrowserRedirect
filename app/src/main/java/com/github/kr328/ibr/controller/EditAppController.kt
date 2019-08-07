@@ -19,7 +19,7 @@ class EditAppController(private val context: Context,val pkg: String, private va
     }
 
     enum class ErrorType {
-        UNKNOWN_APPLICATION, UPDATE_PACKAGES_FAILURE
+        UPDATE_PACKAGES_FAILURE
     }
 
     private val ruleData = MainApplication.fromContext(context).ruleData
@@ -66,13 +66,15 @@ class EditAppController(private val context: Context,val pkg: String, private va
             val pm = context.packageManager
 
             val info = pm.getPackageInfoOrNull(pkg)
-            if ( info == null ) {
-                callback.onError(ErrorType.UNKNOWN_APPLICATION)
-                return@submit
-            }
 
-            val appData = AppData(pkg, info.applicationInfo.loadLabel(pm).toString(),
-                    info.versionName, info.applicationInfo.loadIcon(pm), ruleData.queryPackage(pkg))
+            val appData = if ( info == null ) {
+                AppData(pkg, pkg, "Unknown",
+                        context.getDrawable(android.R.drawable.sym_def_app_icon)!!, ruleData.queryPackage(pkg))
+            }
+            else {
+                AppData(pkg, info.applicationInfo.loadLabel(pm).toString(),
+                        info.versionName, info.applicationInfo.loadIcon(pm), ruleData.queryPackage(pkg))
+            }
 
             callback.updateAppData(ruleData.isPackageEnabled(pkg), appData)
         }

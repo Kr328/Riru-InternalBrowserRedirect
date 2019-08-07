@@ -2,7 +2,12 @@
     <string name="app_name">InternalBrowserRedirect</string>
 
     <string name="app_list_application_error_invalid_service_title">Redirect Service Invalid</string>
-    <string name="app_list_application_error_invalid_service_message">Unable to connect Redirect Service. Please check Riru - Core and Riru - InternalBrowserRedirect have installed on Magisk</string>
+    <string name="app_list_application_error_invalid_service_message">
+        Unable to connect Redirect Service.
+        Please check follow magisk modules has been installed
+        - Riru - Core
+        - Riru - InternalBrowserRedirect
+    </string>
     <string name="app_list_application_error_invalid_service_button_ok">OK</string>
     <string name="app_list_application_error_update_failure">Online Rule Sync Failure</string>
 
@@ -22,6 +27,7 @@
     <string name="edit_app_application_rule_set_tag">TAG</string>
     <string name="edit_app_application_rule_set_author">Authors</string>
     <string name="edit_app_application_rule_set_version">Version</string>
+    <string name="edit_app_application_rule_set_unknown">Unknown</string>
     <string name="edit_app_application_rule">Rule</string>
 
     <string name="edit_app_application_updating">Online Rule Updating</string>
@@ -37,8 +43,8 @@
     <string name="setting_online_rule_branch">Repo Branch</string>
 
     <string name="first_install_notification_channel">Install Notification</string>
-    <string name="first_install_notification_success_installed_title">Install Success</string>
-    <string name="first_install_notification_failure_installed_title">Install Failure</string>
+    <string name="first_install_notification_success_installed_title">InternalBrowserRedirect Installed</string>
+    <string name="first_install_notification_failure_installed_title">InternalBrowserRedirect Install Failed</string>
     <string name="first_install_notification_success_installed_message">Click here to configure</string>
-    <string name="first_install_notification_failure_installed_message">Redirect Service not found. Click here for details.</string>
+    <string name="first_install_notification_failure_installed_message">Click here for details</string>
 </resources>

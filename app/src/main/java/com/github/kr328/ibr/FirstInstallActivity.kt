@@ -22,7 +22,8 @@ class FirstInstallActivity : Activity() {
 
         if ( MainApplication.fromContext(this).ruleData.isValidService() ) {
             NotificationCompat.Builder(this, FIRST_INSTALL_NOTIFICATION_CHANNEL)
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setColor(getColor(R.color.colorAccent))
+                    .setSmallIcon(R.drawable.ic_installed)
                     .setContentTitle(getString(R.string.first_install_notification_success_installed_title))
                     .setContentText(getString(R.string.first_install_notification_success_installed_message))
                     .setAutoCancel(true)
@@ -35,7 +36,8 @@ class FirstInstallActivity : Activity() {
         }
         else {
             NotificationCompat.Builder(this, FIRST_INSTALL_NOTIFICATION_CHANNEL)
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setColor(getColor(R.color.colorAccent))
+                    .setSmallIcon(R.drawable.ic_error)
                     .setContentTitle(getString(R.string.first_install_notification_failure_installed_title))
                     .setContentText(getString(R.string.first_install_notification_failure_installed_message))
                     .setAutoCancel(true)

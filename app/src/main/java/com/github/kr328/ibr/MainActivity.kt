@@ -105,7 +105,8 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
         when (error) {
             AppListController.ErrorType.INVALID_SERVICE -> AlertDialog.Builder(this)
                     .setTitle(R.string.app_list_application_error_invalid_service_title)
-                    .setMessage(R.string.app_list_application_error_invalid_service_message)
+                    .setMessage(getString(R.string.app_list_application_error_invalid_service_message)
+                            .split("\n").map(String::trim).joinToString("\n"))
                     .setCancelable(false)
                     .setPositiveButton(R.string.app_list_application_error_invalid_service_button_ok) { _, _ -> finish() }
                     .show()

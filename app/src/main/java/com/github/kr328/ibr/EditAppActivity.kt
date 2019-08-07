@@ -64,7 +64,7 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
         ) + (appData.ruleSet?.let { ruleSet -> listOf(
                 Settings.Title(getString(R.string.edit_app_application_rule_set)),
                 Settings.Button(getDrawable(R.drawable.ic_label), getString(R.string.edit_app_application_rule_set_tag), ruleSet.tag),
-                Settings.Button(getDrawable(R.drawable.ic_person), getString(R.string.edit_app_application_rule_set_author), ruleSet.authors),
+                Settings.Button(getDrawable(R.drawable.ic_person), getString(R.string.edit_app_application_rule_set_author), ruleSet.authors.emptyUnknown()),
                 Settings.Button(getDrawable(R.drawable.ic_update), getString(R.string.edit_app_application_rule_set_version), ruleSet.version.toString()),
                 Settings.Title(getString(R.string.edit_app_application_rule))
             ) + ruleSet.rules.map { rule ->
@@ -116,8 +116,10 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
 
     override fun onError(error: EditAppController.ErrorType) {
         when ( error ) {
-            EditAppController.ErrorType.UNKNOWN_APPLICATION -> Snackbar.make(root, R.string.edit_app_application_unknown_app, Snackbar.LENGTH_LONG).show()
             EditAppController.ErrorType.UPDATE_PACKAGES_FAILURE -> Snackbar.make(root, R.string.edit_app_application_update_failure, Snackbar.LENGTH_LONG).show()
         }
     }
+
+    fun String.emptyUnknown(): String =
+        takeIf(String::isNotEmpty) ?: getString(R.string.edit_app_application_rule_set_unknown)
 }
