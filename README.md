@@ -7,7 +7,7 @@ A module of [Riru](https://github.com/RikkaApps/Riru). Redirect internal browser
 ## Requirements
 
 * [Riru](https://github.com/RikkaApps/Riru) > 19 installed.
-* Android 8.0-9.0 (below not tests)
+* Android 7.0-9.0 (preview not tested)
 
 
 
@@ -15,66 +15,37 @@ A module of [Riru](https://github.com/RikkaApps/Riru). Redirect internal browser
 
 Redirect some application's internal browser to external browser (eg. TIM's QQBrowser to Chrome)
 
-**Double click same url in 5s will fallback to internal browser**
-
-Currently support apps
-
-- WeChat
-- QQ
-- TIM
-- Bilibili
 
 
+## Documents
 
-## Custom Rules
-
-1. Create file **/data/misc/riru/modules/ibr/config.\<package\>.json (replace \<package\> to target package name)**
-
-2. Write rule in created file 
-
-   example
-
-   ```json
-   {
-   	"name": "TIM", 
-   	"rules": [          
-   		{
-   			"extra-key": "url",   
-   			"ignore-url": ".*bilibili\\.com.*",
-   			"force-url": "" 
-   		}
-   	]
-   } 
-   ```
-   | key        | value                                  |
-   | ---------- | -------------------------------------- |
-   | name       | logcat display name                    |
-   | rules      | rules or just keep empty for debugging |
-   | extra-key  | load url from extra which is key       |
-   | ignore-url | ignore apply url regex                 |
-   | force-url  | force apply url regex                  |
-
-3. logcat to check it work (TAG: **InternalBrowserRedirect**)
-
-4. (Optional) Share this rules by submissing on github issue
+See also [Documents](https://kr328.github.io/Riru-InternalBrowserRedirect-Rules/lang-detect)
 
 
 
 ## Build
 
-  1.Install JDK ,Gradle ,Android SDK ,Android NDK
+1. Install JDK ,Gradle ,Android SDK ,Android NDK
 
-  2.Configure with your environment [local.properties](https://github.com/Kr328/Riru-InternalBrowserRedirect/blob/master/local.properties)
+2. Create `local.properties` on project root directory
+   ```properties
+   sdk.dir=/path/to/android-sdk
+   ndk.dir=/path/to/android-ndk
+   cmake.dir=/path/to/android-cmake/*version*
+   ```
 
-  3.Run command 
+3. Create `keystore.properties` on project root directory
+   ```properties
+   storePassword=your_store_password
+   keyPassword=your_key_password
+   keyAlias=your_key_alias
+   storeFile=/path/to/your/store
+   ```
 
-``` Gradle 
-./gradlew build
-```
-  4.Pick riru-internal-browser-redirect.zip from module/build/outputs
+4. Run command 
+   ```bash
+   ./gradlew build
+   ```
 
+5. Pick riru-internal-browser-redirect.zip from module/build/outputs
 
-
-## Feedback
-
-Telegram Group [Kr328 Riru Modules](https://t.me/kr328_riru_modules)
