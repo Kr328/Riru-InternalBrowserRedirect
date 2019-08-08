@@ -2,7 +2,7 @@
 
 [Riru](https://github.com/RikkaApps/Riru) 模块. 重定向应用的内置浏览器到外部浏览器. ~~(简单来说就是 去你大爷的内置浏览器)~~
 
-[English](https://github.com/Kr328/Riru-InternalBrowserRedirect/blob/master/README.md)
+[English](README.md)
 
 ## 安装要求
 
