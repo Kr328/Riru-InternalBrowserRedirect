@@ -6,7 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.github.kr328.ibr.remote.data.StoreManager;
+import com.github.kr328.ibr.remote.compat.ActivityManagerProxyFactory;
 import com.github.kr328.ibr.remote.proxy.ProxyBinderFactory;
 import com.github.kr328.ibr.remote.proxy.ServiceManagerProxy;
 
@@ -22,13 +22,11 @@ public class Injector {
                     Log.d(Constants.TAG, "addService " + name);
 
                     try {
-                        if ( Context.ACTIVITY_SERVICE.equals(name) ) {
+                        if (Context.ACTIVITY_SERVICE.equals(name)) {
                             originalActivityManager = (Binder) original;
-                            return ProxyBinderFactory.createProxyBinder(originalActivityManager,
-                                    new ActivityManagerProxy(IActivityManager.Stub.asInterface(originalActivityManager)));
+                            return ActivityManagerProxyFactory.create(originalActivityManager, new ActivityManagerProxy());
                         }
-                    }
-                    catch (ReflectiveOperationException e) {
+                    } catch (ReflectiveOperationException e) {
                         Log.e(Constants.TAG, "Create proxy failure", e);
                     }
 
@@ -37,14 +35,14 @@ public class Injector {
 
                 @Override
                 public IBinder getService(String name, IBinder original) {
-                    if ( Context.ACTIVITY_SERVICE.equals(name) && originalActivityManager != null && original != null )
+                    if (Context.ACTIVITY_SERVICE.equals(name) && originalActivityManager != null && original != null)
                         return originalActivityManager;
                     return original;
                 }
 
                 @Override
                 public IBinder checkService(String name, IBinder original) {
-                    if ( Context.ACTIVITY_SERVICE.equals(name) && originalActivityManager != null && original != null )
+                    if (Context.ACTIVITY_SERVICE.equals(name) && originalActivityManager != null && original != null)
                         return originalActivityManager;
                     return original;
                 }

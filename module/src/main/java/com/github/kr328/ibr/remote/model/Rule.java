@@ -15,7 +15,8 @@ public class Rule implements Parcelable {
     private Pattern regexIgnore;
     private Pattern regexForce;
 
-    public Rule() {}
+    public Rule() {
+    }
 
     private Rule(Parcel in) {
         tag = in.readString();
@@ -58,7 +59,7 @@ public class Rule implements Parcelable {
         result.regexForce = Pattern.compile(jsonObject.optString("regex-force", ""));
         result.regexIgnore = Pattern.compile(jsonObject.optString("regex-ignore", ""));
 
-        if ( result.urlPath == Uri.EMPTY )
+        if (result.urlPath == Uri.EMPTY)
             throw new JSONException("Invalid url path");
 
         return result;

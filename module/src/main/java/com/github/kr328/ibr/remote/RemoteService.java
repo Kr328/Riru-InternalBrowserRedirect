@@ -14,16 +14,17 @@ public class RemoteService extends IRemoteService.Stub {
     static RemoteService INSTANCE = new RemoteService();
 
     private IPackageManager packageManager;
+
     private IPackageManager getPackageManager() {
-        if ( packageManager == null )
+        if (packageManager == null)
             packageManager = IPackageManager.Stub.asInterface(ServiceManager.getService("package"));
         return packageManager;
     }
 
     void enforcePermission() throws RemoteException {
         String[] pkgs = getPackageManager().getPackagesForUid(Binder.getCallingUid());
-        for ( String pkg : pkgs ) {
-            if ( Constants.APPLICATION_ID.equals(pkg) )
+        for (String pkg : pkgs) {
+            if (Constants.APPLICATION_ID.equals(pkg))
                 return;
         }
         throw new RemoteException("Permission denied");

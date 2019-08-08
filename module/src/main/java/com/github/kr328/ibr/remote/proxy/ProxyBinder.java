@@ -46,7 +46,7 @@ public class ProxyBinder extends Binder {
 
     @Override
     protected boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
-        if ( callback.onTransact(original, code, data, reply, flags) )
+        if (callback.onTransact(original, code, data, reply, flags))
             return true;
 
         return original.transact(code, data, reply, flags);

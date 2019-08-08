@@ -31,13 +31,13 @@ class RuleSetMatcher {
     static Result matches(RuleSet ruleSet, Intent intent) {
         for (Rule rule : ruleSet.getRules()) {
             Uri uri = parseIntentUrl(intent, rule.getUrlPath());
-            if ( uri == null )
+            if (uri == null)
                 continue;
-            if ( uri == Uri.EMPTY )
+            if (uri == Uri.EMPTY)
                 continue;
-            if ( !"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme()) )
+            if (!"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme()))
                 continue;
-            if ( filterUri(uri, rule) )
+            if (filterUri(uri, rule))
                 continue;
             return new Result(true, ruleSet.getTag(), rule.getTag(), uri);
         }
@@ -45,16 +45,16 @@ class RuleSetMatcher {
     }
 
     private static Uri parseIntentUrl(Intent intent, Uri uri) {
-        if ( !"intent".equals(uri.getScheme()) )
+        if (!"intent".equals(uri.getScheme()))
             return Uri.EMPTY;
 
         switch (optional(uri.getHost(), "")) {
             case "action":
                 return Uri.parse(optional(intent.getAction(), ""));
             case "category":
-                for ( String cat : optional(intent.getCategories(), Collections.<String>emptySet()) ) {
+                for (String cat : optional(intent.getCategories(), Collections.<String>emptySet())) {
                     Uri u = Uri.parse(cat);
-                    if ( "http".equals(u.getScheme()) || "https".equals(u.getScheme()) )
+                    if ("http".equals(u.getScheme()) || "https".equals(u.getScheme()))
                         return u;
                 }
                 return Uri.EMPTY;
@@ -62,11 +62,11 @@ class RuleSetMatcher {
                 return optional(intent.getData(), Uri.EMPTY);
             case "extra":
                 Object nextObject = intent.getExtras();
-                for ( String path : optional(uri.getPathSegments(), Collections.<String>emptyList()) ) {
-                    if ( nextObject instanceof Bundle)
-                        nextObject = ((Bundle)nextObject).get(path);
-                    else if ( nextObject instanceof Map )
-                        nextObject = ((Map)nextObject).get(path);
+                for (String path : optional(uri.getPathSegments(), Collections.<String>emptyList())) {
+                    if (nextObject instanceof Bundle)
+                        nextObject = ((Bundle) nextObject).get(path);
+                    else if (nextObject instanceof Map)
+                        nextObject = ((Map) nextObject).get(path);
                     else {
                         nextObject = "";
                         break;
@@ -78,7 +78,7 @@ class RuleSetMatcher {
         }
     }
 
-    private static boolean filterUri(Uri uri ,Rule rule) {
+    private static boolean filterUri(Uri uri, Rule rule) {
         String url = uri.toString();
 
         return !rule.getRegexForce().matcher(url).matches() &&
@@ -86,7 +86,7 @@ class RuleSetMatcher {
     }
 
     private static <T> T optional(T o, T d) {
-        if ( o == null )
+        if (o == null)
             return d;
         return o;
     }

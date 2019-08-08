@@ -16,7 +16,8 @@ import java.util.TreeSet;
 public class ProxyBinderFactory {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    public @interface ReplaceTransact {}
+    public @interface ReplaceTransact {
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
@@ -32,7 +33,7 @@ public class ProxyBinderFactory {
         Log.d(Constants.TAG, "transact code = " + transactCodes);
 
         return new ProxyBinder(original, (o, code, data, reply, flags) -> {
-            if ( transactCodes.contains(code) )
+            if (transactCodes.contains(code))
                 return replace.transact(code, data, reply, flags);
             return false;
         });
@@ -43,14 +44,14 @@ public class ProxyBinderFactory {
         TransactCodeExporter exporter = new TransactCodeExporter(clazz);
 
         CustomTransact customTransact = clazz.getAnnotation(CustomTransact.class);
-        if ( customTransact != null )
-            for ( int c : customTransact.value() )
+        if (customTransact != null)
+            for (int c : customTransact.value())
                 result.add(c);
 
-        for ( Method method : clazz.getDeclaredMethods() ) {
-            if ( method.getAnnotation(ReplaceTransact.class) != null ) {
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.getAnnotation(ReplaceTransact.class) != null) {
                 int transactCode = exporter.export(method.getName(), method.getParameterTypes());
-                if ( transactCode != -1 )
+                if (transactCode != -1)
                     result.add(transactCode);
                 else
                     Log.w(Constants.TAG, "transact code for " + method.toString() + " not found");

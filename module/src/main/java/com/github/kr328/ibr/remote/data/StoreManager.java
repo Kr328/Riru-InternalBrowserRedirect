@@ -36,7 +36,7 @@ public class StoreManager {
         background.execute(() -> {
             try {
                 FileUtils.writeLines(new File(Constants.DATA_STORE_DIRECTORY, "general.json"), cache.general.toJson().toString());
-            } catch (JSONException|IOException e) {
+            } catch (JSONException | IOException e) {
                 Log.e(Constants.TAG, "Save general failure");
             }
         });
@@ -70,22 +70,21 @@ public class StoreManager {
 
         try {
             cache.general = General.parseFromJson(new JSONObject(FileUtils.readLines(Constants.DATA_STORE_DIRECTORY + "/general.json")));
-        } catch (IOException|JSONException e) {
+        } catch (IOException | JSONException e) {
             Log.w(Constants.TAG, "Load general config failure", e);
             cache.general = new General();
         }
 
         File[] files = new File(Constants.DATA_STORE_DIRECTORY).listFiles();
-        if ( files == null )
+        if (files == null)
             return;
 
-        for ( File f : files ) {
+        for (File f : files) {
             Matcher matcher = Constants.PATTERN_CONFIG_FILE.matcher(f.getName());
-            if ( matcher.matches() ) {
+            if (matcher.matches()) {
                 try {
                     cache.ruleSets.put(matcher.group(1), RuleSet.readFromJson(new JSONObject(FileUtils.readLines(f))));
-                }
-                catch (IOException|JSONException e) {
+                } catch (IOException | JSONException e) {
                     Log.w(Constants.TAG, "Load " + f.toString() + " failure");
                 }
             }
@@ -99,7 +98,9 @@ public class StoreManager {
         HashMap<String, RuleSet> ruleSets;
     }
 
-    private StoreManager() { load(); }
+    private StoreManager() {
+        load();
+    }
 
     private static StoreManager INSTANCE = new StoreManager();
     private Cache cache = new Cache();

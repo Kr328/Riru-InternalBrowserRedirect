@@ -34,7 +34,7 @@ public class TransactCodeExporter {
         proxyInterface = (IInterface) methodAsInterface.invoke(null, TRANSACT_CODE_EXPORT_BINDER);
     }
 
-    public int export(String name, Class<?> ...argTypes) throws ReflectiveOperationException {
+    public int export(String name, Class<?>... argTypes) throws ReflectiveOperationException {
         Method m = proxyInterface.getClass().getMethod(name, argTypes);
         return export(m);
     }
@@ -52,7 +52,7 @@ public class TransactCodeExporter {
     private Object[] buildDefaultArgs(Method method) {
         ArrayList<Object> result = new ArrayList<>();
 
-        for ( Class<?> c : method.getParameterTypes()) {
+        for (Class<?> c : method.getParameterTypes()) {
             switch (c.getName()) {
                 case "int":
                     result.add(0);
@@ -67,10 +67,10 @@ public class TransactCodeExporter {
                     result.add(0.0d);
                     break;
                 case "char":
-                    result.add((char)0);
+                    result.add((char) 0);
                     break;
                 case "byte":
-                    result.add((byte)0);
+                    result.add((byte) 0);
                     break;
                 default:
                     result.add(null);

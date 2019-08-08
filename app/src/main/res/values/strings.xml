@@ -10,6 +10,7 @@
     </string>
     <string name="app_list_application_error_invalid_service_button_ok">OK</string>
     <string name="app_list_application_error_update_failure">Online Rule Sync Failure</string>
+    <string name="app_list_application_error_empty_app_list">No any app supported in this device</string>
 
     <string name="app_list_application_state_enabled">Enabled</string>
     <string name="app_list_application_state_disabled">Disabled</string>

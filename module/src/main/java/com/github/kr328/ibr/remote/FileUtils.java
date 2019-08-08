@@ -16,7 +16,7 @@ public class FileUtils {
         StringBuilder builder = new StringBuilder();
         String line;
 
-        while (( line = reader.readLine()) != null )
+        while ((line = reader.readLine()) != null)
             builder.append(line);
 
         reader.close();

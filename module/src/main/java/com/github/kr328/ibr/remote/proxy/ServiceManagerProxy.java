@@ -13,17 +13,17 @@ import java.util.Objects;
 public class ServiceManagerProxy implements IServiceManager {
     public interface Callback {
         IBinder addService(String name, IBinder original);
+
         IBinder getService(String name, IBinder original);
+
         IBinder checkService(String name, IBinder original);
     }
 
     public static synchronized void install(Callback callback) throws ReflectiveOperationException {
-        if ( installed )
+        if (installed)
             return;
 
         IServiceManager original = getOriginalIServiceManager();
-        if ( original instanceof ServiceManagerProxy )
-            return;
 
         setDefaultServiceManager(new ServiceManagerProxy(original, callback));
 

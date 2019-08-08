@@ -58,7 +58,7 @@ public class RuleSet implements Parcelable {
         result.token = jsonObject.optString("token", "");
 
         JSONArray array = jsonObject.getJSONArray("rules");
-        for ( int i = 0 ; i < array.length() ; i++ )
+        for (int i = 0; i < array.length(); i++)
             result.rules.add(com.github.kr328.ibr.remote.model.Rule.parseFromJson(array.getJSONObject(i)));
 
         return result;
@@ -68,7 +68,7 @@ public class RuleSet implements Parcelable {
         JSONObject result = new JSONObject();
 
         JSONArray array = new JSONArray();
-        for ( com.github.kr328.ibr.remote.model.Rule rule : rules )
+        for (com.github.kr328.ibr.remote.model.Rule rule : rules)
             array.put(rule.toJson());
 
         result.put("tag", tag);

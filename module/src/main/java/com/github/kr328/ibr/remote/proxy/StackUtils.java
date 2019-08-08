@@ -4,8 +4,8 @@ public class StackUtils {
     public static boolean hasMethodOnStack(Thread thread, String method) {
         StackTraceElement[] elements = thread.getStackTrace();
 
-        for ( int i = elements.length - 1 ; i >= 0 ; i-- ) {
-            if ( elements[i].getMethodName().equals(method) )
+        for (int i = elements.length - 1; i >= 0; i--) {
+            if (elements[i].getMethodName().equals(method))
                 return true;
         }
 
