@@ -5,6 +5,7 @@ import android.content.pm.LabeledIntent;
 import android.os.Binder;
 import android.os.Parcelable;
 import android.os.RemoteException;
+import android.os.SystemProperties;
 import android.util.Log;
 
 import com.github.kr328.ibr.remote.compat.ActivityManagerProxyFactory;
@@ -51,6 +52,8 @@ public class ActivityManagerProxy implements ActivityManagerProxyFactory.Callbac
 
     @Override
     public Binder queryRedirectService() throws RemoteException {
+        SystemProperties.set(Constants.SERVICE_STATUE_KEY, "running");
+
         RemoteService.INSTANCE.enforcePermission();
 
         return RemoteService.INSTANCE;

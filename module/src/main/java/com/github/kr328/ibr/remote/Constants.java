@@ -5,7 +5,10 @@ import java.util.regex.Pattern;
 public class Constants {
     public static final String TAG = "InternalBrowserRedirect";
     public static final String APPLICATION_ID = "com.github.kr328.ibr";
+
     static final int VERSION = 4;
+
+    static final String SERVICE_STATUE_KEY = "sys.ibr.status";
 
     public static final String DATA_STORE_DIRECTORY = "/data/misc/riru/modules/internal_browser_redirect/userdata/";
     public static final Pattern PATTERN_CONFIG_FILE = Pattern.compile("rules.([a-zA-Z.]+).json");

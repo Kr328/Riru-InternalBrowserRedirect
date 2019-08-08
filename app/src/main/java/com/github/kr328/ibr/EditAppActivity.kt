@@ -65,7 +65,6 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
                 Settings.Title(getString(R.string.edit_app_application_rule_set)),
                 Settings.Button(getDrawable(R.drawable.ic_label), getString(R.string.edit_app_application_rule_set_tag), ruleSet.tag),
                 Settings.Button(getDrawable(R.drawable.ic_person), getString(R.string.edit_app_application_rule_set_author), ruleSet.authors.emptyUnknown()),
-                Settings.Button(getDrawable(R.drawable.ic_update), getString(R.string.edit_app_application_rule_set_version), ruleSet.version.toString()),
                 Settings.Title(getString(R.string.edit_app_application_rule))
             ) + ruleSet.rules.map { rule ->
                 Settings.Button(null, rule.tag, rule.urlSource.toString())

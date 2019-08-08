@@ -7,11 +7,12 @@ import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.compat.connectSystemService
 
 fun openRemoteConnection(): IRemoteService {
-    val activity = connectSystemService("activity")
     val data = Parcel.obtain()
     val reply = Parcel.obtain()
 
     try {
+        val activity = connectSystemService("activity")
+
         data.writeInterfaceToken(BuildConfig.APPLICATION_ID)
 
         activity.transact(Constants.ACTIVITY_CONNECT_TRANSACT_CODE, data, reply, 0)
@@ -23,3 +24,4 @@ fun openRemoteConnection(): IRemoteService {
         reply.recycle()
     }
 }
+

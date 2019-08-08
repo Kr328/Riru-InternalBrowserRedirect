@@ -16,11 +16,11 @@ import com.github.kr328.ibr.remote.proxy.ProxyBinderFactory.CustomTransact;
 import com.github.kr328.ibr.remote.proxy.ProxyBinderFactory.ReplaceTransact;
 
 @CustomTransact({Constants.ACTIVITY_CONNECT_TRANSACT_CODE})
-public class ActivityManagerProxy extends ActivityManagerNative {
+public class ActivityManagerProxyV23 extends ActivityManagerNative {
     private IActivityManager activityManager;
     private ActivityManagerProxyFactory.Callback callback;
 
-    ActivityManagerProxy(Binder original, ActivityManagerProxyFactory.Callback callback) throws NoSuchMethodException {
+    public ActivityManagerProxyV23(Binder original, ActivityManagerProxyFactory.Callback callback) throws NoSuchMethodException {
         this.activityManager = asInterface(original);
         this.callback = callback;
 

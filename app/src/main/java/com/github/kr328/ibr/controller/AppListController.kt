@@ -1,11 +1,9 @@
 package com.github.kr328.ibr.controller
 
 import android.content.Context
-import android.util.Log
-import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
-import com.github.kr328.ibr.R
 import com.github.kr328.ibr.data.RuleData
+import com.github.kr328.ibr.data.sources.ServiceSource
 import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
 import com.github.kr328.ibr.model.AppListData
@@ -21,7 +19,7 @@ class AppListController(private val context: Context, private val callback: Call
         fun showProgress()
         fun closeProgress()
         fun updateAppList(data: AppListData)
-        fun onError(error: ErrorType)
+        fun onError(error: ErrorType, extras: Any)
     }
 
     private val ruleData = MainApplication.fromContext(context).ruleData
@@ -37,7 +35,7 @@ class AppListController(private val context: Context, private val callback: Call
             updateList()
 
             if (!result.success)
-                callback.onError(ErrorType.UPDATE_FAILURE)
+                callback.onError(ErrorType.UPDATE_FAILURE, Any())
         }
     }
 
@@ -46,9 +44,8 @@ class AppListController(private val context: Context, private val callback: Call
     }
 
     fun onStart() {
-        if (!ruleData.isValidService()) {
-            callback.onError(ErrorType.INVALID_SERVICE)
-
+        if ( ruleData.getServiceStatus() != ServiceSource.RCStatus.RUNNING ) {
+            callback.onError(ErrorType.INVALID_SERVICE, ruleData.getServiceStatus())
             return
         }
 

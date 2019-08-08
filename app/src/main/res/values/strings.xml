@@ -1,16 +1,42 @@
 <resources>
     <string name="app_name">InternalBrowserRedirect</string>
 
-    <string name="app_list_application_error_invalid_service_title">Redirect Service Invalid</string>
-    <string name="app_list_application_error_invalid_service_message">
-        Unable to connect Redirect Service.
-        Please check follow magisk modules has been installed
-        - Riru - Core
-        - Riru - InternalBrowserRedirect
-    </string>
     <string name="app_list_application_error_invalid_service_button_ok">OK</string>
     <string name="app_list_application_error_update_failure">Online Rule Sync Failure</string>
-    <string name="app_list_application_error_empty_app_list">No any app supported in this device</string>
+    <string name="app_list_application_error_empty_app_list">No any app supported on this device</string>
+    <string name="app_list_application_error_invalid_service_title">Redirect Service Invalid</string>
+    <string name="app_list_application_error_invalid_service_message_unknown">
+        Everything seems to work, but it still unable to connect to the service.
+    </string>
+    <string name="app_list_application_error_invalid_service_message_riru_not_load">
+        Riru - Core did not load Riru - InternalBrowserRedirect \n
+        Please check follow module has been installed in magisk \n
+        - Riru - Core \n
+        - Riru - InternalBrowserRedirect \n
+    </string>
+    <string name="app_list_application_error_invalid_service_message_not_call_fork">
+        Riru - Core and Riru - InternalBrowserRedirect loaded, but Riru - Core unable to inject system_server \n
+        It seem that some magisk module incompatible with Riru - Core
+    </string>
+    <string name="app_list_application_error_invalid_service_message_inject_failure">
+        Riru - Core and Riru - InternalBrowserRedirect have injected to system_server, but some process failed
+    </string>
+    <string name="app_list_application_error_invalid_service_message_service_not_created">
+        Riru - Core and Riru - InternalBrowserRedirect inject to system_server, but some process failed \n
+        It seem that some module incompatible with Riru - InternalBrowserRedirect
+    </string>
+    <string name="app_list_application_error_invalid_service_message_service_unable_to_handle">
+        Riru - Core and Riru - InternalBrowserRedirect inject to system_server, but some process failed \n
+        It seem that some module incompatible with Riru - InternalBrowserRedirect
+    </string>
+    <string name="app_list_application_error_invalid_service_message_system_block_ipc">
+        Everything is working in service side, but we unable to communicate with service \n
+        It seem that system block IPC
+    </string>
+    <string name="app_list_application_error_invalid_service_message_service_version_not_matches">
+        Redirect service version not match controller version \n
+        Please check Riru - InternalBrowserRedirect and this app verion
+    </string>
 
     <string name="app_list_application_state_enabled">Enabled</string>
     <string name="app_list_application_state_disabled">Disabled</string>

@@ -12,19 +12,20 @@ import java.util.List;
 
 public class RuleSet implements Parcelable {
     private String tag;
-    private String token;
+    private List<String> extras;
     private List<Rule> rules;
 
     public RuleSet() {
         tag = "";
-        token = "";
+        extras = new ArrayList<>();
         rules = new ArrayList<>();
     }
 
     private RuleSet(Parcel in) {
         tag = in.readString();
-        token = in.readString();
-        rules = in.createTypedArrayList(com.github.kr328.ibr.remote.model.Rule.CREATOR);
+        extras = new ArrayList<>();
+        in.readStringList(extras);
+        rules = in.createTypedArrayList(Rule.CREATOR);
     }
 
     public static final Creator<RuleSet> CREATOR = new Creator<RuleSet>() {
@@ -47,7 +48,7 @@ public class RuleSet implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(tag);
-        parcel.writeString(token);
+        parcel.writeStringList(extras);
         parcel.writeTypedList(rules);
     }
 
@@ -55,11 +56,14 @@ public class RuleSet implements Parcelable {
         RuleSet result = new RuleSet();
 
         result.tag = jsonObject.getString("tag");
-        result.token = jsonObject.optString("token", "");
 
-        JSONArray array = jsonObject.getJSONArray("rules");
+        JSONArray array = jsonObject.getJSONArray("extras");
+        for ( int i = 0 ; i < array.length() ; i++ )
+            result.extras.add(array.getString(i));
+
+        array = jsonObject.getJSONArray("rules");
         for (int i = 0; i < array.length(); i++)
-            result.rules.add(com.github.kr328.ibr.remote.model.Rule.parseFromJson(array.getJSONObject(i)));
+            result.rules.add(Rule.parseFromJson(array.getJSONObject(i)));
 
         return result;
     }
@@ -68,22 +72,22 @@ public class RuleSet implements Parcelable {
         JSONObject result = new JSONObject();
 
         JSONArray array = new JSONArray();
-        for (com.github.kr328.ibr.remote.model.Rule rule : rules)
+        for (Rule rule : rules)
             array.put(rule.toJson());
 
         result.put("tag", tag);
         result.put("rules", array);
-        result.put("token", token);
+        result.put("extras", new JSONArray(extras));
 
         return result;
     }
 
-    public String getToken() {
-        return token;
+    public List<String> getExtras() {
+        return extras;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setExtras(List<String> extras) {
+        this.extras = extras;
     }
 
     public String getTag() {
@@ -94,11 +98,11 @@ public class RuleSet implements Parcelable {
         this.tag = tag;
     }
 
-    public List<com.github.kr328.ibr.remote.model.Rule> getRules() {
+    public List<Rule> getRules() {
         return rules;
     }
 
-    public void setRules(List<com.github.kr328.ibr.remote.model.Rule> rules) {
+    public void setRules(List<Rule> rules) {
         this.rules = rules;
     }
 }

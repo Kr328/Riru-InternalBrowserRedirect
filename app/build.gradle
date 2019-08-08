@@ -19,10 +19,10 @@ android {
 
     defaultConfig {
         applicationId "com.github.kr328.ibr"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 10000
+        versionName "10.0"
 
     }
 
@@ -49,6 +49,7 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.1"
+    implementation 'androidx.browser:browser:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
     implementation 'androidx.core:core-ktx:1.2.0-alpha02'

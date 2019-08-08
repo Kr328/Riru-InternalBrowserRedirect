@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.github.kr328.ibr.data.sources.ServiceSource
 
 class FirstInstallActivity : Activity() {
     companion object {
@@ -20,7 +21,7 @@ class FirstInstallActivity : Activity() {
 
         createNotificationChannel()
 
-        if ( MainApplication.fromContext(this).ruleData.isValidService() ) {
+        if ( MainApplication.fromContext(this).ruleData.getServiceStatus() == ServiceSource.RCStatus.RUNNING ) {
             NotificationCompat.Builder(this, FIRST_INSTALL_NOTIFICATION_CHANNEL)
                     .setColor(getColor(R.color.colorAccent))
                     .setSmallIcon(R.drawable.ic_installed)
@@ -50,7 +51,6 @@ class FirstInstallActivity : Activity() {
 
         finish()
     }
-
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManagerCompat.from(this)

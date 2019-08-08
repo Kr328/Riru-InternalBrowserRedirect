@@ -12,11 +12,37 @@
     <string name="edit_app_application_rule_set_author">作者</string>
     <string name="edit_app_application_rule_set_tag">标签</string>
     <string name="edit_app_application_rule">策略</string>
-    <string name="app_list_application_error_invalid_service_message">
-        无法连接到重定向服务. \n
+    <string name="app_list_application_error_invalid_service_message_unknown">
+        所有功能看起来都正常工作, 但我们仍然无法连接到服务端
+    </string>
+    <string name="app_list_application_error_invalid_service_message_riru_not_load">
+        Riru - Core 并没有载入 Riru - InternalBrowserRedirect \n
         请检查以下 Magisk 模块 安装正常 \n
         - Riru - Core \n
-        - Riru - InternalBrowserRedirect \n
+        - Riru - InternalBrowserRedirect
+    </string>
+    <string name="app_list_application_error_invalid_service_message_not_call_fork">
+        Riru - Core 和 Riru - InternalBrowserRedirect 都已经载入, 但是 Riru - Core 无法注入 system_server \n
+        看起来是一些模块与 Riru - Core 不兼容
+    </string>
+    <string name="app_list_application_error_invalid_service_message_inject_failure">
+        Riru - Core 和 Riru - InternalBrowserRedirect 已经注入到 system_server, 但是一些注入操作失败了
+    </string>
+    <string name="app_list_application_error_invalid_service_message_service_not_created">
+        Riru - Core 和 Riru - InternalBrowserRedirect 已经注入到 system_server, 但是一些注入操作失败了 \n
+        看起来是一些模块与 Riru - InternalBrowserRedirect 不兼容 \n
+    </string>
+    <string name="app_list_application_error_invalid_service_message_service_unable_to_handle">
+        Riru - Core 和 Riru - InternalBrowserRedirect 已经注入到 system_server, 但是一些注入操作失败了 \n
+        看起来是一些模块与 Riru - InternalBrowserRedirect 不兼容
+    </string>
+    <string name="app_list_application_error_invalid_service_message_system_block_ipc">
+        服务端正常工作, 但是我们仍然无法连接到服务端
+        看起来是系统阻止了我们的 IPC
+    </string>
+    <string name="app_list_application_error_invalid_service_message_service_version_not_matches">
+        服务端版本与控制器不匹配 \n
+        请检查 Riru - InternalBrowserRedirect 和 此应用 的 版本
     </string>
     <string name="app_list_application_error_invalid_service_title">无效的重定向服务</string>
     <string name="app_list_application_error_invalid_service_button_ok">确认</string>

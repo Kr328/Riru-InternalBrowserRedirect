@@ -1,8 +1,6 @@
 package com.github.kr328.ibr.controller
 
 import android.content.Context
-import android.util.Log
-import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.data.RuleData
 import com.github.kr328.ibr.data.state.RuleDataState

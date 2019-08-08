@@ -12,6 +12,8 @@ public class Logger {
                 "  Action: " + intent.getAction() + '\n' +
                 "  Category: " + intent.getCategories() + '\n' +
                 "  Data: " + intent.getData() + '\n' +
+                "  Package: " + intent.getPackage() + "\n" +
+                "  Component: " + intent.getComponent() +  "\n" +
                 "  Extra: " + log(intent.getExtras(), "    ");
     }
 

@@ -12,18 +12,19 @@ import java.util.List;
 
 public class RuleSet implements Parcelable {
     private String tag;
-    private String token;
+    private List<String> extras;
     private List<Rule> rules;
 
     public RuleSet() {
         tag = "";
-        token = "";
+        extras = new ArrayList<>();
         rules = new ArrayList<>();
     }
 
     private RuleSet(Parcel in) {
         tag = in.readString();
-        token = in.readString();
+        extras = new ArrayList<>();
+        in.readStringList(extras);
         rules = in.createTypedArrayList(Rule.CREATOR);
     }
 
@@ -47,7 +48,7 @@ public class RuleSet implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(tag);
-        parcel.writeString(token);
+        parcel.writeStringList(extras);
         parcel.writeTypedList(rules);
     }
 
@@ -55,9 +56,12 @@ public class RuleSet implements Parcelable {
         RuleSet result = new RuleSet();
 
         result.tag = jsonObject.getString("tag");
-        result.token = jsonObject.getString("token");
 
-        JSONArray array = jsonObject.getJSONArray("rules");
+        JSONArray array = jsonObject.getJSONArray("extras");
+        for ( int i = 0 ; i < array.length() ; i++ )
+            result.extras.add(array.getString(i));
+
+        array = jsonObject.getJSONArray("rules");
         for (int i = 0; i < array.length(); i++)
             result.rules.add(Rule.parseFromJson(array.getJSONObject(i)));
 
@@ -73,17 +77,17 @@ public class RuleSet implements Parcelable {
 
         result.put("tag", tag);
         result.put("rules", array);
-        result.put("token", token);
+        result.put("extras", new JSONArray(extras));
 
         return result;
     }
 
-    public String getToken() {
-        return token;
+    public List<String> getExtras() {
+        return extras;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setExtras(List<String> extras) {
+        this.extras = extras;
     }
 
     public String getTag() {

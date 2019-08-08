@@ -19,7 +19,7 @@ public class ActivityManagerProxyV26 extends IActivityManager.Stub {
     private IActivityManager activityManager;
     private ActivityManagerProxyFactory.Callback callback;
 
-    ActivityManagerProxyV26(Binder original, ActivityManagerProxyFactory.Callback callback) throws NoSuchMethodException {
+    public ActivityManagerProxyV26(Binder original, ActivityManagerProxyFactory.Callback callback) throws NoSuchMethodException {
         this.activityManager = asInterface(original);
         this.callback = callback;
 
