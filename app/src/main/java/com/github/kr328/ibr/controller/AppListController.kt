@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class AppListController(private val context: Context, private val callback: Callback) : RuleData.RuleDataCallback {
     enum class ErrorType {
-        INVALID_SERVICE, UPDATE_FAILURE
+        INVALID_SERVICE, UPDATE_FAILURE, NO_ANY_SUPPORT_APP
     }
 
     interface Callback {
@@ -36,6 +36,8 @@ class AppListController(private val context: Context, private val callback: Call
 
             if (!result.success)
                 callback.onError(ErrorType.UPDATE_FAILURE, Any())
+            else if ( ruleData.queryLocalMetadata().packages.isEmpty() )
+                callback.onError(ErrorType.NO_ANY_SUPPORT_APP, Any())
         }
     }
 

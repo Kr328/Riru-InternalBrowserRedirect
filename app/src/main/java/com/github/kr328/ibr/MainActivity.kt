@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
                         .show()
             }
             AppListController.ErrorType.UPDATE_FAILURE -> Snackbar.make(root, R.string.app_list_application_error_update_failure, Snackbar.LENGTH_LONG).show()
+            AppListController.ErrorType.NO_ANY_SUPPORT_APP -> Snackbar.make(root, R.string.app_list_application_error_empty_app_list, Snackbar.LENGTH_LONG).show();
         }
     }
 }

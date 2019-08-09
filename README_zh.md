@@ -7,7 +7,7 @@
 ## 安装要求
 
 * [Riru - Core](https://github.com/RikkaApps/Riru) 版本大于或等于 19 .
-* Android 7.0-9.0 (低版本未测试)
+* Android 7.0-9.0
 
 
 

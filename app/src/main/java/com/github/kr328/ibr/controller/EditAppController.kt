@@ -46,7 +46,7 @@ class EditAppController(private val context: Context,val pkg: String, private va
     }
 
     override fun onStateResult(result: RuleDataStateResult) {
-        if ( result.state == RuleDataState.UPDATE_PACKAGES && !result.success )
+        if (result.state == RuleDataState.UPDATE_PACKAGES && !result.success)
             callback.onError(ErrorType.UPDATE_PACKAGES_FAILURE)
 
         updateView()

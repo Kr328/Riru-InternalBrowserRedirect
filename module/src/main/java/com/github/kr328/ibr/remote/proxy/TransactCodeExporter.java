@@ -4,6 +4,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Parcel;
+import android.util.Log;
+
+import com.github.kr328.ibr.remote.Constants;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -73,7 +76,12 @@ public class TransactCodeExporter {
                     result.add((byte) 0);
                     break;
                 default:
-                    result.add(null);
+                    try {
+                        result.add(c.newInstance());
+                    } catch (IllegalAccessException|InstantiationException e) {
+                        Log.w(Constants.TAG, "Create default object " + c + " failure");
+                        result.add(null);
+                    }
             }
         }
 
