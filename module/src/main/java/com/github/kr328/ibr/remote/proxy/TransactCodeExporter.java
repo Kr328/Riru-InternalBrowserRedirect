@@ -8,14 +8,15 @@ import android.util.Log;
 
 import com.github.kr328.ibr.remote.Constants;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-public class TransactCodeExporter {
+class TransactCodeExporter {
     private IInterface proxyInterface;
     private int lastTransactCode;
 
-    public TransactCodeExporter(Class<? extends Binder> stubClass) throws ReflectiveOperationException {
+    TransactCodeExporter(Class<? extends Binder> stubClass) throws ReflectiveOperationException {
         Method methodAsInterface = stubClass.getMethod("asInterface", IBinder.class);
         Binder TRANSACT_CODE_EXPORT_BINDER = new Binder() {
             @Override
@@ -37,12 +38,12 @@ public class TransactCodeExporter {
         proxyInterface = (IInterface) methodAsInterface.invoke(null, TRANSACT_CODE_EXPORT_BINDER);
     }
 
-    public int export(String name, Class<?>... argTypes) throws ReflectiveOperationException {
+    int export(String name, Class<?>... argTypes) throws ReflectiveOperationException {
         Method m = proxyInterface.getClass().getMethod(name, argTypes);
         return export(m);
     }
 
-    public int export(Method method) throws ReflectiveOperationException {
+    private int export(Method method) throws ReflectiveOperationException {
         Object[] args = buildDefaultArgs(method);
 
         lastTransactCode = -1;
@@ -77,8 +78,8 @@ public class TransactCodeExporter {
                     break;
                 default:
                     try {
-                        result.add(c.newInstance());
-                    } catch (IllegalAccessException|InstantiationException e) {
+                        result.add(c.getConstructor().newInstance());
+                    } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
                         Log.w(Constants.TAG, "Create default object " + c + " failure");
                         result.add(null);
                     }
