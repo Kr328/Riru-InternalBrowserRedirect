@@ -57,17 +57,15 @@ public class RemoteService extends IRemoteService.Stub {
 
     @Override
     public void updateSetting(String feature, boolean enabled) throws RemoteException {
-        switch (feature) {
-            case Constants.SETTING_DEBUG_MODE:
-                StoreManager.getInstance().setDebugModeEnabled(enabled);
+        if (Constants.SETTING_DEBUG_MODE.equals(feature)) {
+            StoreManager.getInstance().setDebugModeEnabled(enabled);
         }
     }
 
     @Override
     public boolean getBooleanSetting(String feature) throws RemoteException {
-        switch (feature) {
-            case Constants.SETTING_DEBUG_MODE:
-                return StoreManager.getInstance().isDebugModeEnabled();
+        if (Constants.SETTING_DEBUG_MODE.equals(feature)) {
+            return StoreManager.getInstance().isDebugModeEnabled();
         }
         return false;
     }
