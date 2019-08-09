@@ -136,12 +136,6 @@ print_modname() {
   ui_print "*******************************"
 }
 
-print_warning() {
-  ui_print "*******************************"
-  ui_print "   WARN: May cause *BootLoop*  "
-  ui_print "*******************************"
-}
-
 check_riru_version() {
   [[ ! -f "$RIRU_PATH/api_version" ]] && abort "! Please Install Riru - Core v19 or above"
   VERSION=$(cat "$RIRU_PATH/api_version")
@@ -167,8 +161,6 @@ on_install() {
   check_architecture
   check_android_api
   check_riru_version
-
-  print_warning
 
   remove_deprecated_config
   remove_apk_installed_mark
