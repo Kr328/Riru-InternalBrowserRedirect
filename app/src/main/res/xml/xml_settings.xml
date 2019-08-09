@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/setting_develop">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="setting_develop_debug_mode"
+            android:summary="@string/setting_develop_debug_mode_summary"
+            android:title="@string/setting_develop_debug_mode" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/setting_online_rule">
+        <EditTextPreference
+            android:key="setting_online_rule_user"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/setting_online_rule_user" />
+        <EditTextPreference
+            android:key="setting_online_rule_repo"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/setting_online_rule_repo" />
+        <EditTextPreference
+            android:key="setting_online_rule_branch"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/setting_online_rule_branch" />
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>

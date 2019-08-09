@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">内置浏览器重定向</string>
+
+    <string name="app_list_application_state_online_rule">在线规则</string>
+    <string name="app_list_application_state_unknown_rule">未知</string>
+    <string name="app_list_application_state_preload_rule">预建规则</string>
+    <string name="app_list_application_state_enabled">已启用</string>
+    <string name="app_list_application_state_disabled">已禁用</string>
+    <string name="edit_app_application_enable">启用</string>
+    <string name="edit_app_application_rule_set">策略组</string>
+    <string name="edit_app_application_rule_set_author">作者</string>
+    <string name="edit_app_application_rule_set_tag">标签</string>
+    <string name="edit_app_application_rule">策略</string>
+    <string name="app_list_application_error_invalid_service_message_unknown">
+        所有功能看起来都正常工作, 但我们仍然无法连接到服务端
+    </string>
+    <string name="app_list_application_error_invalid_service_message_riru_not_load">
+        Riru - Core 并没有载入 Riru - InternalBrowserRedirect \n
+        请检查以下 Magisk 模块 安装正常 \n
+        - Riru - Core \n
+        - Riru - InternalBrowserRedirect
+    </string>
+    <string name="app_list_application_error_invalid_service_message_not_call_fork">
+        Riru - Core 和 Riru - InternalBrowserRedirect 都已经载入, 但是 Riru - Core 无法注入 system_server \n
+        看起来是一些模块与 Riru - Core 不兼容
+    </string>
+    <string name="app_list_application_error_invalid_service_message_inject_failure">
+        Riru - Core 和 Riru - InternalBrowserRedirect 已经注入到 system_server, 但是一些注入操作失败了
+    </string>
+    <string name="app_list_application_error_invalid_service_message_service_not_created">
+        Riru - Core 和 Riru - InternalBrowserRedirect 已经注入到 system_server, 但是一些注入操作失败了 \n
+        看起来是一些模块与 Riru - InternalBrowserRedirect 不兼容 \n
+    </string>
+    <string name="app_list_application_error_invalid_service_message_service_unable_to_handle">
+        Riru - Core 和 Riru - InternalBrowserRedirect 已经注入到 system_server, 但是一些注入操作失败了 \n
+        看起来是一些模块与 Riru - InternalBrowserRedirect 不兼容
+    </string>
+    <string name="app_list_application_error_invalid_service_message_system_block_ipc">
+        服务端正常工作, 但是我们仍然无法连接到服务端
+        看起来是系统阻止了我们的 IPC
+    </string>
+    <string name="app_list_application_error_invalid_service_message_service_version_not_matches">
+        服务端版本与控制器不匹配 \n
+        请检查 Riru - InternalBrowserRedirect 和 此应用 的 版本
+    </string>
+    <string name="app_list_application_error_invalid_service_title">无效的重定向服务</string>
+    <string name="app_list_application_error_invalid_service_button_ok">确认</string>
+    <string name="app_list_application_error_update_failure">在线规则同步失败</string>
+    <string name="app_list_application_menu_help">帮助</string>
+    <string name="app_list_application_menu_refresh">刷新</string>
+    <string name="app_list_application_menu_settings">设置</string>
+    <string name="edit_app_application_updating">在线规则正在更新</string>
+    <string name="edit_app_application_update_failure">在线规则同步失败</string>
+    <string name="edit_app_application_unknown_app">未知应用</string>
+    <string name="edit_app_application_rule_set_version">版本</string>
+    <string name="setting_develop">开发</string>
+    <string name="setting_develop_debug_mode">调试模式</string>
+    <string name="setting_develop_debug_mode_summary">将会打印所有的 Intent 到日志 [IntentBrowserRedirect]</string>
+    <string name="setting_online_rule">在线规则</string>
+    <string name="setting_online_rule_branch">仓库分支</string>
+    <string name="setting_online_rule_repo">Github 仓库</string>
+    <string name="setting_online_rule_user">Github 用户</string>
+    <string name="first_install_notification_channel">首次安装通知</string>
+    <string name="first_install_notification_failure_installed_message">点此检查</string>
+    <string name="first_install_notification_failure_installed_title">内置浏览器重定向安装失败</string>
+    <string name="first_install_notification_success_installed_title">内置浏览器重定向已安装</string>
+    <string name="first_install_notification_success_installed_message">点此配置</string>
+    <string name="edit_app_application_rule_set_unknown">未知</string>
+    <string name="app_list_application_error_empty_app_list">未在本设备找到支持的应用</string>
+</resources>

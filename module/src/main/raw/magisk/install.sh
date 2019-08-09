@@ -31,7 +31,7 @@ PROPFILE=false
 POSTFSDATA=false
 
 # Set to true if you need late_start service script
-LATESTARTSERVICE=false
+LATESTARTSERVICE=true
 
 ##########################################################################################
 # Replace list
@@ -120,10 +120,25 @@ REPLACE="
 ##########################################################################################
 
 RIRU_PATH="/data/misc/riru"
+MODULE_NAME="internal_browser_redirect"
+
+remove_deprecated_config() {
+  rm -rf "$RIRU_PATH/modules/ibr"
+}
+
+remove_apk_installed_mark() {
+  rm -rf "$RIRU_PATH/modules/$MODULE_NAME/apk_installed"
+}
 
 print_modname() {
   ui_print "*******************************"
   ui_print "Riru - InternalBrowserRedirect "
+  ui_print "*******************************"
+}
+
+print_warning() {
+  ui_print "*******************************"
+  ui_print "   WARN: May cause *BootLoop*  "
   ui_print "*******************************"
 }
 
@@ -142,26 +157,38 @@ check_architecture() {
   fi
 }
 
+check_android_api() {
+	if [[ "$API" -lt "24" ]] || [[ "$API" -gt "28" ]] ;then
+		abort "! Unspported API Level $API"
+	fi
+}
+
 on_install() {
   check_architecture
+  check_android_api
   check_riru_version
+
+  print_warning
+
+  remove_deprecated_config
+  remove_apk_installed_mark
 
   ui_print "- Extracting arm/arm64 libraries & dex"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
-  rm "$MODPATH/system/placeholder"
 
   if [[ "$IS64BIT" = false ]]; then
 	ui_print "- Removing 64-bit libraries"
 	rm -rf "$MODPATH/system/lib64"
   fi
 
-  TARGET="$RIRU_PATH/modules/ibr"
+  TARGET="$RIRU_PATH/modules/$MODULE_NAME"
 
   ui_print "- Extracting extra files"
   unzip -o "$ZIPFILE" 'data/*' -d "$TMPDIR" >&2
 
- [[ -d "$TARGET" ]] || mkdir -p "$TARGET" || abort "! Can't mkdir -p $TARGET"
+  [[ -d "$TARGET" ]] || mkdir -p "$TARGET" || abort "! Can't mkdir -p $TARGET"
   cp -af "$TMPDIR/data/." "$TARGET" || abort "! Can't cp -af $TMPDIR$TARGET/. $TARGET"
+  mkdir -p $TARGET/userdata
 
   ui_print "- Files copied"
 }
@@ -169,6 +196,7 @@ on_install() {
 set_permissions() {
   # The following is the default rule, DO NOT remove
   set_perm_recursive $MODPATH 0 0 0755 0644
+  set_perm_recursive $RIRU_PATH/modules/$MODULE_NAME 1000 1000 0755 0644  u:object_r:system_data_file:s0
 
   # Here are some examples:
   # set_perm_recursive  $MODPATH/system/lib       0     0       0755      0644

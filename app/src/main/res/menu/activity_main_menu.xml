@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/activity_main_menu_refresh"
+        android:title="@string/app_list_application_menu_refresh" />
+    <item
+        android:id="@+id/activity_main_menu_settings"
+        android:title="@string/app_list_application_menu_settings" />
+    <item
+        android:id="@+id/activity_main_menu_about"
+        android:title="@string/app_list_application_menu_help" />
+</menu>

@@ -2,74 +2,51 @@
 
 [Riru](https://github.com/RikkaApps/Riru) 模块. 重定向应用的内置浏览器到外部浏览器. ~~(简单来说就是 去你大爷的内置浏览器)~~
 
-[English](https://github.com/Kr328/Riru-InternalBrowserRedirect/blob/master/README.md)
+[English](README.md)
 
 ## 安装要求
 
 * [Riru - Core](https://github.com/RikkaApps/Riru) 版本大于或等于 19 .
-* Android 8.0-9.0 (低版本未测试)
+* Android 7.0-9.0
+
+
 
 
 ## 功能
 
 重定向应用的内置浏览器到外部浏览器
 
-**5s内再次点击同一链接会回滚到使用内置浏览器**
-
-当前支持的App
-
-- 微信
-- QQ
-- TIM
-- Bilibili
 
 
-## 自定义规则
+## 文档
 
-1. 创建文件 **/data/misc/riru/modules/ibr/config.\<package\>.json (将 \<package\> 替换为目标包名)**
-
-2. 在创建的文件中写入规则
-
-   样例
-
-   ```json
-   {
-   	"name": "TIM", 
-   	"rules": [          
-   		{
-   			"extra-key": "url",   
-   			"ignore-url": ".*bilibili\\.com.*",
-   			"force-url": "" 
-   		}
-   	]
-   } 
-   ```
-   | key        | value                                  |
-   | ---------- | -------------------------------------- |
-   | name       | 在日志中显示的名称                      |
-   | rules      | 规则列表 可以留空用于调试                |
-   | extra-key  | 从 extra 中提取原始链接的 key           |
-   | ignore-url | 忽略特定url的正则表达式                 |
-   | force-url  | 强制生效的url的正则表达                |
-
-3. 通过日志检查是否正常工作 (TAG: **InternalBrowserRedirect**)
-
-4. (可以) 通过 Github ISSUE 分享你的规则 :)
+参见 [文档](https://kr328.github.io/Riru-InternalBrowserRedirect-Rules/lang-detect)
 
 
 
 ## 构建
 
-  1.安装 JDK ,Gradle ,Android SDK ,Android NDK
+1. 安装 JDK ,Gradle ,Android SDK ,Android NDK
 
-  2.根据你的环境配置 [local.properties](https://github.com/Kr328/Riru-InternalBrowserRedirect/blob/master/local.properties)
+2. 在 **项目根目录** 建立 `local.properties`
+   ```properties
+   sdk.dir=/路径/到/AndroidSdk
+   ndk.dir=/路径/到/AndroidNdk
+   cmake.dir=/路径/到/AndroidCmake/*版本*
+   ```
+3. 在 **项目根目录** 建立 `keystore.properties`
+   ```properties
+   storePassword=
+   keyPassword=
+   keyAlias=
+   storeFile=
+   ```
+4. 执行以下命令
+   ```bash 
+   ./gradlew build
+   ```
 
-  3.执行以下命令
-
-``` Gradle 
-./gradlew build
-```
-  4.从 module/build/outputs 拿取 riru-internal-browser-redirect.zip
+5. 从 module/build/outputs 获取 riru-internal-browser-redirect.zip
 
 
 
