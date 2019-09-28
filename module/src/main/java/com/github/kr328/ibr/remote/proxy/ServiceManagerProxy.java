@@ -1,15 +1,25 @@
 package com.github.kr328.ibr.remote.proxy;
 
+import android.annotation.SuppressLint;
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.IPermissionController;
 import android.os.IServiceManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.ServiceManagerNative;
+import android.util.Log;
+
+import com.android.internal.os.BinderInternal;
+import com.github.kr328.ibr.remote.Constants;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
+@SuppressWarnings("JavaReflectionMemberAccess")
+@SuppressLint("PrivateApi")
 public class ServiceManagerProxy implements IServiceManager {
     public interface Callback {
         IBinder addService(String name, IBinder original);
@@ -33,6 +43,7 @@ public class ServiceManagerProxy implements IServiceManager {
     private IServiceManager original;
     private Callback callback;
     private static boolean installed;
+    private static Method allowBlocking;
 
     private ServiceManagerProxy(IServiceManager original, Callback callback) {
         this.original = original;
@@ -40,9 +51,9 @@ public class ServiceManagerProxy implements IServiceManager {
     }
 
     private static IServiceManager getOriginalIServiceManager() throws ReflectiveOperationException {
-        Method method = ServiceManager.class.getDeclaredMethod("getIServiceManager");
-        method.setAccessible(true);
-        return Objects.requireNonNull((IServiceManager) method.invoke(null));
+        Field field = ServiceManager.class.getDeclaredField("sServiceManager");
+        field.setAccessible(true);
+        return (IServiceManager) field.get(null);
     }
 
     private static void setDefaultServiceManager(IServiceManager serviceManager) throws ReflectiveOperationException {
@@ -51,45 +62,67 @@ public class ServiceManagerProxy implements IServiceManager {
         field.set(null, serviceManager);
     }
 
+    private IServiceManager getOriginal() {
+        if ( original == null ) {
+            try {
+                original = ServiceManagerNative
+                        .asInterface((IBinder) allowBlocking.invoke(null, BinderInternal.getContextObject()));
+            } catch (Exception e) {
+                Log.w(Constants.TAG, "allowBlocking failure", e);
+                original = ServiceManagerNative.asInterface(BinderInternal.getContextObject());
+            }
+        }
+
+        return original;
+    }
+
     // Pie
     @Override
     public IBinder getService(String name) throws RemoteException {
-        return callback.getService(name, original.getService(name));
+        return callback.getService(name, getOriginal().getService(name));
     }
 
     @Override
     public IBinder checkService(String name) throws RemoteException {
-        return callback.checkService(name, original.checkService(name));
+        return callback.checkService(name, getOriginal().checkService(name));
     }
 
     @Override
     public void addService(String name, IBinder service, boolean allowIsolated, int dumpFlags) throws RemoteException {
-        original.addService(name, callback.addService(name, service), allowIsolated, dumpFlags);
+        getOriginal().addService(name, callback.addService(name, service), allowIsolated, dumpFlags);
     }
 
     @Override
     public String[] listServices(int dumpFlags) throws RemoteException {
-        return original.listServices(dumpFlags);
+        return getOriginal().listServices(dumpFlags);
     }
 
     @Override
     public void setPermissionController(IPermissionController controller) throws RemoteException {
-        original.setPermissionController(controller);
+        getOriginal().setPermissionController(controller);
     }
 
     // Oreo
     @Override
     public void addService(String name, IBinder service, boolean allowIsolated) throws RemoteException {
-        original.addService(name, callback.addService(name, service), allowIsolated);
+        getOriginal().addService(name, callback.addService(name, service), allowIsolated);
     }
 
     @Override
     public String[] listServices() throws RemoteException {
-        return original.listServices();
+        return getOriginal().listServices();
     }
 
     @Override
     public IBinder asBinder() {
-        return original.asBinder();
+        return getOriginal().asBinder();
     }
+
+     static {
+         try {
+             allowBlocking = Binder.class.getDeclaredMethod("allowBlocking", IBinder.class);
+         } catch (NoSuchMethodException e) {
+             Log.e(Constants.TAG, "allowBlocking", e);
+         }
+     }
 }

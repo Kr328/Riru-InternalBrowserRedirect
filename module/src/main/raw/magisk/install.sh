@@ -152,7 +152,7 @@ check_architecture() {
 }
 
 check_android_api() {
-	if [[ "$API" -lt "24" ]] || [[ "$API" -gt "28" ]] ;then
+	if [[ "$API" -lt "24" ]] || [[ "$API" -gt "29" ]] ;then
 		abort "! Unspported API Level $API"
 	fi
 }

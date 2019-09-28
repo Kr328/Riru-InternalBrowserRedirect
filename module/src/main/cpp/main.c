@@ -17,11 +17,19 @@
 #define DEX_PATH           "/system/framework/boot-internal-browser-redirect.jar"
 #define SERVICE_STATUE_KEY "sys.ibr.status"
 
-EXPORT int nativeForkSystemServerPost(JNIEnv *env, jclass clazz, jint res) {
+EXPORT
+int nativeForkAndSpecializePost(JNIEnv *env, jclass clazz, jint res) {
+    if ( res == 0 )
+        invoke_inject_method(env, "app_forked");
+}
+
+EXPORT
+int nativeForkSystemServerPost(JNIEnv *env, jclass clazz, jint res) {
     if ( res == 0 ) {
         __system_property_set(SERVICE_STATUE_KEY, "system_server_forked");
-        invoke_inject_method(env, "");
+        invoke_inject_method(env, "system_server_forked");
     }
+    return 0;
 }
 
 EXPORT
@@ -33,7 +41,7 @@ void onModuleLoaded() {
     strcat(buffer,":" DEX_PATH);
     setenv("CLASSPATH",buffer,1);
 
-    hook_install(&find_inject_class_method);
+    hook_install(&init_inject_class_method);
 
     __system_property_set(SERVICE_STATUE_KEY, "riru_loaded");
 }

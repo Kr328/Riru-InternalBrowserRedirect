@@ -8,14 +8,12 @@ import android.os.RemoteException;
 import android.os.SystemProperties;
 import android.util.Log;
 
-import com.github.kr328.ibr.remote.compat.ActivityManagerProxyFactory;
 import com.github.kr328.ibr.remote.data.StoreManager;
 import com.github.kr328.ibr.remote.i18n.I18n;
 import com.github.kr328.ibr.remote.i18n.I18nFactory;
 import com.github.kr328.ibr.remote.model.RuleSet;
 
-public class ActivityManagerProxy implements ActivityManagerProxyFactory.Callback {
-    @Override
+public class ActivityManagerProxy {
     public Intent startActivity(String callingPackage, Intent intent) {
         if (intent.getComponent() == null)
             return intent;
@@ -50,7 +48,6 @@ public class ActivityManagerProxy implements ActivityManagerProxyFactory.Callbac
         return intent;
     }
 
-    @Override
     public Binder queryRedirectService() throws RemoteException {
         SystemProperties.set(Constants.SERVICE_STATUE_KEY, "running");
 

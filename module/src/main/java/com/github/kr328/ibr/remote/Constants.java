@@ -9,6 +9,7 @@ public class Constants {
     static final int VERSION = 4;
 
     static final String SERVICE_STATUE_KEY = "sys.ibr.status";
+    static final String DEBUG_MODE_KEY = "sys.ibr.debug";
 
     public static final String DATA_STORE_DIRECTORY = "/data/misc/riru/modules/internal_browser_redirect/userdata/";
     public static final Pattern PATTERN_CONFIG_FILE = Pattern.compile("rules.([a-zA-Z.]+).json");

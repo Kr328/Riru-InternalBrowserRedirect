@@ -31,17 +31,17 @@ class SettingsActivity : AppCompatActivity() {
 
             when (key) {
                 SETTING_ONLINE_RULE_USER_KEY ->
-                    with ((findPreference(key) as EditTextPreference) to sp.getString(key, Constants.DEFAULT_RULE_GITHUB_USER) ) {
+                    with (findPreference<EditTextPreference>(key)!! to sp.getString(key, Constants.DEFAULT_RULE_GITHUB_USER) ) {
                         first.text = second
                         first.summary = second
                     }
                 SETTING_ONLINE_RULE_REPO_KEY ->
-                    with ((findPreference(key) as EditTextPreference) to sp.getString(key, Constants.DEFAULT_RULE_REPO) ) {
+                    with (findPreference<EditTextPreference>(key)!! to sp.getString(key, Constants.DEFAULT_RULE_REPO) ) {
                         first.text = second
                         first.summary = second
                     }
                 SETTING_ONLINE_RULE_BRANCH_KEY ->
-                    with ((findPreference(key) as EditTextPreference) to sp.getString(key, Constants.DEFAULT_RULE_BRANCH) ) {
+                    with (findPreference<EditTextPreference>(key)!! to sp.getString(key, Constants.DEFAULT_RULE_BRANCH) ) {
                         first.text = second
                         first.summary = second
                     }
