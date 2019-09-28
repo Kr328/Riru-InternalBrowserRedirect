@@ -33,3 +33,6 @@ local.properties
 
 # keystore
 keystore.properties
+
+# vscode
+.vscode
