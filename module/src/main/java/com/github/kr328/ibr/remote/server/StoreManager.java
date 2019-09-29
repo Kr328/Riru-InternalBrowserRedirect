@@ -1,9 +1,8 @@
-package com.github.kr328.ibr.remote.data;
+package com.github.kr328.ibr.remote.server;
 
 import android.util.Log;
 
 import com.github.kr328.ibr.remote.Constants;
-import com.github.kr328.ibr.remote.FileUtils;
 import com.github.kr328.ibr.remote.model.General;
 import com.github.kr328.ibr.remote.model.RuleSet;
 
@@ -19,6 +18,14 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 
 public class StoreManager {
+    private static StoreManager INSTANCE = new StoreManager();
+    private Cache cache = new Cache();
+    private Executor background = Executors.newSingleThreadExecutor();
+
+    private StoreManager() {
+        load();
+    }
+
     public static StoreManager getInstance() {
         return INSTANCE;
     }
@@ -31,6 +38,10 @@ public class StoreManager {
         return cache.ruleSets;
     }
 
+    public synchronized boolean isDebugModeEnabled() {
+        return cache.general.isDebugMode();
+    }
+
     public synchronized void setDebugModeEnabled(boolean enabled) {
         cache.general.setDebugMode(enabled);
         background.execute(() -> {
@@ -40,10 +51,6 @@ public class StoreManager {
                 Log.e(Constants.TAG, "Save general failure");
             }
         });
-    }
-
-    public synchronized boolean isDebugModeEnabled() {
-        return cache.general.isDebugMode();
     }
 
     public synchronized void updateRuleSet(String pkg, RuleSet ruleSet) {
@@ -97,12 +104,4 @@ public class StoreManager {
         General general;
         HashMap<String, RuleSet> ruleSets;
     }
-
-    private StoreManager() {
-        load();
-    }
-
-    private static StoreManager INSTANCE = new StoreManager();
-    private Cache cache = new Cache();
-    private Executor background = Executors.newSingleThreadExecutor();
 }

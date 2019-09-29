@@ -10,6 +10,17 @@ import org.json.JSONObject;
 import java.util.regex.Pattern;
 
 public class Rule implements Parcelable {
+    public static final Creator<Rule> CREATOR = new Creator<Rule>() {
+        @Override
+        public Rule createFromParcel(Parcel in) {
+            return new Rule(in);
+        }
+
+        @Override
+        public Rule[] newArray(int size) {
+            return new Rule[size];
+        }
+    };
     private String tag;
     private Uri urlPath;
     private Pattern regexIgnore;
@@ -25,32 +36,6 @@ public class Rule implements Parcelable {
         regexForce = Pattern.compile(in.readString());
     }
 
-    public static final Creator<Rule> CREATOR = new Creator<Rule>() {
-        @Override
-        public Rule createFromParcel(Parcel in) {
-            return new Rule(in);
-        }
-
-        @Override
-        public Rule[] newArray(int size) {
-            return new Rule[size];
-        }
-    };
-
-
-    @Override
-    public int describeContents() {
-        return "Rule".hashCode();
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(tag);
-        parcel.writeString(urlPath.toString());
-        parcel.writeString(regexIgnore.pattern());
-        parcel.writeString(regexForce.pattern());
-    }
-
     public static Rule parseFromJson(JSONObject jsonObject) throws JSONException {
         Rule result = new Rule();
 
@@ -63,6 +48,19 @@ public class Rule implements Parcelable {
             throw new JSONException("Invalid url path");
 
         return result;
+    }
+
+    @Override
+    public int describeContents() {
+        return "Rule".hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(tag);
+        parcel.writeString(urlPath.toString());
+        parcel.writeString(regexIgnore.pattern());
+        parcel.writeString(regexForce.pattern());
     }
 
     public JSONObject toJson() throws JSONException {

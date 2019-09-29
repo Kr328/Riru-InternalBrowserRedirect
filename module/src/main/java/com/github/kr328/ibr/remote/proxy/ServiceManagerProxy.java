@@ -14,40 +14,44 @@ import com.android.internal.os.BinderInternal;
 import com.github.kr328.ibr.remote.Constants;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 @SuppressWarnings("JavaReflectionMemberAccess")
 @SuppressLint("PrivateApi")
 public class ServiceManagerProxy implements IServiceManager {
-    public interface Callback {
-        IBinder addService(String name, IBinder original);
+    private static ServiceManagerProxy instance;
+    private static Method allowBlocking;
 
-        IBinder getService(String name, IBinder original);
-
-        IBinder checkService(String name, IBinder original);
-    }
-
-    public static synchronized void install(Callback callback) throws ReflectiveOperationException {
-        if (installed)
-            return;
-
-        IServiceManager original = getOriginalIServiceManager();
-
-        setDefaultServiceManager(new ServiceManagerProxy(original, callback));
-
-        installed = true;
+    static {
+        try {
+            allowBlocking = Binder.class.getDeclaredMethod("allowBlocking", IBinder.class);
+        } catch (NoSuchMethodException e) {
+            Log.e(Constants.TAG, "allowBlocking", e);
+        }
     }
 
     private IServiceManager original;
     private Callback callback;
-    private static boolean installed;
-    private static Method allowBlocking;
 
     private ServiceManagerProxy(IServiceManager original, Callback callback) {
         this.original = original;
         this.callback = callback;
+    }
+
+    public static synchronized void install(Callback callback) throws ReflectiveOperationException {
+        if (callback == null)
+            return;
+
+        if (instance == null) {
+            instance = new ServiceManagerProxy(getOriginalIServiceManager(), new Callback());
+            setDefaultServiceManager(instance);
+        }
+
+        instance.callback = callback;
+    }
+
+    public static void install() throws ReflectiveOperationException {
+        install(new Callback());
     }
 
     private static IServiceManager getOriginalIServiceManager() throws ReflectiveOperationException {
@@ -63,7 +67,7 @@ public class ServiceManagerProxy implements IServiceManager {
     }
 
     private IServiceManager getOriginal() {
-        if ( original == null ) {
+        if (original == null) {
             try {
                 original = ServiceManagerNative
                         .asInterface((IBinder) allowBlocking.invoke(null, BinderInternal.getContextObject()));
@@ -118,11 +122,17 @@ public class ServiceManagerProxy implements IServiceManager {
         return getOriginal().asBinder();
     }
 
-     static {
-         try {
-             allowBlocking = Binder.class.getDeclaredMethod("allowBlocking", IBinder.class);
-         } catch (NoSuchMethodException e) {
-             Log.e(Constants.TAG, "allowBlocking", e);
-         }
-     }
+    public static class Callback {
+        public IBinder addService(String name, IBinder service) {
+            return service;
+        }
+
+        public IBinder getService(String name, IBinder service) {
+            return service;
+        }
+
+        public IBinder checkService(String name, IBinder service) {
+            return service;
+        }
+    }
 }

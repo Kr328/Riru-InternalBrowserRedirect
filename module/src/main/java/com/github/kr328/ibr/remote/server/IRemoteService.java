@@ -1,13 +1,27 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
  */
-package com.github.kr328.ibr.remote;
+package com.github.kr328.ibr.remote.server;
 
 public interface IRemoteService extends android.os.IInterface {
+    int getVersion() throws android.os.RemoteException;
+
+    java.util.Map queryAllRuleSet() throws android.os.RemoteException;
+
+    com.github.kr328.ibr.remote.model.RuleSet queryRuleSet(java.lang.String packageName) throws android.os.RemoteException;
+
+    void updateRuleSet(java.lang.String packageName, com.github.kr328.ibr.remote.model.RuleSet ruleSet) throws android.os.RemoteException;
+
+    void removeRuleSet(java.lang.String packageName) throws android.os.RemoteException;
+
+    void updateSetting(java.lang.String feature, boolean enabled) throws android.os.RemoteException;
+
+    boolean getBooleanSetting(java.lang.String feature) throws android.os.RemoteException;
+
     /**
      * Default implementation for IRemoteService.
      */
-    public static class Default implements com.github.kr328.ibr.remote.IRemoteService {
+    class Default implements IRemoteService {
         @Override
         public int getVersion() throws android.os.RemoteException {
             return 0;
@@ -49,8 +63,15 @@ public interface IRemoteService extends android.os.IInterface {
     /**
      * Local-side IPC implementation stub class.
      */
-    public static abstract class Stub extends android.os.Binder implements com.github.kr328.ibr.remote.IRemoteService {
-        private static final java.lang.String DESCRIPTOR = "com.github.kr328.ibr.remote.IRemoteService";
+    abstract class Stub extends android.os.Binder implements IRemoteService {
+        static final int TRANSACTION_getVersion = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
+        static final int TRANSACTION_queryAllRuleSet = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
+        static final int TRANSACTION_queryRuleSet = (android.os.IBinder.FIRST_CALL_TRANSACTION + 2);
+        static final int TRANSACTION_updateRuleSet = (android.os.IBinder.FIRST_CALL_TRANSACTION + 3);
+        static final int TRANSACTION_removeRuleSet = (android.os.IBinder.FIRST_CALL_TRANSACTION + 4);
+        static final int TRANSACTION_updateSetting = (android.os.IBinder.FIRST_CALL_TRANSACTION + 5);
+        static final int TRANSACTION_getBooleanSetting = (android.os.IBinder.FIRST_CALL_TRANSACTION + 6);
+        private static final java.lang.String DESCRIPTOR = "com.github.kr328.ibr.remote.server.IRemoteService";
 
         /**
          * Construct the stub at attach it to the interface.
@@ -60,18 +81,30 @@ public interface IRemoteService extends android.os.IInterface {
         }
 
         /**
-         * Cast an IBinder object into an com.github.kr328.ibr.remote.IRemoteService interface,
+         * Cast an IBinder object into an com.github.kr328.ibr.remote.server.IRemoteService interface,
          * generating a proxy if needed.
          */
-        public static com.github.kr328.ibr.remote.IRemoteService asInterface(android.os.IBinder obj) {
+        public static IRemoteService asInterface(android.os.IBinder obj) {
             if ((obj == null)) {
                 return null;
             }
             android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
-            if (((iin != null) && (iin instanceof com.github.kr328.ibr.remote.IRemoteService))) {
-                return ((com.github.kr328.ibr.remote.IRemoteService) iin);
+            if (((iin != null) && (iin instanceof IRemoteService))) {
+                return ((IRemoteService) iin);
             }
-            return new com.github.kr328.ibr.remote.IRemoteService.Stub.Proxy(obj);
+            return new IRemoteService.Stub.Proxy(obj);
+        }
+
+        public static boolean setDefaultImpl(IRemoteService impl) {
+            if (Stub.Proxy.sDefaultImpl == null && impl != null) {
+                Stub.Proxy.sDefaultImpl = impl;
+                return true;
+            }
+            return false;
+        }
+
+        public static IRemoteService getDefaultImpl() {
+            return Stub.Proxy.sDefaultImpl;
         }
 
         @Override
@@ -162,7 +195,8 @@ public interface IRemoteService extends android.os.IInterface {
             }
         }
 
-        private static class Proxy implements com.github.kr328.ibr.remote.IRemoteService {
+        private static class Proxy implements IRemoteService {
+            public static IRemoteService sDefaultImpl;
             private android.os.IBinder mRemote;
 
             Proxy(android.os.IBinder remote) {
@@ -210,7 +244,7 @@ public interface IRemoteService extends android.os.IInterface {
                         return getDefaultImpl().queryAllRuleSet();
                     }
                     _reply.readException();
-                    java.lang.ClassLoader cl = (java.lang.ClassLoader) this.getClass().getClassLoader();
+                    java.lang.ClassLoader cl = this.getClass().getClassLoader();
                     _result = _reply.readHashMap(cl);
                 } finally {
                     _reply.recycle();
@@ -328,42 +362,6 @@ public interface IRemoteService extends android.os.IInterface {
                 }
                 return _result;
             }
-
-            public static com.github.kr328.ibr.remote.IRemoteService sDefaultImpl;
-        }
-
-        static final int TRANSACTION_getVersion = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
-        static final int TRANSACTION_queryAllRuleSet = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
-        static final int TRANSACTION_queryRuleSet = (android.os.IBinder.FIRST_CALL_TRANSACTION + 2);
-        static final int TRANSACTION_updateRuleSet = (android.os.IBinder.FIRST_CALL_TRANSACTION + 3);
-        static final int TRANSACTION_removeRuleSet = (android.os.IBinder.FIRST_CALL_TRANSACTION + 4);
-        static final int TRANSACTION_updateSetting = (android.os.IBinder.FIRST_CALL_TRANSACTION + 5);
-        static final int TRANSACTION_getBooleanSetting = (android.os.IBinder.FIRST_CALL_TRANSACTION + 6);
-
-        public static boolean setDefaultImpl(com.github.kr328.ibr.remote.IRemoteService impl) {
-            if (Stub.Proxy.sDefaultImpl == null && impl != null) {
-                Stub.Proxy.sDefaultImpl = impl;
-                return true;
-            }
-            return false;
-        }
-
-        public static com.github.kr328.ibr.remote.IRemoteService getDefaultImpl() {
-            return Stub.Proxy.sDefaultImpl;
         }
     }
-
-    public int getVersion() throws android.os.RemoteException;
-
-    public java.util.Map queryAllRuleSet() throws android.os.RemoteException;
-
-    public com.github.kr328.ibr.remote.model.RuleSet queryRuleSet(java.lang.String packageName) throws android.os.RemoteException;
-
-    public void updateRuleSet(java.lang.String packageName, com.github.kr328.ibr.remote.model.RuleSet ruleSet) throws android.os.RemoteException;
-
-    public void removeRuleSet(java.lang.String packageName) throws android.os.RemoteException;
-
-    public void updateSetting(java.lang.String feature, boolean enabled) throws android.os.RemoteException;
-
-    public boolean getBooleanSetting(java.lang.String feature) throws android.os.RemoteException;
 }

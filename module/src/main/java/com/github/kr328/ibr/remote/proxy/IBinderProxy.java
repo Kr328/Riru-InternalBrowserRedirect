@@ -4,19 +4,12 @@ import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
-import android.util.Log;
-
-import com.github.kr328.ibr.remote.Constants;
 
 import java.io.FileDescriptor;
 
 public class IBinderProxy implements IBinder {
     private IBinder original;
     private Callback callback;
-
-    public interface Callback {
-        IInterface onQueryLocalInterface(String descriptor, IInterface original);
-    }
 
     public IBinderProxy(IBinder original, Callback callback) {
         this.original = original;
@@ -66,5 +59,9 @@ public class IBinderProxy implements IBinder {
     @Override
     public boolean unlinkToDeath(DeathRecipient recipient, int flags) {
         return original.unlinkToDeath(recipient, flags);
+    }
+
+    public interface Callback {
+        IInterface onQueryLocalInterface(String descriptor, IInterface original);
     }
 }

@@ -1,4 +1,4 @@
-package com.github.kr328.ibr.remote;
+package com.github.kr328.ibr.remote.client;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,23 +11,6 @@ import java.util.Collections;
 import java.util.Map;
 
 class RuleSetMatcher {
-    static class Result {
-        boolean matches;
-        String ruleSetTag;
-        String ruleTag;
-        Uri uri;
-
-        Result(boolean matches, String ruleSetTag, String ruleTag, Uri uri) {
-            this.matches = matches;
-            this.ruleSetTag = ruleSetTag;
-            this.ruleTag = ruleTag;
-            this.uri = uri;
-        }
-
-        Result() {
-        }
-    }
-
     static Result matches(RuleSet ruleSet, Intent intent) {
         for (Rule rule : ruleSet.getRules()) {
             Uri uri = parseIntentUrl(intent, rule.getUrlPath());
@@ -89,5 +72,22 @@ class RuleSetMatcher {
         if (o == null)
             return d;
         return o;
+    }
+
+    static class Result {
+        boolean matches;
+        String ruleSetTag;
+        String ruleTag;
+        Uri uri;
+
+        Result(boolean matches, String ruleSetTag, String ruleTag, Uri uri) {
+            this.matches = matches;
+            this.ruleSetTag = ruleSetTag;
+            this.ruleTag = ruleTag;
+            this.uri = uri;
+        }
+
+        Result() {
+        }
     }
 }

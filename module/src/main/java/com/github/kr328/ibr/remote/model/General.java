@@ -4,14 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class General {
-    public boolean isDebugMode() {
-        return debugMode;
-    }
-
-    public void setDebugMode(boolean debugMode) {
-        this.debugMode = debugMode;
-    }
-
     private boolean debugMode = false;
 
     public static General parseFromJson(JSONObject jsonObject) {
@@ -20,6 +12,14 @@ public class General {
         result.debugMode = jsonObject.optBoolean("debugMode", false);
 
         return result;
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 
     public JSONObject toJson() throws JSONException {

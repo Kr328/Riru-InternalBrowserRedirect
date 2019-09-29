@@ -1,4 +1,4 @@
-package com.github.kr328.ibr.remote;
+package com.github.kr328.ibr.remote.client;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ public class Logger {
                 "  Category: " + intent.getCategories() + '\n' +
                 "  Data: " + intent.getData() + '\n' +
                 "  Package: " + intent.getPackage() + "\n" +
-                "  Component: " + intent.getComponent() +  "\n" +
+                "  Component: " + intent.getComponent() + "\n" +
                 "  Extra: " + log(intent.getExtras(), "    ");
     }
 
