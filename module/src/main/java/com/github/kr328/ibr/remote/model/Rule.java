@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Rule implements Parcelable {
@@ -21,10 +22,10 @@ public class Rule implements Parcelable {
             return new Rule[size];
         }
     };
-    private String tag;
-    private Uri urlPath;
-    private Pattern regexIgnore;
-    private Pattern regexForce;
+    public String tag;
+    public Uri urlPath;
+    public Pattern regexIgnore;
+    public Pattern regexForce;
 
     public Rule() {
     }
@@ -32,8 +33,8 @@ public class Rule implements Parcelable {
     private Rule(Parcel in) {
         tag = in.readString();
         urlPath = Uri.parse(in.readString());
-        regexIgnore = Pattern.compile(in.readString());
-        regexForce = Pattern.compile(in.readString());
+        regexIgnore = Pattern.compile(Objects.requireNonNull(in.readString()));
+        regexForce = Pattern.compile(Objects.requireNonNull(in.readString()));
     }
 
     public static Rule parseFromJson(JSONObject jsonObject) throws JSONException {
@@ -72,37 +73,5 @@ public class Rule implements Parcelable {
         result.put("regex-ignore", regexIgnore);
 
         return result;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    public Uri getUrlPath() {
-        return urlPath;
-    }
-
-    public void setUrlPath(Uri urlPath) {
-        this.urlPath = urlPath;
-    }
-
-    public Pattern getRegexIgnore() {
-        return regexIgnore;
-    }
-
-    public void setRegexIgnore(Pattern regexIgnore) {
-        this.regexIgnore = regexIgnore;
-    }
-
-    public Pattern getRegexForce() {
-        return regexForce;
-    }
-
-    public void setRegexForce(Pattern regexForce) {
-        this.regexForce = regexForce;
     }
 }

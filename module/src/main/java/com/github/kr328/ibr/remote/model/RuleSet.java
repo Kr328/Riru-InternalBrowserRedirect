@@ -22,14 +22,16 @@ public class RuleSet implements Parcelable {
             return new RuleSet[size];
         }
     };
-    private String tag;
-    private List<String> extras;
-    private List<Rule> rules;
+    public String tag;
+    public List<String> extras;
+    public List<Rule> rules;
+    public boolean debug;
 
-    public RuleSet() {
+    private RuleSet() {
         tag = "";
         extras = new ArrayList<>();
         rules = new ArrayList<>();
+        debug = false;
     }
 
     private RuleSet(Parcel in) {
@@ -37,12 +39,14 @@ public class RuleSet implements Parcelable {
         extras = new ArrayList<>();
         in.readStringList(extras);
         rules = in.createTypedArrayList(Rule.CREATOR);
+        debug = in.readBoolean();
     }
 
     public static RuleSet readFromJson(JSONObject jsonObject) throws JSONException {
         RuleSet result = new RuleSet();
 
         result.tag = jsonObject.getString("tag");
+        result.debug = jsonObject.optBoolean("debug", false);
 
         JSONArray array = jsonObject.getJSONArray("extras");
         for (int i = 0; i < array.length(); i++)
@@ -65,6 +69,7 @@ public class RuleSet implements Parcelable {
         parcel.writeString(tag);
         parcel.writeStringList(extras);
         parcel.writeTypedList(rules);
+        parcel.writeBoolean(debug);
     }
 
     public JSONObject toJson() throws JSONException {
@@ -77,31 +82,8 @@ public class RuleSet implements Parcelable {
         result.put("tag", tag);
         result.put("rules", array);
         result.put("extras", new JSONArray(extras));
+        result.put("debug", debug);
 
         return result;
-    }
-
-    public List<String> getExtras() {
-        return extras;
-    }
-
-    public void setExtras(List<String> extras) {
-        this.extras = extras;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    public List<Rule> getRules() {
-        return rules;
-    }
-
-    public void setRules(List<Rule> rules) {
-        this.rules = rules;
     }
 }
