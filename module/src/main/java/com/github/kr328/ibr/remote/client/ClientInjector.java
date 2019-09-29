@@ -12,7 +12,7 @@ public class ClientInjector {
     public static void inject(String data) throws ReflectiveOperationException, JSONException {
         RuleSet ruleSet = RuleSet.readFromJson(new JSONObject(data));
 
-        final ClientActivityManagerProxy proxy = new ClientActivityManagerProxy();
+        final ClientActivityManagerProxy proxy = new ClientActivityManagerProxy(ruleSet);
 
         ServiceManagerProxy.install(new ServiceManagerProxy.Callback() {
             @Override

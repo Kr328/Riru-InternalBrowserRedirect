@@ -1,6 +1,8 @@
 #include "utils.h"
 
-char *malloc_and_load_file(const char *path) {
+#include <string.h>
+
+char *malloc_and_load_file(const char *prefix, const char *path) {
     if ( path == NULL )
         return NULL;
 
@@ -17,9 +19,11 @@ char *malloc_and_load_file(const char *path) {
         return NULL;
     }
 
-    char *result = (char*) malloc((size_t) file_stat.st_size);
+    int prefix_length = strlen(prefix);
+    char *result = (char*) malloc((size_t) file_stat.st_size + prefix_length);
 
-    read(fd, result, (size_t) file_stat.st_size);
+    strcpy(result, prefix);
+    read(fd, result + prefix_length, (size_t) file_stat.st_size);
 
     close(fd);
 

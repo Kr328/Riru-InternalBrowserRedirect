@@ -23,21 +23,17 @@ public class RuleSet implements Parcelable {
         }
     };
     public String tag;
-    public List<String> extras;
     public List<Rule> rules;
     public boolean debug;
 
     private RuleSet() {
         tag = "";
-        extras = new ArrayList<>();
         rules = new ArrayList<>();
         debug = false;
     }
 
     private RuleSet(Parcel in) {
         tag = in.readString();
-        extras = new ArrayList<>();
-        in.readStringList(extras);
         rules = in.createTypedArrayList(Rule.CREATOR);
         debug = in.readBoolean();
     }
@@ -48,11 +44,7 @@ public class RuleSet implements Parcelable {
         result.tag = jsonObject.getString("tag");
         result.debug = jsonObject.optBoolean("debug", false);
 
-        JSONArray array = jsonObject.getJSONArray("extras");
-        for (int i = 0; i < array.length(); i++)
-            result.extras.add(array.getString(i));
-
-        array = jsonObject.getJSONArray("rules");
+        JSONArray array = jsonObject.getJSONArray("rules");
         for (int i = 0; i < array.length(); i++)
             result.rules.add(Rule.parseFromJson(array.getJSONObject(i)));
 
@@ -67,7 +59,6 @@ public class RuleSet implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(tag);
-        parcel.writeStringList(extras);
         parcel.writeTypedList(rules);
         parcel.writeBoolean(debug);
     }
@@ -81,7 +72,6 @@ public class RuleSet implements Parcelable {
 
         result.put("tag", tag);
         result.put("rules", array);
-        result.put("extras", new JSONArray(extras));
         result.put("debug", debug);
 
         return result;

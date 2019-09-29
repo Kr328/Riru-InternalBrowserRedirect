@@ -6,4 +6,4 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-char *malloc_and_load_file(const char *path);
+char *malloc_and_load_file(const char *prefix, const char *path);
