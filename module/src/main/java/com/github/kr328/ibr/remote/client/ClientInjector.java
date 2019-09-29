@@ -9,10 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ClientInjector {
-    public static void inject(String data) throws ReflectiveOperationException, JSONException {
-        RuleSet ruleSet = RuleSet.readFromJson(new JSONObject(data));
-
-        final ClientActivityManagerProxy proxy = new ClientActivityManagerProxy(ruleSet);
+    public static void inject() throws ReflectiveOperationException, JSONException {
+        final ClientActivityManagerProxy proxy = new ClientActivityManagerProxy(new RuleSet());
 
         ServiceManagerProxy.install(new ServiceManagerProxy.Callback() {
             @Override

@@ -13,4 +13,6 @@ public class Constants {
     public static final int ACTIVITY_CONNECT_TRANSACT_CODE = 24519;
 
     public static final String SERVICE_STATUE_KEY = "sys.ibr.status";
+
+    public static final String ZYGOTE_SOCKET_NAME = "internal_browser_redirect_service";
 }

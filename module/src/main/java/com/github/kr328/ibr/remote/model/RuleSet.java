@@ -26,7 +26,7 @@ public class RuleSet implements Parcelable {
     public List<Rule> rules;
     public boolean debug;
 
-    private RuleSet() {
+    public RuleSet() {
         tag = "";
         rules = new ArrayList<>();
         debug = false;

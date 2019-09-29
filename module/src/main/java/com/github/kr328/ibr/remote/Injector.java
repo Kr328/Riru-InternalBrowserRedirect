@@ -12,23 +12,20 @@ import org.json.JSONException;
 @SuppressWarnings("unused")
 public class Injector {
     public static void inject(String argument) {
-        String[] args = argument.split("\\|", 2);
-
         try {
-            switch (args[0]) {
+            switch (argument) {
                 case "init":
                     injectInitialize();
                     break;
                 case "app_forked":
-                    if ( args.length == 2 )
-                        injectApplication(args[1]);
+                    injectApplication();
                     break;
                 case "system_server_forked":
                     injectSystemServer();
                     break;
             }
         } catch (Throwable e) {
-            Log.e(Constants.TAG, "Inject " + args[0] + " failure", e);
+            Log.e(Constants.TAG, "Inject " + argument + " failure", e);
         }
     }
 
@@ -48,10 +45,10 @@ public class Injector {
         Log.i(Constants.TAG, "Inject successfully");
     }
 
-    private static void injectApplication(String data) throws ReflectiveOperationException, JSONException {
+    private static void injectApplication() throws ReflectiveOperationException, JSONException {
         Log.i(Constants.TAG, "In application pid = " + android.os.Process.myPid());
 
-        ClientInjector.inject(data);
+        ClientInjector.inject();
 
         Log.i(Constants.TAG, "Inject successfully");
     }

@@ -11,14 +11,14 @@
 #include "log.h"
 #include "utils.h"
 #include "inject.h"
+#include "remote.h"
 
 #define EXPORT __attribute__((visibility("default")))
 
 #define DEX_PATH           "/system/framework/boot-internal-browser-redirect.jar"
 #define SERVICE_STATUE_KEY "sys.ibr.status"
-#define CONFIG_PATH_FORMAT "/data/misc/riru/modules/internal_browser_redirect/userdata/rules.%s.json"
 
-static char *app_fork_argument;
+static int enable_inject;
 
 static void on_app_fork(JNIEnv *env, jstring jAppDataDir, jstring jPackageName) {
     static char config_path_buffer[1024];
@@ -51,10 +51,7 @@ static void on_app_fork(JNIEnv *env, jstring jAppDataDir, jstring jPackageName) 
         (*env)->ReleaseStringUTFChars(env, jAppDataDir, appDataDir);
     }
 
-    if ( app_fork_argument != NULL )
-        free(app_fork_argument);
-    sprintf(config_path_buffer, CONFIG_PATH_FORMAT, package_name);
-    app_fork_argument = malloc_and_load_file("app_forked|", config_path_buffer);
+    enable_inject = query_is_package_enabled(package_name);
 
     //LOGD("file = %s, data = %s", config_path_buffer, app_fork_argument);
 }
@@ -71,8 +68,10 @@ void nativeForkAndSpecializePre(
 
 EXPORT
 int nativeForkAndSpecializePost(JNIEnv *env, jclass clazz, jint res) {
-    if ( res == 0 && app_fork_argument != NULL )
-        invoke_inject_method(env, app_fork_argument);
+    if (res == 0 && enable_inject) {
+        invoke_inject_method(env, "app_forked");
+        close_connection();
+    }
 }
 
 EXPORT
