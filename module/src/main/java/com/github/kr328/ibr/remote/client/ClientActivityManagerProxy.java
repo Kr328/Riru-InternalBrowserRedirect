@@ -42,6 +42,7 @@ public class ClientActivityManagerProxy extends BaseClientActivityManagerProxy {
                     payloads.callingPackage, i18n.getString(I18n.STRING_INTERNAL_BROWSER), 0)});
 
             payloads.intent = chooser;
+            payloads.options = null;
         }
     }
 }
