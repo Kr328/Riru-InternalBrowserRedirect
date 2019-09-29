@@ -12,8 +12,8 @@ import java.util.Map;
 
 class RuleSetMatcher {
     static Result matches(RuleSet ruleSet, Intent intent) {
-        for (Rule rule : ruleSet.getRules()) {
-            Uri uri = parseIntentUrl(intent, rule.getUrlPath());
+        for (Rule rule : ruleSet.rules) {
+            Uri uri = parseIntentUrl(intent, rule.urlPath);
             if (uri == null)
                 continue;
             if (uri == Uri.EMPTY)
@@ -22,7 +22,7 @@ class RuleSetMatcher {
                 continue;
             if (filterUri(uri, rule))
                 continue;
-            return new Result(true, ruleSet.getTag(), rule.getTag(), uri);
+            return new Result(true, ruleSet.tag, rule.tag, uri);
         }
         return new Result();
     }
@@ -64,8 +64,8 @@ class RuleSetMatcher {
     private static boolean filterUri(Uri uri, Rule rule) {
         String url = uri.toString();
 
-        return !rule.getRegexForce().matcher(url).matches() &&
-                rule.getRegexIgnore().matcher(url).matches();
+        return !rule.regexForce.matcher(url).matches() &&
+                rule.regexIgnore.matcher(url).matches();
     }
 
     private static <T> T optional(T o, T d) {

@@ -3,6 +3,7 @@ package com.github.kr328.ibr.remote.server;
 import android.content.Context;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.SystemProperties;
 
 import com.github.kr328.ibr.remote.Constants;
 import com.github.kr328.ibr.remote.proxy.ServiceManagerProxy;
@@ -18,6 +19,8 @@ public class ServerInjector {
                     originalActivity = service;
 
                     final RemoteService remoteService = new RemoteService();
+
+                    SystemProperties.set(Constants.SERVICE_STATUE_KEY, "service_created");
 
                     return new ProxyBinder((Binder) service, (original, code, data, reply, flags) -> {
                         if (code == Constants.ACTIVITY_CONNECT_TRANSACT_CODE)

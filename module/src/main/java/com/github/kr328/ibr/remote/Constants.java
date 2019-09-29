@@ -12,5 +12,5 @@ public class Constants {
     public static final String TEMPLATE_CONFIG_FILE = "rules.%s.json";
     public static final int ACTIVITY_CONNECT_TRANSACT_CODE = 24519;
 
-    static final String SERVICE_STATUE_KEY = "sys.ibr.status";
+    public static final String SERVICE_STATUE_KEY = "sys.ibr.status";
 }
