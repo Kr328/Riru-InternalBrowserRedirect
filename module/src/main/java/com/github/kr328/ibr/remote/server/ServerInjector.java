@@ -19,12 +19,15 @@ public class ServerInjector {
                     originalActivity = service;
 
                     final RemoteService remoteService = new RemoteService();
+                    final ClientService clientService = new ClientService();
 
                     SystemProperties.set(Constants.SERVICE_STATUE_KEY, "service_created");
 
                     return new ProxyBinder((Binder) service, (original, code, data, reply, flags) -> {
-                        if (code == Constants.ACTIVITY_CONNECT_TRANSACT_CODE)
+                        if (code == Constants.ACTIVITY_CONNECT_SERVER_CODE)
                             return remoteService.transactInstance(data, reply);
+                        else if ( code == Constants.ACTIVITY_CONNECT_CLIENT_CODE )
+                            return clientService.transactInstance(data, reply);
                         return original.transact(code, data, reply, flags);
                     });
                 }

@@ -43,6 +43,7 @@ class RuleSetMatcher {
                 return Uri.EMPTY;
             case "data":
                 return optional(intent.getData(), Uri.EMPTY);
+            case "extras":
             case "extra":
                 Object nextObject = intent.getExtras();
                 for (String path : optional(uri.getPathSegments(), Collections.<String>emptyList())) {

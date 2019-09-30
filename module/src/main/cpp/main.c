@@ -9,20 +9,19 @@
 
 #include "hook.h"
 #include "log.h"
-#include "utils.h"
 #include "inject.h"
-#include "remote.h"
 
 #define EXPORT __attribute__((visibility("default")))
 
-#define DEX_PATH           "/system/framework/boot-internal-browser-redirect.jar"
+#define DEX_PATH    "/system/framework/boot-internal-browser-redirect.jar"
+#define RULES_PATH  "/data/misc/riru/internal_browser_redirect/userdata/rules.%s.json"
 #define SERVICE_STATUE_KEY "sys.ibr.status"
 
 static int enable_inject;
 
 static void on_app_fork(JNIEnv *env, jstring jAppDataDir, jstring jPackageName) {
-    static char config_path_buffer[1024];
-    char package_name[256];
+    char path_buffer[1024];
+    char package_name[256] = {0};
 
     if (jPackageName) {
         const char *packageName = (*env)->GetStringUTFChars(env, jPackageName, NULL);
@@ -47,11 +46,14 @@ static void on_app_fork(JNIEnv *env, jstring jAppDataDir, jstring jPackageName) 
                 break;
 
             package_name[0] = '\0';
+            break;
         }
         (*env)->ReleaseStringUTFChars(env, jAppDataDir, appDataDir);
     }
 
-    enable_inject = query_is_package_enabled(package_name);
+    sprintf(path_buffer, RULES_PATH, package_name);
+
+    return access(path_buffer, F_OK) == 0;
 
     //LOGD("file = %s, data = %s", config_path_buffer, app_fork_argument);
 }

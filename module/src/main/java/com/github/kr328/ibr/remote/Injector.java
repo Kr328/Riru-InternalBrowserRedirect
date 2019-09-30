@@ -7,8 +7,6 @@ import com.github.kr328.ibr.remote.client.ClientInjector;
 import com.github.kr328.ibr.remote.proxy.ServiceManagerProxy;
 import com.github.kr328.ibr.remote.server.ServerInjector;
 
-import org.json.JSONException;
-
 @SuppressWarnings("unused")
 public class Injector {
     public static void inject(String argument) {
@@ -45,7 +43,7 @@ public class Injector {
         Log.i(Constants.TAG, "Inject successfully");
     }
 
-    private static void injectApplication() throws ReflectiveOperationException, JSONException {
+    private static void injectApplication() throws ReflectiveOperationException {
         Log.i(Constants.TAG, "In application pid = " + android.os.Process.myPid());
 
         ClientInjector.inject();
