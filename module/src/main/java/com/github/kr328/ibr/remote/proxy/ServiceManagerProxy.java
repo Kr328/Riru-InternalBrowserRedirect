@@ -75,8 +75,6 @@ public class ServiceManagerProxy implements IServiceManager {
                 Log.w(Constants.TAG, "allowBlocking failure", e);
                 original = ServiceManagerNative.asInterface(BinderInternal.getContextObject());
             }
-
-            callback.initialized();
         }
 
         return original;
@@ -125,7 +123,6 @@ public class ServiceManagerProxy implements IServiceManager {
     }
 
     public static class Callback {
-        public void    initialized() {}
         public IBinder addService(String name, IBinder service) {
             return service;
         }

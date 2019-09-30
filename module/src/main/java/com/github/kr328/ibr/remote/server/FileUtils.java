@@ -11,7 +11,7 @@ public class FileUtils {
         return readLines(new File(path));
     }
 
-    public static String readLines(File file) throws IOException {
+    static String readLines(File file) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         StringBuilder builder = new StringBuilder();
         String line;
@@ -24,11 +24,7 @@ public class FileUtils {
         return builder.toString();
     }
 
-    public static void writeLines(String path, String data) throws IOException {
-        writeLines(new File(path), data);
-    }
-
-    public static void writeLines(File file, String data) throws IOException {
+    static void writeLines(File file, String data) throws IOException {
         FileOutputStream stream = new FileOutputStream(file);
 
         stream.write(data.getBytes());

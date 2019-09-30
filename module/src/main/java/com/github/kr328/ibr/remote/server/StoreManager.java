@@ -18,9 +18,7 @@ class StoreManager {
     private HashMap<String, RuleSet> ruleSets = new HashMap<>();
     private static StoreManager INSTANCE = new StoreManager();
 
-    private StoreManager() {
-        load();
-    }
+    private StoreManager() {}
 
     static StoreManager getInstance() {
         return INSTANCE;
@@ -49,20 +47,22 @@ class StoreManager {
         new File(Constants.DATA_STORE_DIRECTORY, String.format(Constants.TEMPLATE_CONFIG_FILE_NAME, pkg)).delete();
     }
 
-    private synchronized void load() {
+    synchronized void load() {
         ruleSets = new HashMap<>();
 
         File[] files = new File(Constants.DATA_STORE_DIRECTORY).listFiles();
         if (files == null)
             return;
 
-        for (File f : files) {
-            Matcher matcher = Constants.PATTERN_CONFIG_FILE.matcher(f.getName());
+        for (File file : files) {
+            Matcher matcher = Constants.PATTERN_CONFIG_FILE.matcher(file.getName());
             if (matcher.matches()) {
                 try {
-                    ruleSets.put(matcher.group(1), RuleSet.readFromJson(new JSONObject(FileUtils.readLines(f))));
+                    ruleSets.put(matcher.group(1), RuleSet.readFromJson(new JSONObject(FileUtils.readLines(file))));
                 } catch (IOException | JSONException e) {
-                    Log.w(Constants.TAG, "Load " + f.toString() + " failure");
+                    Log.w(Constants.TAG, "Load " + file.toString() + " failure", e);
+                    //noinspection ResultOfMethodCallIgnored
+                    file.delete();
                 }
             }
         }

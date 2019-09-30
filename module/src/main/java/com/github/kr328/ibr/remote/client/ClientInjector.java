@@ -13,11 +13,6 @@ public class ClientInjector {
             public IBinder getService(String name, IBinder service) {
                 return proxy.proxy(name, service);
             }
-
-            @Override
-            public void initialized() {
-                proxy.onInitialized();
-            }
         });
     }
 }

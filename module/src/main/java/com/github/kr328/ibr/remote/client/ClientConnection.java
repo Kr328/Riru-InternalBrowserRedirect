@@ -12,10 +12,13 @@ class ClientConnection {
     private static IClientService connection;
 
     static IClientService getConnection() {
+        if ( connection == null )
+            openConnection();
+
         return connection;
     }
 
-    static void openConnection() {
+    private static void openConnection() {
         IBinder binder = ServiceManager.getService("activity");
 
         Parcel data = Parcel.obtain();

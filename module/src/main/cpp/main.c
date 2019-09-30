@@ -14,7 +14,7 @@
 #define EXPORT __attribute__((visibility("default")))
 
 #define DEX_PATH    "/system/framework/boot-internal-browser-redirect.jar"
-#define RULES_PATH  "/data/misc/riru/internal_browser_redirect/userdata/rules.%s.json"
+#define RULES_PATH  "/data/misc/riru/modules/internal_browser_redirect/userdata/rules.%s.json"
 #define SERVICE_STATUE_KEY "sys.ibr.status"
 
 static int enable_inject;
@@ -53,7 +53,7 @@ static void on_app_fork(JNIEnv *env, jstring jAppDataDir, jstring jPackageName) 
 
     sprintf(path_buffer, RULES_PATH, package_name);
 
-    return access(path_buffer, F_OK) == 0;
+    enable_inject = access(path_buffer, F_OK) == 0;
 
     //LOGD("file = %s, data = %s", config_path_buffer, app_fork_argument);
 }
@@ -72,7 +72,6 @@ EXPORT
 int nativeForkAndSpecializePost(JNIEnv *env, jclass clazz, jint res) {
     if (res == 0 && enable_inject) {
         invoke_inject_method(env, "app_forked");
-        close_connection();
     }
 }
 

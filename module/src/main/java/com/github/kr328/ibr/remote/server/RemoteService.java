@@ -19,6 +19,10 @@ public class RemoteService extends IRemoteService.Stub {
         return packageManager;
     }
 
+    RemoteService() {
+        StoreManager.getInstance().load();
+    }
+
     private void enforcePermission() throws RemoteException {
         String[] pkgs = getPackageManager().getPackagesForUid(Binder.getCallingUid());
         for (String pkg : pkgs) {
