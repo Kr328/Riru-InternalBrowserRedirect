@@ -1,6 +1,6 @@
 package com.github.kr328.ibr.data.sources
 
-import com.github.kr328.ibr.model.Packages
+import com.github.kr328.ibr.model.RuleSets
 import com.github.kr328.ibr.model.RuleSet
 import com.github.kr328.ibr.utils.SimpleHttpClient
 import kotlinx.serialization.json.Json
@@ -18,9 +18,9 @@ class RemoteRepoSource(private val repo: RemoteRepo) : BaseSource {
         fun getBranch(): String
     }
 
-    override fun queryAllPackages(): Packages {
+    override fun queryAllPackages(): RuleSets {
         try {
-            return Json(DEFAULT_JSON_CONFIGURE).parse(Packages.serializer(),
+            return Json(DEFAULT_JSON_CONFIGURE).parse(RuleSets.serializer(),
                     SimpleHttpClient.get(URL("https://raw.githubusercontent.com/${repo.getUser()}/${repo.getRepo()}/${repo.getBranch()}/packages.json")))
         } catch (e: Exception) {
             throw BaseSource.SourceException("RemoteRepoSource.queryAllPackages", e)
@@ -36,7 +36,7 @@ class RemoteRepoSource(private val repo: RemoteRepo) : BaseSource {
         }
     }
 
-    override fun saveAllPackages(data: Packages) = throw UnsupportedOperationException("Unsupported")
+    override fun saveAllPackages(data: RuleSets) = throw UnsupportedOperationException("Unsupported")
     override fun savePackage(pkg: String, data: RuleSet) = throw UnsupportedOperationException("Unsupported")
     override fun removePackage(pkg: String) = throw UnsupportedOperationException("Unsupported")
 }

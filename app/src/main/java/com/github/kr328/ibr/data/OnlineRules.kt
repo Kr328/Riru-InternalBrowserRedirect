@@ -1,4 +1,4 @@
-package com.github.kr328.ibr.data.sources
+package com.github.kr328.ibr.data
 
 import android.content.Context
 import com.github.kr328.ibr.BuildConfig
@@ -12,7 +12,7 @@ import kotlinx.serialization.json.JsonConfiguration
 
 class OnlineRules(context: Context) {
     private val preference = context.getSharedPreferences(BuildConfig.APPLICATION_ID + ".general", Context.MODE_PRIVATE)
-    private val httpClient = SimpleCachedHttpClient(context.cacheDir.resolve("online-rules"), buildBaseUrl())
+    private val httpClient = SimpleCachedHttpClient(context.cacheDir.resolve(Constants.CACHE_ONLINE_RULE_PATH), buildBaseUrl())
 
     init {
         preference.registerOnSharedPreferenceChangeListener {_, _ ->

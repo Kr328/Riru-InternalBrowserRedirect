@@ -15,6 +15,7 @@ object Constants {
     const val ACTIVITY_CONNECT_TRANSACT_CODE = 24519
 
     const val CACHE_ONLINE_RULE_PATH = "online-rules"
+    const val LOCAL_RULE_PATH = "local-rules"
 
     const val SETTING_DEBUG_MODE = "setting_debug_mode"
 }

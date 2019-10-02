@@ -15,7 +15,7 @@ class SettingsAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.
     var settings: List<Settings> = emptyList()
 
     class TitleHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val title: TextView = view.findViewById(R.id.adapter_settings_title_title)
+        val title: TextView = view.findViewById(R.id.view_settings_title_title)
 
         companion object {
             const val TYPE = 1
@@ -23,11 +23,11 @@ class SettingsAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.
     }
 
     class AppInfoHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val icon: ImageView = view.findViewById(R.id.adapter_settings_app_info_icon)
-        val name: TextView = view.findViewById(R.id.adapter_settings_app_info_name)
-        val version: TextView = view.findViewById(R.id.adapter_settings_app_info_version)
-        val packageName: TextView = view.findViewById(R.id.adapter_settings_app_info_package)
-        val info: View = view.findViewById(R.id.adapter_settings_app_info_view_info)
+        val icon: ImageView = view.findViewById(R.id.view_settings_app_info_icon)
+        val name: TextView = view.findViewById(R.id.view_settings_app_info_name)
+        val version: TextView = view.findViewById(R.id.view_settings_app_info_version)
+        val packageName: TextView = view.findViewById(R.id.view_settings_app_info_package)
+        val info: View = view.findViewById(R.id.view_settings_app_info_view_info)
 
         companion object {
             const val TYPE = 2
@@ -35,9 +35,9 @@ class SettingsAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.
     }
 
     class ButtonHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val icon: ImageView = view.findViewById(R.id.adapter_settings_button_icon)
-        val title: TextView = view.findViewById(R.id.adapter_settings_button_title)
-        val summary: TextView = view.findViewById(R.id.adapter_settings_button_summary)
+        val icon: ImageView = view.findViewById(R.id.view_settings_button_icon)
+        val title: TextView = view.findViewById(R.id.view_settings_button_title)
+        val summary: TextView = view.findViewById(R.id.view_settings_button_summary)
         val clickable: View = view.findViewById(R.id.adapter_settings_button_clickable)
 
         companion object {
@@ -46,7 +46,7 @@ class SettingsAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.
     }
 
     class HeaderSwitchHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val switch: SwitchMaterial = view.findViewById(R.id.adapter_settings_header_switch)
+        val switch: SwitchMaterial = view.findViewById(R.id.view_settings_header_switch)
 
         companion object {
             const val TYPE = 4
@@ -57,10 +57,10 @@ class SettingsAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.
         val layoutInflater = LayoutInflater.from(context)
 
         return when ( viewType ) {
-            TitleHolder.TYPE -> TitleHolder(layoutInflater.inflate(R.layout.adapter_settings_title, parent, false))
-            AppInfoHolder.TYPE -> AppInfoHolder(layoutInflater.inflate(R.layout.adapter_settings_app_info, parent, false))
-            ButtonHolder.TYPE -> ButtonHolder(layoutInflater.inflate(R.layout.adapter_settings_button, parent, false))
-            HeaderSwitchHolder.TYPE -> HeaderSwitchHolder(layoutInflater.inflate(R.layout.adapter_settings_header_switch, parent, false))
+            TitleHolder.TYPE -> TitleHolder(layoutInflater.inflate(R.layout.view_settings_title, parent, false))
+            AppInfoHolder.TYPE -> AppInfoHolder(layoutInflater.inflate(R.layout.view_settings_app_info, parent, false))
+            ButtonHolder.TYPE -> ButtonHolder(layoutInflater.inflate(R.layout.view_settings_button, parent, false))
+            HeaderSwitchHolder.TYPE -> HeaderSwitchHolder(layoutInflater.inflate(R.layout.view_settings_header_switch, parent, false))
             else -> object: RecyclerView.ViewHolder(View(context)) {}
         }
     }

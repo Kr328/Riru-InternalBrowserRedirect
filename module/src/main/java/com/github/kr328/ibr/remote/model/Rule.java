@@ -24,8 +24,8 @@ public class Rule implements Parcelable {
     };
     public String tag;
     public Uri urlPath;
-    public Pattern regexIgnore;
-    public Pattern regexForce;
+    public String regexIgnore;
+    public String regexForce;
 
     public Rule() {
     }
@@ -33,8 +33,8 @@ public class Rule implements Parcelable {
     private Rule(Parcel in) {
         tag = in.readString();
         urlPath = Uri.parse(in.readString());
-        regexIgnore = Pattern.compile(Objects.requireNonNull(in.readString()));
-        regexForce = Pattern.compile(Objects.requireNonNull(in.readString()));
+        regexIgnore = in.readString();
+        regexForce = in.readString();
     }
 
     public static Rule parseFromJson(JSONObject jsonObject) throws JSONException {
@@ -42,8 +42,8 @@ public class Rule implements Parcelable {
 
         result.tag = jsonObject.getString("tag");
         result.urlPath = Uri.parse(jsonObject.getString("url-path"));
-        result.regexForce = Pattern.compile(jsonObject.optString("regex-force", ""));
-        result.regexIgnore = Pattern.compile(jsonObject.optString("regex-ignore", ""));
+        result.regexForce = jsonObject.optString("regex-force", "");
+        result.regexIgnore = jsonObject.optString("regex-ignore", "");
 
         if (result.urlPath == Uri.EMPTY)
             throw new JSONException("Invalid url path");
@@ -60,8 +60,8 @@ public class Rule implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(tag);
         parcel.writeString(urlPath.toString());
-        parcel.writeString(regexIgnore.pattern());
-        parcel.writeString(regexForce.pattern());
+        parcel.writeString(regexIgnore);
+        parcel.writeString(regexForce);
     }
 
     public JSONObject toJson() throws JSONException {

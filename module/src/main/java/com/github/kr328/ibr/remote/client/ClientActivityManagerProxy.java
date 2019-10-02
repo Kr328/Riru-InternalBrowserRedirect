@@ -12,6 +12,8 @@ import com.github.kr328.ibr.remote.i18n.I18nFactory;
 import com.github.kr328.ibr.remote.model.RuleSet;
 
 public class ClientActivityManagerProxy extends BaseClientActivityManagerProxy {
+    private RuleSetCache cache = new RuleSetCache();
+
     @Override
     protected void handleStartActivity(StartActivityPayloads payloads) {
         if (payloads.intent.getComponent() == null)
@@ -21,7 +23,10 @@ public class ClientActivityManagerProxy extends BaseClientActivityManagerProxy {
             return;
 
         try {
-            RuleSet ruleSet = ClientConnection.getConnection().queryRuleSet(payloads.callingPackage);
+            RuleSet ruleSet = cache.getRuleSet(payloads.callingPackage);
+
+            if ( ruleSet == null )
+                return;
 
             if (ruleSet.debug) {
                 for (String line : Logger.log(payloads.callingPackage, payloads.intent).split("\n"))

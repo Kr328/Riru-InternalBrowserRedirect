@@ -9,7 +9,7 @@
     android:paddingBottom="25dp">
 
     <ImageView
-        android:id="@+id/adapter_settings_app_info_icon"
+        android:id="@+id/view_settings_app_info_icon"
         android:layout_width="45dp"
         android:layout_height="45dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,40 +17,40 @@
         android:contentDescription="@string/app_name" />
 
     <TextView
-        android:id="@+id/adapter_settings_app_info_name"
+        android:id="@+id/view_settings_app_info_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="19dp"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/adapter_settings_app_info_icon"
-        app:layout_constraintTop_toTopOf="@+id/adapter_settings_app_info_icon" />
+        app:layout_constraintStart_toEndOf="@+id/view_settings_app_info_icon"
+        app:layout_constraintTop_toTopOf="@+id/view_settings_app_info_icon" />
 
     <TextView
-        android:id="@+id/adapter_settings_app_info_version"
+        android:id="@+id/view_settings_app_info_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textSize="12sp"
-        app:layout_constraintTop_toTopOf="@id/adapter_settings_app_info_name"
-        app:layout_constraintBottom_toBottomOf="@id/adapter_settings_app_info_name"
-        app:layout_constraintStart_toEndOf="@id/adapter_settings_app_info_name"/>
+        app:layout_constraintTop_toTopOf="@id/view_settings_app_info_name"
+        app:layout_constraintBottom_toBottomOf="@id/view_settings_app_info_name"
+        app:layout_constraintStart_toEndOf="@id/view_settings_app_info_name"/>
 
     <TextView
-        android:id="@+id/adapter_settings_app_info_package"
+        android:id="@+id/view_settings_app_info_package"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/adapter_settings_app_info_name"
-        app:layout_constraintBottom_toBottomOf="@id/adapter_settings_app_info_icon"/>
+        app:layout_constraintStart_toStartOf="@id/view_settings_app_info_name"
+        app:layout_constraintBottom_toBottomOf="@id/view_settings_app_info_icon"/>
 
     <View
-        android:id="@+id/adapter_settings_app_info_view_info"
+        android:id="@+id/view_settings_app_info_view_info"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/ic_info"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/adapter_settings_app_info_icon"
-        app:layout_constraintBottom_toBottomOf="@id/adapter_settings_app_info_icon"/>
+        app:layout_constraintTop_toTopOf="@id/view_settings_app_info_icon"
+        app:layout_constraintBottom_toBottomOf="@id/view_settings_app_info_icon"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

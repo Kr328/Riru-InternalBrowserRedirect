@@ -2,8 +2,7 @@ package com.github.kr328.ibr.data.sources
 
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.compat.SystemProperties
-import com.github.kr328.ibr.model.Packages
-import com.github.kr328.ibr.remote.IRemoteService
+import com.github.kr328.ibr.model.RuleSets
 import com.github.kr328.ibr.remote.model.Rule
 import com.github.kr328.ibr.remote.model.RuleSet
 import com.github.kr328.ibr.remote.openRemoteConnection
@@ -56,13 +55,13 @@ class ServiceSource : BaseSource {
         }
     }
 
-    override fun queryAllPackages(): Packages? {
+    override fun queryAllPackages(): RuleSets? {
         val packages = connection.queryAllRuleSet()
                 .mapKeys { it.key as String }
                 .mapValues { it.value as RuleSet }
 
-        return Packages(packages.map {
-            Packages.Package(it.key, -1)
+        return RuleSets(packages.map {
+            RuleSets.Data(it.key, -1)
         })
     }
 
@@ -77,7 +76,7 @@ class ServiceSource : BaseSource {
         }
     }
 
-    override fun saveAllPackages(data: Packages) = throw UnsupportedOperationException("Unsupported")
+    override fun saveAllPackages(data: RuleSets) = throw UnsupportedOperationException("Unsupported")
 
     override fun savePackage(pkg: String, data: com.github.kr328.ibr.model.RuleSet) {
         val ruleSet = RuleSet()
@@ -104,7 +103,4 @@ class ServiceSource : BaseSource {
         connection.updateSetting(feature, enabled)
     }
 
-    val connection: IRemoteService by lazy {
-        openRemoteConnection()
-    }
 }

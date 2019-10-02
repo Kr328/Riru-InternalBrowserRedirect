@@ -65,8 +65,7 @@ class RuleSetMatcher {
     private static boolean filterUri(Uri uri, Rule rule) {
         String url = uri.toString();
 
-        return !rule.regexForce.matcher(url).matches() &&
-                rule.regexIgnore.matcher(url).matches();
+        return !url.matches(rule.regexForce) && url.matches(rule.regexIgnore);
     }
 
     private static <T> T optional(T o, T d) {

@@ -19,10 +19,6 @@ public class RemoteService extends IRemoteService.Stub {
         return packageManager;
     }
 
-    RemoteService() {
-        StoreManager.getInstance().load();
-    }
-
     private void enforcePermission() throws RemoteException {
         String[] pkgs = getPackageManager().getPackagesForUid(Binder.getCallingUid());
         for (String pkg : pkgs) {
@@ -44,13 +40,18 @@ public class RemoteService extends IRemoteService.Stub {
         return true;
     }
 
+    RemoteService() {
+        StoreManager.getInstance().load();
+        SystemProperties.set(Constants.LAST_UPDATE_KEY, String.valueOf(System.currentTimeMillis()));
+    }
+
     @Override
     public int getVersion() {
         return Constants.VERSION;
     }
 
     @Override
-    public String[] queryEnabledPackages() throws RemoteException {
+    public String[] queryEnabledPackages() {
         return StoreManager.getInstance().getRuleSets().keySet().toArray(new String[0]);
     }
 
@@ -62,10 +63,12 @@ public class RemoteService extends IRemoteService.Stub {
     @Override
     public void updateRuleSet(String packageName, RuleSet ruleSet) {
         StoreManager.getInstance().updateRuleSet(packageName, ruleSet);
+        SystemProperties.set(Constants.LAST_UPDATE_KEY, String.valueOf(System.currentTimeMillis()));
     }
 
     @Override
     public void removeRuleSet(String packageName) {
         StoreManager.getInstance().removeRuleSet(packageName);
+        SystemProperties.set(Constants.LAST_UPDATE_KEY, String.valueOf(System.currentTimeMillis()));
     }
 }

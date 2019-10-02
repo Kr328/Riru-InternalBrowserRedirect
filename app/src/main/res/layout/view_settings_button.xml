@@ -14,17 +14,17 @@
     android:background="?selectableItemBackground">
 
     <ImageView
-        android:id="@+id/adapter_settings_button_icon"
+        android:id="@+id/view_settings_button_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="25dp"
         android:contentDescription="@string/app_name"
-        app:layout_constraintEnd_toStartOf="@id/adapter_settings_button_title"
-        app:layout_constraintTop_toTopOf="@id/adapter_settings_button_title"
-        app:layout_constraintBottom_toBottomOf="@id/adapter_settings_button_summary"/>
+        app:layout_constraintEnd_toStartOf="@id/view_settings_button_title"
+        app:layout_constraintTop_toTopOf="@id/view_settings_button_title"
+        app:layout_constraintBottom_toBottomOf="@id/view_settings_button_summary"/>
 
     <TextView
-        android:id="@+id/adapter_settings_button_title"
+        android:id="@+id/view_settings_button_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -34,11 +34,11 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/adapter_settings_button_summary"
+        android:id="@+id/view_settings_button_summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        app:layout_constraintStart_toStartOf="@id/adapter_settings_button_title"
-        app:layout_constraintTop_toBottomOf="@id/adapter_settings_button_title"/>
+        app:layout_constraintStart_toStartOf="@id/view_settings_button_title"
+        app:layout_constraintTop_toBottomOf="@id/view_settings_button_title"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

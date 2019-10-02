@@ -1,6 +1,6 @@
 package com.github.kr328.ibr.data.sources
 
-import com.github.kr328.ibr.model.Packages
+import com.github.kr328.ibr.model.RuleSets
 import com.github.kr328.ibr.model.RuleSet
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
@@ -15,10 +15,10 @@ class LocalRepoSource(private val baseDir: File) : BaseSource {
             ?: -1
 
     @Synchronized
-    override fun queryAllPackages(): Packages? {
+    override fun queryAllPackages(): RuleSets? {
         return try {
             baseDir.resolve("packages.json").takeIf(File::exists)?.let {
-                Json(DEFAULT_JSON_CONFIGURE).parse(Packages.serializer(), it.readText())
+                Json(DEFAULT_JSON_CONFIGURE).parse(RuleSets.serializer(), it.readText())
             }
         } catch (e: Exception) {
             null
@@ -37,10 +37,10 @@ class LocalRepoSource(private val baseDir: File) : BaseSource {
     }
 
     @Synchronized
-    override fun saveAllPackages(data: Packages) {
+    override fun saveAllPackages(data: RuleSets) {
         try {
             baseDir.apply { mkdirs() }.resolve("packages.json")
-                    .writeText(Json(DEFAULT_JSON_CONFIGURE).stringify(Packages.serializer(), data))
+                    .writeText(Json(DEFAULT_JSON_CONFIGURE).stringify(RuleSets.serializer(), data))
         } catch (e: Exception) {
             throw BaseSource.SourceException("saveAllPackages", e)
         }
@@ -49,9 +49,8 @@ class LocalRepoSource(private val baseDir: File) : BaseSource {
     @Synchronized
     override fun savePackage(pkg: String, data: RuleSet) {
         try {
-            baseDir.resolve("rules").apply { mkdirs() }.resolve("$pkg.json").let {
-                it.writeText(Json(DEFAULT_JSON_CONFIGURE).stringify(RuleSet.serializer(), data))
-            }
+            baseDir.resolve("rules").apply { mkdirs() }.resolve("$pkg.json")
+                    .writeText(Json(DEFAULT_JSON_CONFIGURE).stringify(RuleSet.serializer(), data))
         } catch (e: Exception) {
             throw BaseSource.SourceException("savePackage $pkg", e)
         }

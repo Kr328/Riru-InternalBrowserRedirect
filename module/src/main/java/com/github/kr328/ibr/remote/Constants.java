@@ -21,6 +21,7 @@ public class Constants {
 
     // Service Status
     public static final String SERVICE_STATUE_KEY = "sys.ibr.status";
+    public static final String LAST_UPDATE_KEY = "sys.ibr.last_update";
 
     // Intent
     public static final String INTENT_CATEGORY_IGNORE = "com.github.kr328.intent.ibr.category.IGNORE";

@@ -1,10 +1,17 @@
 package com.github.kr328.ibr.compat
 
 import android.os.IBinder
+import java.lang.reflect.Method
 
-fun connectSystemService(name: String): IBinder {
-    return with ( Class.forName("android.os.ServiceManager").getDeclaredMethod("getService", String::class.java) ) {
-        isAccessible = true
-        invoke(null, name)
-    } as IBinder
+object ServiceManager {
+    private val methodGetService: Method by lazy {
+        Class.forName("android.os.ServiceManager").getDeclaredMethod("getService", String::class.java).apply {
+            isAccessible = true
+        }
+    }
+
+    fun getService(name: String): IBinder {
+        return methodGetService.invoke(null, name) as IBinder
+    }
 }
+

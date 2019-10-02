@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/adapter_settings_header_switch"
+        android:id="@+id/view_settings_header_switch"
         app:thumbTint="@android:color/white"
         app:trackTint="@color/color_header_switch"
         android:layout_width="match_parent"
