@@ -25,7 +25,7 @@ class OnlineRules(context: Context) {
         val repo = preference.getString(SettingsActivity.SETTING_ONLINE_RULE_REPO_KEY, Constants.DEFAULT_RULE_REPO)
         val branch = preference.getString(SettingsActivity.SETTING_ONLINE_RULE_BRANCH_KEY, Constants.DEFAULT_RULE_BRANCH)
 
-        return "https://raw.githubusercontent.com/$user/$repo/$branch/packages.json"
+        return "https://raw.githubusercontent.com/$user/$repo/$branch/"
     }
 
     fun queryRuleSets(cacheFirst: Boolean, ignoreCache: Boolean): RuleSets =

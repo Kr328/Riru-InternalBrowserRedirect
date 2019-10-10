@@ -6,7 +6,7 @@ import com.github.kr328.ibr.data.RuleData
 import com.github.kr328.ibr.data.sources.ServiceSource
 import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
-import com.github.kr328.ibr.model.AppListData
+import com.github.kr328.ibr.model.AppListElement
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -18,7 +18,7 @@ class AppListController(private val context: Context, private val callback: Call
     interface Callback {
         fun showProgress()
         fun closeProgress()
-        fun updateAppList(data: AppListData)
+        fun updateAppList(data: AppListElement)
         fun onError(error: ErrorType, extras: Any)
     }
 
@@ -79,26 +79,26 @@ class AppListController(private val context: Context, private val callback: Call
                     val p = preload[it.key]
 
                     when {
-                        l != null && p != null -> AppListData.Element(info.packageName, info.loadLabel(pm).toString(),
-                                AppListData.AppState(true, AppListData.RuleType.ONLINE), info.loadIcon(pm))
-                        l != null -> AppListData.Element(info.packageName, info.loadLabel(pm).toString(),
-                                AppListData.AppState(false, AppListData.RuleType.ONLINE), info.loadIcon(pm))
-                        p != null -> AppListData.Element(info.packageName, info.loadLabel(pm).toString(),
-                                AppListData.AppState(true, AppListData.RuleType.PRELOAD), info.loadIcon(pm))
+                        l != null && p != null -> AppListElement.Element(info.packageName, info.loadLabel(pm).toString(),
+                                AppListElement.AppRuleState(true, AppListElement.RuleType.ONLINE), info.loadIcon(pm))
+                        l != null -> AppListElement.Element(info.packageName, info.loadLabel(pm).toString(),
+                                AppListElement.AppRuleState(false, AppListElement.RuleType.ONLINE), info.loadIcon(pm))
+                        p != null -> AppListElement.Element(info.packageName, info.loadLabel(pm).toString(),
+                                AppListElement.AppRuleState(true, AppListElement.RuleType.PRELOAD), info.loadIcon(pm))
                         else -> null
                     }
                 } else {
                     val p = preload[it.key]
 
                     when {
-                        p != null -> AppListData.Element(it.key, it.key,
-                                AppListData.AppState(true, AppListData.RuleType.PRELOAD), context.getDrawable(android.R.drawable.sym_def_app_icon)!!)
+                        p != null -> AppListElement.Element(it.key, it.key,
+                                AppListElement.AppRuleState(true, AppListElement.RuleType.PRELOAD), context.getDrawable(android.R.drawable.sym_def_app_icon)!!)
                         else -> null
                     }
                 }
             }
 
-            callback.updateAppList(AppListData(elements.sortedWith(compareBy({ it.appState.getPriority() }, { it.name }))))
+            callback.updateAppList(AppListElement(elements.sortedWith(compareBy({ it.appState.getPriority() }, { it.name }))))
 
             running.set(false)
 
@@ -106,11 +106,11 @@ class AppListController(private val context: Context, private val callback: Call
         }
     }
 
-    private fun AppListData.AppState.getPriority(): Int {
+    private fun AppListElement.AppRuleState.getPriority(): Int {
         val rulePriority = when (ruleType) {
-            AppListData.RuleType.ONLINE -> 0
-            AppListData.RuleType.PRELOAD -> 1
-            AppListData.RuleType.UNKNOWN -> 2
+            AppListElement.RuleType.ONLINE -> 0
+            AppListElement.RuleType.PRELOAD -> 1
+            AppListElement.RuleType.UNKNOWN -> 2
         }
 
         return if (enabled)

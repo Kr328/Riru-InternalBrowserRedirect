@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
@@ -17,29 +16,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.kr328.ibr.adapters.AppListAdapter
 import com.github.kr328.ibr.controller.AppListController
 import com.github.kr328.ibr.data.sources.ServiceSource
-import com.github.kr328.ibr.model.AppListData
+import com.github.kr328.ibr.model.AppListElement
+import com.github.kr328.ibr.state.AppListState
 import com.google.android.material.snackbar.Snackbar
+import org.rekotlin.StoreSubscriber
 
-class MainActivity : AppCompatActivity(), AppListController.Callback {
-    private lateinit var controller: AppListController
-    private lateinit var root: LinearLayout
-    private lateinit var appList: RecyclerView
-    private lateinit var progress: ProgressBar
+class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
+    private val store by lazy { MainApplication.fromContext(this).store }
+    private val root: LinearLayout by lazy { findViewById<LinearLayout>(R.id.activity_main_root) }
+    private val appList: RecyclerView by lazy { findViewById<RecyclerView>(R.id.activity_main_main_list) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        root = findViewById(R.id.activity_main_root)
-        appList = findViewById(R.id.activity_main_main_list)
-        progress = findViewById(R.id.activity_main_progress)
-
         appList.adapter = AppListAdapter(this) {
             startActivity(Intent(this, EditAppActivity::class.java).setData(Uri.parse("package://$it")))
         }
         appList.layoutManager = LinearLayoutManager(this)
-
-        controller = AppListController(this, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -49,8 +43,6 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.activity_main_menu_refresh ->
-                controller.forceRefresh()
             R.id.activity_main_menu_settings ->
                 startActivity(Intent(this, SettingsActivity::class.java))
             R.id.activity_main_menu_about ->
@@ -61,53 +53,49 @@ class MainActivity : AppCompatActivity(), AppListController.Callback {
         return true
     }
 
+    override fun newState(state: AppListState?) {
+        updateAppList(state?.list ?: emptyList())
+    }
+
     override fun onStart() {
         super.onStart()
 
-        controller.onStart()
+        store.subscribe(this) { appState ->
+            appState.select {
+                it.appListState
+            }
+        }
     }
 
     override fun onStop() {
         super.onStop()
 
-        controller.onStop()
+        store.unsubscribe(this)
     }
 
-    override fun showProgress() {
-        runOnUiThread {
-            progress.visibility = View.VISIBLE
-        }
-    }
-
-    override fun closeProgress() {
-        runOnUiThread {
-            progress.visibility = View.INVISIBLE
-        }
-    }
-
-    override fun updateAppList(data: AppListData) {
+    private fun updateAppList(data: List<AppListElement>) {
         val adapter = appList.adapter as AppListAdapter
-        val oldData = adapter.appListData
+        val oldData = adapter.appListElement
 
         val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                    oldData.elements[oldItemPosition].packageName == data.elements[newItemPosition].packageName
+                    oldData[oldItemPosition].packageName == data[newItemPosition].packageName
 
-            override fun getOldListSize(): Int = oldData.elements.size
+            override fun getOldListSize(): Int = oldData.size
 
-            override fun getNewListSize(): Int = data.elements.size
+            override fun getNewListSize(): Int = data.size
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                    oldData.elements[oldItemPosition].equalsBase(data.elements[newItemPosition])
+                    oldData[oldItemPosition].equalsBase(data[newItemPosition])
         })
 
         runOnUiThread {
             result.dispatchUpdatesTo(adapter)
-            adapter.appListData = data
+            adapter.appListElement = data
         }
     }
 
-    override fun onError(error: AppListController.ErrorType, extras: Any) {
+    private fun onError(error: AppListController.ErrorType, extras: Any) {
         when (error) {
             AppListController.ErrorType.INVALID_SERVICE -> {
                 val resId = when ( extras as ServiceSource.RCStatus ) {

@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.kr328.ibr.R
-import com.github.kr328.ibr.model.AppListData
+import com.github.kr328.ibr.model.AppListElement
 
 class AppListAdapter(private val context: Context, private val onClickListener: (pkg: String) -> Unit) :
         RecyclerView.Adapter<AppListAdapter.AppListViewHolder>() {
@@ -19,7 +19,7 @@ class AppListAdapter(private val context: Context, private val onClickListener: 
         val description: TextView = view.findViewById(R.id.adapter_app_list_description)
     }
 
-    var appListData: AppListData = AppListData(emptyList())
+    var appListElement: List<AppListElement> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppListViewHolder {
         return AppListViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_app_list, parent, false).also {
@@ -30,25 +30,25 @@ class AppListAdapter(private val context: Context, private val onClickListener: 
     }
 
     override fun getItemCount(): Int {
-        return appListData.elements.size
+        return appListElement.size
     }
 
     override fun onBindViewHolder(holder: AppListViewHolder, position: Int) {
-        val data = appListData.elements[position]
+        val data = appListElement[position]
 
         holder.itemView.tag = data.packageName
 
         holder.name.text = data.name
         holder.icon.setImageDrawable(data.icon)
-        holder.description.text = data.appState.toI18nString()
+        holder.description.text = data.appRuleState.toI18nString()
 
-        if (data.appState.enabled)
+        if (data.appRuleState.enabled)
             holder.description.setTextColor(context.getColor(R.color.colorAccent))
         else
             holder.description.setTextColor(Color.GRAY)
     }
 
-    private fun AppListData.AppState.toI18nString(): String {
+    private fun AppListElement.AppRuleState.toI18nString(): String {
         val sb = StringBuilder()
 
         sb.append(context.getString(
@@ -57,9 +57,9 @@ class AppListAdapter(private val context: Context, private val onClickListener: 
         sb.append(" (")
         sb.append(context.getString(
                 when (ruleType) {
-                    AppListData.RuleType.ONLINE -> R.string.app_list_application_state_online_rule
-                    AppListData.RuleType.PRELOAD -> R.string.app_list_application_state_preload_rule
-                    AppListData.RuleType.UNKNOWN -> R.string.app_list_application_state_unknown_rule
+                    AppListElement.RuleType.ONLINE -> R.string.app_list_application_state_online_rule
+                    AppListElement.RuleType.PRELOAD -> R.string.app_list_application_state_preload_rule
+                    AppListElement.RuleType.UNKNOWN -> R.string.app_list_application_state_unknown_rule
                 }
         ))
         sb.append(")")
