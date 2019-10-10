@@ -6,20 +6,21 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.kr328.ibr.action.AppListStartAction
 import com.github.kr328.ibr.adapters.AppListAdapter
 import com.github.kr328.ibr.controller.AppListController
-import com.github.kr328.ibr.data.sources.ServiceSource
+import com.github.kr328.ibr.data.RemoteService
 import com.github.kr328.ibr.model.AppListElement
 import com.github.kr328.ibr.state.AppListState
 import com.google.android.material.snackbar.Snackbar
 import org.rekotlin.StoreSubscriber
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
     private val store by lazy { MainApplication.fromContext(this).store }
@@ -54,7 +55,9 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
     }
 
     override fun newState(state: AppListState?) {
-        updateAppList(state?.list ?: emptyList())
+        thread {
+            updateAppList(state?.list ?: emptyList())
+        }
     }
 
     override fun onStart() {
@@ -65,6 +68,8 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
                 it.appListState
             }
         }
+
+        store.dispatch(AppListStartAction())
     }
 
     override fun onStop() {
@@ -98,16 +103,16 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
     private fun onError(error: AppListController.ErrorType, extras: Any) {
         when (error) {
             AppListController.ErrorType.INVALID_SERVICE -> {
-                val resId = when ( extras as ServiceSource.RCStatus ) {
-                    ServiceSource.RCStatus.RUNNING -> R.string.app_list_application_error_invalid_service_message_unknown
-                    ServiceSource.RCStatus.RIRU_NOT_LOADED -> R.string.app_list_application_error_invalid_service_message_riru_not_load
-                    ServiceSource.RCStatus.RIRU_NOT_CALL_SYSTEM_SERVER_FORKED -> R.string.app_list_application_error_invalid_service_message_not_call_fork
-                    ServiceSource.RCStatus.INJECT_FAILURE -> R.string.app_list_application_error_invalid_service_message_inject_failure
-                    ServiceSource.RCStatus.SERVICE_NOT_CREATED -> R.string.app_list_application_error_invalid_service_message_service_not_created
-                    ServiceSource.RCStatus.UNABLE_TO_HANDLE_REQUEST -> R.string.app_list_application_error_invalid_service_message_service_unable_to_handle
-                    ServiceSource.RCStatus.SYSTEM_BLOCK_IPC -> R.string.app_list_application_error_invalid_service_message_system_block_ipc
-                    ServiceSource.RCStatus.SERVICE_VERSION_NOT_MATCHES -> R.string.app_list_application_error_invalid_service_message_service_version_not_matches
-                    ServiceSource.RCStatus.UNKNOWN -> R.string.app_list_application_error_invalid_service_message_unknown
+                val resId = when ( extras as RemoteService.RCStatus ) {
+                    RemoteService.RCStatus.RUNNING -> R.string.app_list_application_error_invalid_service_message_unknown
+                    RemoteService.RCStatus.RIRU_NOT_LOADED -> R.string.app_list_application_error_invalid_service_message_riru_not_load
+                    RemoteService.RCStatus.RIRU_NOT_CALL_SYSTEM_SERVER_FORKED -> R.string.app_list_application_error_invalid_service_message_not_call_fork
+                    RemoteService.RCStatus.INJECT_FAILURE -> R.string.app_list_application_error_invalid_service_message_inject_failure
+                    RemoteService.RCStatus.SERVICE_NOT_CREATED -> R.string.app_list_application_error_invalid_service_message_service_not_created
+                    RemoteService.RCStatus.UNABLE_TO_HANDLE_REQUEST -> R.string.app_list_application_error_invalid_service_message_service_unable_to_handle
+                    RemoteService.RCStatus.SYSTEM_BLOCK_IPC -> R.string.app_list_application_error_invalid_service_message_system_block_ipc
+                    RemoteService.RCStatus.SERVICE_VERSION_NOT_MATCHES -> R.string.app_list_application_error_invalid_service_message_service_version_not_matches
+                    RemoteService.RCStatus.UNKNOWN -> R.string.app_list_application_error_invalid_service_message_unknown
                 }
 
                 AlertDialog.Builder(this)

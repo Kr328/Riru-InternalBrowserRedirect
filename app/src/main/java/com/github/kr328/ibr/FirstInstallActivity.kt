@@ -8,7 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.github.kr328.ibr.data.sources.ServiceSource
+import com.github.kr328.ibr.remote.RemoteConnection
 
 class FirstInstallActivity : Activity() {
     companion object {
@@ -21,7 +21,7 @@ class FirstInstallActivity : Activity() {
 
         createNotificationChannel()
 
-        if ( MainApplication.fromContext(this).ruleData.getServiceStatus() == ServiceSource.RCStatus.RUNNING ) {
+        if ( RemoteConnection.currentStatus() == RemoteConnection.RCStatus.RUNNING ) {
             NotificationCompat.Builder(this, FIRST_INSTALL_NOTIFICATION_CHANNEL)
                     .setColor(getColor(R.color.colorAccent))
                     .setSmallIcon(R.drawable.ic_installed)

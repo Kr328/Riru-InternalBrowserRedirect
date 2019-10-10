@@ -7,7 +7,7 @@ buildscript {
         maven { url "https://dl.bintray.com/kr328/riru-gradle-tools" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
         classpath 'com.github.kr328:riru-gradle-tools:1.0-alpha06'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"

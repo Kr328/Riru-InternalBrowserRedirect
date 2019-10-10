@@ -4,8 +4,8 @@ import android.content.Context
 import com.github.kr328.ibr.BuildConfig
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.SettingsActivity
-import com.github.kr328.ibr.model.RuleSet
-import com.github.kr328.ibr.model.RuleSets
+import com.github.kr328.ibr.model.OnlineRuleSet
+import com.github.kr328.ibr.model.OnlineRuleSets
 import com.github.kr328.ibr.utils.SimpleCachedHttpClient
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
@@ -28,10 +28,10 @@ class OnlineRules(context: Context) {
         return "https://raw.githubusercontent.com/$user/$repo/$branch/"
     }
 
-    fun queryRuleSets(cacheFirst: Boolean, ignoreCache: Boolean): RuleSets =
+    fun queryRuleSets(cacheFirst: Boolean, ignoreCache: Boolean): OnlineRuleSets =
             Json(JsonConfiguration.Stable.copy(strictMode = false))
-                    .parse(RuleSets.serializer(), httpClient.get("packages.json", cacheFirst, ignoreCache))
-    fun queryRuleSet(packageName: String, cacheFirst: Boolean, ignoreCache: Boolean): RuleSet =
+                    .parse(OnlineRuleSets.serializer(), httpClient.get("packages.json", cacheFirst, ignoreCache))
+    fun queryRuleSet(packageName: String, cacheFirst: Boolean, ignoreCache: Boolean): OnlineRuleSet =
             Json(JsonConfiguration.Stable.copy(strictMode = false))
-                    .parse(RuleSet.serializer(), httpClient.get("rules/$packageName.json", cacheFirst, ignoreCache))
+                    .parse(OnlineRuleSet.serializer(), httpClient.get("rules/$packageName.json", cacheFirst, ignoreCache))
 }

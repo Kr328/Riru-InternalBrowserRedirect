@@ -6,7 +6,7 @@
     <string name="app_list_application_error_empty_app_list">No any app supported on this device</string>
     <string name="app_list_application_error_invalid_service_title">Redirect Service Invalid</string>
     <string name="app_list_application_error_invalid_service_message_unknown">
-        Everything seems to work, but it still unable to connect to the service.
+        Everything seems work, but it still unable to connect to the service.
     </string>
     <string name="app_list_application_error_invalid_service_message_riru_not_load">
         Riru - Core did not load Riru - InternalBrowserRedirect \n

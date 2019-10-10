@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/setting_develop">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="setting_develop_debug_mode"
-            android:summary="@string/setting_develop_debug_mode_summary"
-            android:title="@string/setting_develop_debug_mode" />
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_online_rule">
         <EditTextPreference
             android:key="setting_online_rule_user"

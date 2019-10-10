@@ -7,15 +7,14 @@ import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.data.sources.BaseSource
 import com.github.kr328.ibr.data.sources.LocalRepoSource
 import com.github.kr328.ibr.data.sources.RemoteRepoSource
-import com.github.kr328.ibr.data.sources.ServiceSource
 import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
-import com.github.kr328.ibr.model.RuleSets
+import com.github.kr328.ibr.model.OnlineRuleSets
 import com.github.kr328.ibr.utils.SingleThreadPool
 import java.util.*
 
 class RuleDataUpdater(private val context: Context,
-                      private val service: ServiceSource,
+                      private val service: RemoteService,
                       private val local: LocalRepoSource,
                       private val remote: RemoteRepoSource) {
     private val callbacks = Collections.synchronizedList<RuleData.RuleDataCallback>(mutableListOf())
@@ -36,7 +35,7 @@ class RuleDataUpdater(private val context: Context,
                 currentState = RuleDataState.UPDATE_PACKAGES
 
                 val applications = context.packageManager.getInstalledApplications(0).map(ApplicationInfo::packageName)
-                val servicePackages = service.queryAllPackages()?.packages?.map(RuleSets.Data::packageName)?.toSet()
+                val servicePackages = service.queryAllPackages()?.packages?.map(OnlineRuleSets.Data::packageName)?.toSet()
                         ?: emptySet()
                 val remotePackages = remote.queryAllPackages().packages.map { it.packageName to it }.toMap()
                 val localPackages = local.queryAllPackages()?.packages?.map { it.packageName to it }?.toMap()
@@ -56,7 +55,7 @@ class RuleDataUpdater(private val context: Context,
 
                 (localPackages.keys - localStore).forEach(local::removePackage)
 
-                local.saveAllPackages(RuleSets(remotePackages.filterKeys(localStore::contains).values.toList()))
+                local.saveAllPackages(OnlineRuleSets(remotePackages.filterKeys(localStore::contains).values.toList()))
 
                 callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true)) }
             } catch (e: BaseSource.SourceException) {

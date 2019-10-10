@@ -22,7 +22,8 @@ class MainApplication : Application() {
     }
     val store = Store(
             reducer = AppReducer::handle ,
-            state = null
+            state = null,
+            middleware = emptyList()
     )
 
     companion object {

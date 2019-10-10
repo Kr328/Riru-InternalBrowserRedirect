@@ -10,7 +10,6 @@ import androidx.preference.PreferenceFragmentCompat
 
 class SettingsActivity : AppCompatActivity() {
     companion object {
-        const val SETTING_ONLINE_DEBUG_MODE_KEY = "setting_develop_debug_mode"
         const val SETTING_ONLINE_RULE_USER_KEY = "setting_online_rule_user"
         const val SETTING_ONLINE_RULE_REPO_KEY = "setting_online_rule_repo"
         const val SETTING_ONLINE_RULE_BRANCH_KEY = "setting_online_rule_branch"
@@ -45,8 +44,6 @@ class SettingsActivity : AppCompatActivity() {
                         first.text = second
                         first.summary = second
                     }
-                SETTING_ONLINE_DEBUG_MODE_KEY ->
-                    MainApplication.fromContext(requireContext()).ruleData.updateServiceFeature(Constants.SETTING_DEBUG_MODE, sp.getBoolean(key, false))
             }
         }
 
@@ -71,7 +68,6 @@ class SettingsActivity : AppCompatActivity() {
             onSharedPreferenceChanged(preferenceManager.sharedPreferences, SETTING_ONLINE_RULE_USER_KEY)
             onSharedPreferenceChanged(preferenceManager.sharedPreferences, SETTING_ONLINE_RULE_REPO_KEY)
             onSharedPreferenceChanged(preferenceManager.sharedPreferences, SETTING_ONLINE_RULE_BRANCH_KEY)
-            onSharedPreferenceChanged(preferenceManager.sharedPreferences, SETTING_ONLINE_DEBUG_MODE_KEY)
         }
     }
 }

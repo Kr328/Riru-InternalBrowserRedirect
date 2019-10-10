@@ -3,7 +3,7 @@ package com.github.kr328.ibr.controller
 import android.content.Context
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.data.RuleData
-import com.github.kr328.ibr.data.sources.ServiceSource
+import com.github.kr328.ibr.data.RemoteService
 import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
 import com.github.kr328.ibr.model.AppListElement
@@ -46,7 +46,7 @@ class AppListController(private val context: Context, private val callback: Call
     }
 
     fun onStart() {
-        if ( ruleData.getServiceStatus() != ServiceSource.RCStatus.RUNNING ) {
+        if ( ruleData.getServiceStatus() != RemoteService.RCStatus.RUNNING ) {
             callback.onError(ErrorType.INVALID_SERVICE, ruleData.getServiceStatus())
             return
         }
