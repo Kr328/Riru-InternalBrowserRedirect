@@ -11,9 +11,11 @@ class SettingTitle @JvmOverloads constructor(context: Context, attributeSet: Att
         FrameLayout(context, attributeSet, defaultStyleAttr, defaultStyleRes) {
     var title: CharSequence
         get() = titleView.text
-        set(value) { titleView.text = value }
+        set(value) {
+            titleView.text = value
+        }
 
-    private val titleView: TextView;
+    private val titleView: TextView
 
     init {
         val root = LayoutInflater.from(context).inflate(R.layout.view_settings_title, this, true)

@@ -17,12 +17,12 @@ class SimpleCachedHttpClient(private val cacheDir: File, var baseUrl: String) {
         if (targetFile.exists() && cacheFirst)
             return targetFile.readText()
 
-        if (!targetFile.exists() || ignoreCache || System.currentTimeMillis() - targetFile.lastModified() > Constants.DEFAULT_RULE_INVALIDATE ) {
+        if (!targetFile.exists() || ignoreCache || System.currentTimeMillis() - targetFile.lastModified() > Constants.DEFAULT_RULE_INVALIDATE) {
             val data = SimpleHttpClient.get(URL("$baseUrl/$file"))
 
             targetFile.writeText(data)
 
-            return data;
+            return data
         }
 
         return targetFile.readText()
@@ -31,8 +31,7 @@ class SimpleCachedHttpClient(private val cacheDir: File, var baseUrl: String) {
     fun getOrNull(file: String, cacheFirst: Boolean, ignoreCache: Boolean): String? {
         return try {
             get(file, cacheFirst, ignoreCache)
-        }
-        catch (e: IOException) {
+        } catch (e: IOException) {
             null
         }
     }

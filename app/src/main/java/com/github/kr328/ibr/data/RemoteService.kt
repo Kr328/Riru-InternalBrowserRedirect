@@ -29,12 +29,12 @@ class RemoteService {
 
     fun getStatus(): RCStatus {
         return try {
-            if ( RemoteConnection.connection.version == Constants.REMOTE_SERVICE_VERSION )
+            if (RemoteConnection.connection.version == Constants.REMOTE_SERVICE_VERSION)
                 RCStatus.RUNNING
             else
                 RCStatus.SERVICE_VERSION_NOT_MATCHES
         } catch (e: Exception) {
-            when ( SystemProperties.get(REDIRECT_SERIVCE_STATUE_KEY, "") ) {
+            when (SystemProperties.get(REDIRECT_SERIVCE_STATUE_KEY, "")) {
                 "" -> RCStatus.RIRU_NOT_LOADED
                 REDIRECT_SERVICE_STATUE_RIRU_LOADED ->
                     RCStatus.RIRU_NOT_CALL_SYSTEM_SERVER_FORKED

@@ -12,7 +12,10 @@ class SettingHeaderSwitch @JvmOverloads constructor(context: Context, attributeS
         FrameLayout(context, attributeSet, defStyleAttr, defStyleRes) {
     var title: CharSequence
         get() = switch.text
-        set(value) { switch.text = value }
+        set(value) {
+            switch.text = value
+        }
+
     fun setOnCheckedChangeListener(listener: (view: View, checked: Boolean) -> Unit) {
         switch.setOnCheckedChangeListener { view, checked ->
             listener(view, checked)

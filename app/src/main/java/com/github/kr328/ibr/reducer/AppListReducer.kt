@@ -9,7 +9,7 @@ object AppListReducer {
     fun handle(action: Action, appListState: AppListState?): AppListState {
         var state = appListState ?: AppListState()
 
-        when ( action ) {
+        when (action) {
             is AppListUpdatedAction -> state = state.copy(list = action.list)
             is AppListProgressAction -> state = state.copy(progress = action.show)
         }

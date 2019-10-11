@@ -14,13 +14,22 @@ class SettingButton @JvmOverloads constructor(context: Context, attributeSet: At
         FrameLayout(context, attributeSet, defaultStyleAttr, defaultStyleRes) {
     var title: CharSequence
         get() = titleView.text
-        set(value) { titleView.text = value }
+        set(value) {
+            titleView.text = value
+        }
     var summary: CharSequence
         get() = summaryView.text
-        set(value) { summaryView.text = value }
+        set(value) {
+            summaryView.text = value
+        }
     var icon: Drawable
-        get() { throw IllegalArgumentException("Unsupported") }
-        set(value) { iconView.setImageDrawable(value) }
+        get() {
+            throw IllegalArgumentException("Unsupported")
+        }
+        set(value) {
+            iconView.setImageDrawable(value)
+        }
+
     override fun setOnClickListener(l: OnClickListener?) = root.setOnClickListener(l)
 
     private val titleView: TextView

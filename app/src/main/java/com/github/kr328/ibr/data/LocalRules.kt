@@ -15,7 +15,7 @@ class LocalRules(context: Context) {
     fun queryRuleSets(): StoreRuleSets {
         val file = userData.resolve("packages.json")
 
-        if ( !file.isFile )
+        if (!file.isFile)
             return StoreRuleSets(emptyList())
 
         return Json(JsonConfiguration.Stable.copy(strictMode = false))
@@ -26,7 +26,7 @@ class LocalRules(context: Context) {
     fun queryRuleSet(packageName: String): StoreRuleSet {
         val file = userData.resolve("rules/$packageName.json")
 
-        if ( !file.isFile )
+        if (!file.isFile)
             return StoreRuleSet("", "", emptyList())
 
         return Json(JsonConfiguration.Stable.copy(strictMode = false))

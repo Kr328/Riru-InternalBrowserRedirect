@@ -14,16 +14,25 @@ class SettingAppInfo @JvmOverloads constructor(context: Context, attributeSet: A
         FrameLayout(context, attributeSet, defStyleAttr, defStyleRes) {
     var icon: Drawable
         get() = iconView.drawable
-        set(value) { iconView.setImageDrawable(value) }
+        set(value) {
+            iconView.setImageDrawable(value)
+        }
     var name: CharSequence
         get() = nameView.text
-        set(value) { nameView.text = value }
+        set(value) {
+            nameView.text = value
+        }
     var packageName: CharSequence
         get() = packageView.text
-        set(value) { packageView.text = value }
+        set(value) {
+            packageView.text = value
+        }
     var version: CharSequence
         get() = versionView.text
-        set(value) { versionView.text = value }
+        set(value) {
+            versionView.text = value
+        }
+
     override fun setOnClickListener(l: OnClickListener?) = clickView.setOnClickListener(l)
 
     private val iconView: ImageView

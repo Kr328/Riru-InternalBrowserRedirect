@@ -11,6 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RuleSet implements Parcelable {
+    public static final Creator<RuleSet> CREATOR = new Creator<RuleSet>() {
+        @Override
+        public RuleSet createFromParcel(Parcel in) {
+            return new RuleSet(in);
+        }
+
+        @Override
+        public RuleSet[] newArray(int size) {
+            return new RuleSet[size];
+        }
+    };
     private String tag;
     private List<String> extras;
     private List<Rule> rules;
@@ -28,17 +39,21 @@ public class RuleSet implements Parcelable {
         rules = in.createTypedArrayList(Rule.CREATOR);
     }
 
-    public static final Creator<RuleSet> CREATOR = new Creator<RuleSet>() {
-        @Override
-        public RuleSet createFromParcel(Parcel in) {
-            return new RuleSet(in);
-        }
+    public static RuleSet readFromJson(JSONObject jsonObject) throws JSONException {
+        RuleSet result = new RuleSet();
 
-        @Override
-        public RuleSet[] newArray(int size) {
-            return new RuleSet[size];
-        }
-    };
+        result.tag = jsonObject.getString("tag");
+
+        JSONArray array = jsonObject.getJSONArray("extras");
+        for (int i = 0; i < array.length(); i++)
+            result.extras.add(array.getString(i));
+
+        array = jsonObject.getJSONArray("rules");
+        for (int i = 0; i < array.length(); i++)
+            result.rules.add(Rule.parseFromJson(array.getJSONObject(i)));
+
+        return result;
+    }
 
     @Override
     public int describeContents() {
@@ -50,22 +65,6 @@ public class RuleSet implements Parcelable {
         parcel.writeString(tag);
         parcel.writeStringList(extras);
         parcel.writeTypedList(rules);
-    }
-
-    public static RuleSet readFromJson(JSONObject jsonObject) throws JSONException {
-        RuleSet result = new RuleSet();
-
-        result.tag = jsonObject.getString("tag");
-
-        JSONArray array = jsonObject.getJSONArray("extras");
-        for ( int i = 0 ; i < array.length() ; i++ )
-            result.extras.add(array.getString(i));
-
-        array = jsonObject.getJSONArray("rules");
-        for (int i = 0; i < array.length(); i++)
-            result.rules.add(Rule.parseFromJson(array.getJSONObject(i)));
-
-        return result;
     }
 
     public JSONObject toJson() throws JSONException {

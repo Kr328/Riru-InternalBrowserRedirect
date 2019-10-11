@@ -14,7 +14,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.kr328.ibr.action.AppListRefreshAction
 import com.github.kr328.ibr.action.AppListStartedAction
 import com.github.kr328.ibr.adapters.AppListAdapter
-import com.github.kr328.ibr.model.AppListElement
 import com.github.kr328.ibr.state.AppListState
 import org.rekotlin.StoreSubscriber
 

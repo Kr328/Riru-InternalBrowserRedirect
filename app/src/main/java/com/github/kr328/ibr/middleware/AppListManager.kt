@@ -11,17 +11,17 @@ class AppListManager(context: Context) {
     private val loader = AppListLoader(context)
     private val executor = Executors.newSingleThreadExecutor()
 
-    val handler: Middleware<AppState> = { dispatch, _  ->
+    val handler: Middleware<AppState> = { dispatch, _ ->
         { next ->
             { action ->
-                when ( action ) {
+                when (action) {
                     is AppListStartedAction -> {
                         executor.submit {
                             dispatch(AppListProgressAction(show = true))
 
                             val data = loader.load(cacheFirst = true, ignoreCache = false)
 
-                            if ( data != null )
+                            if (data != null)
                                 dispatch(AppListUpdatedAction(data))
                             else
                                 dispatch(AppListUpdateErrorAction(ALUError.LOAD_FAILURE))
@@ -29,7 +29,7 @@ class AppListManager(context: Context) {
                         executor.submit {
                             val data = loader.load(cacheFirst = false, ignoreCache = false)
 
-                            if ( data != null )
+                            if (data != null)
                                 dispatch(AppListUpdatedAction(data))
                             else
                                 dispatch(AppListUpdateErrorAction(ALUError.LOAD_FAILURE))
@@ -41,7 +41,7 @@ class AppListManager(context: Context) {
                         executor.submit {
                             val data = loader.load(cacheFirst = false, ignoreCache = true)
 
-                            if ( data != null )
+                            if (data != null)
                                 dispatch(AppListUpdatedAction(data))
                             else
                                 dispatch(AppListUpdateErrorAction(ALUError.LOAD_FAILURE))

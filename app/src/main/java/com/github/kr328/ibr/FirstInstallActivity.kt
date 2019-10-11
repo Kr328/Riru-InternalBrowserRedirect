@@ -21,7 +21,7 @@ class FirstInstallActivity : Activity() {
 
         createNotificationChannel()
 
-        if ( RemoteConnection.currentStatus() == RemoteConnection.RCStatus.RUNNING ) {
+        if (RemoteConnection.currentStatus() == RemoteConnection.RCStatus.RUNNING) {
             NotificationCompat.Builder(this, FIRST_INSTALL_NOTIFICATION_CHANNEL)
                     .setColor(getColor(R.color.colorAccent))
                     .setSmallIcon(R.drawable.ic_installed)
@@ -33,9 +33,8 @@ class FirstInstallActivity : Activity() {
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             }, PendingIntent.FLAG_UPDATE_CURRENT))
                     .build()
-                    .also { NotificationManagerCompat.from(this).notify(FIRST_INSTALL_NOTIFICATION_ID, it)}
-        }
-        else {
+                    .also { NotificationManagerCompat.from(this).notify(FIRST_INSTALL_NOTIFICATION_ID, it) }
+        } else {
             NotificationCompat.Builder(this, FIRST_INSTALL_NOTIFICATION_CHANNEL)
                     .setColor(getColor(R.color.colorAccent))
                     .setSmallIcon(R.drawable.ic_error)
@@ -46,11 +45,12 @@ class FirstInstallActivity : Activity() {
                             Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             PendingIntent.FLAG_UPDATE_CURRENT))
                     .build()
-                    .also { NotificationManagerCompat.from(this).notify(FIRST_INSTALL_NOTIFICATION_ID, it)}
+                    .also { NotificationManagerCompat.from(this).notify(FIRST_INSTALL_NOTIFICATION_ID, it) }
         }
 
         finish()
     }
+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManagerCompat.from(this)

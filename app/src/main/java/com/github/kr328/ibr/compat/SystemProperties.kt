@@ -10,9 +10,8 @@ object SystemProperties {
     fun get(key: String, fallback: String): String {
         return try {
             methodGet.invoke(null, key, fallback) as String
-        }
-        catch (e: ReflectiveOperationException) {
-            fallback;
+        } catch (e: ReflectiveOperationException) {
+            fallback
         }
     }
 }

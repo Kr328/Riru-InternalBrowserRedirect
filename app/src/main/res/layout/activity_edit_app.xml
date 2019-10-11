@@ -5,9 +5,4 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_edit_app_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:dividerHeight="0dp"/>
 </FrameLayout>

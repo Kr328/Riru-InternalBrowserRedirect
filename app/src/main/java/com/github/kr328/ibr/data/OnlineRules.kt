@@ -15,7 +15,7 @@ class OnlineRules(context: Context) {
     private val httpClient = SimpleCachedHttpClient(context.cacheDir.resolve(Constants.CACHE_ONLINE_RULE_PATH), buildBaseUrl())
 
     init {
-        preference.registerOnSharedPreferenceChangeListener {_, _ ->
+        preference.registerOnSharedPreferenceChangeListener { _, _ ->
             httpClient.baseUrl = buildBaseUrl()
         }
     }
@@ -31,6 +31,7 @@ class OnlineRules(context: Context) {
     fun queryRuleSets(cacheFirst: Boolean, ignoreCache: Boolean): StoreRuleSets =
             Json(JsonConfiguration.Stable.copy(strictMode = false))
                     .parse(StoreRuleSets.serializer(), httpClient.get("packages.json", cacheFirst, ignoreCache))
+
     fun queryRuleSet(packageName: String, cacheFirst: Boolean, ignoreCache: Boolean): StoreRuleSet =
             Json(JsonConfiguration.Stable.copy(strictMode = false))
                     .parse(StoreRuleSet.serializer(), httpClient.get("rules/$packageName.json", cacheFirst, ignoreCache))

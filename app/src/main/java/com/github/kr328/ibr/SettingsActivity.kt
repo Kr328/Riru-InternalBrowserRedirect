@@ -25,22 +25,22 @@ class SettingsActivity : AppCompatActivity() {
 
     class Fragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
         override fun onSharedPreferenceChanged(sp: SharedPreferences?, key: String?) {
-            if ( sp == null || key == null )
+            if (sp == null || key == null)
                 return
 
             when (key) {
                 SETTING_ONLINE_RULE_USER_KEY ->
-                    with (findPreference<EditTextPreference>(key)!! to sp.getString(key, Constants.DEFAULT_RULE_GITHUB_USER) ) {
+                    with(findPreference<EditTextPreference>(key)!! to sp.getString(key, Constants.DEFAULT_RULE_GITHUB_USER)) {
                         first.text = second
                         first.summary = second
                     }
                 SETTING_ONLINE_RULE_REPO_KEY ->
-                    with (findPreference<EditTextPreference>(key)!! to sp.getString(key, Constants.DEFAULT_RULE_REPO) ) {
+                    with(findPreference<EditTextPreference>(key)!! to sp.getString(key, Constants.DEFAULT_RULE_REPO)) {
                         first.text = second
                         first.summary = second
                     }
                 SETTING_ONLINE_RULE_BRANCH_KEY ->
-                    with (findPreference<EditTextPreference>(key)!! to sp.getString(key, Constants.DEFAULT_RULE_BRANCH) ) {
+                    with(findPreference<EditTextPreference>(key)!! to sp.getString(key, Constants.DEFAULT_RULE_BRANCH)) {
                         first.text = second
                         first.summary = second
                     }
@@ -60,7 +60,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            preferenceManager.sharedPreferencesName = BuildConfig.APPLICATION_ID + ".general";
+            preferenceManager.sharedPreferencesName = BuildConfig.APPLICATION_ID + ".general"
             preferenceManager.sharedPreferencesMode = Context.MODE_PRIVATE
 
             setPreferencesFromResource(R.xml.xml_settings, rootKey)
