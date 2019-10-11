@@ -1,6 +1,7 @@
 package com.github.kr328.ibr.utils
 
 import com.github.kr328.ibr.Constants
+import kotlinx.io.IOException
 import java.io.File
 import java.net.URL
 
@@ -25,5 +26,14 @@ class SimpleCachedHttpClient(private val cacheDir: File, var baseUrl: String) {
         }
 
         return targetFile.readText()
+    }
+
+    fun getOrNull(file: String, cacheFirst: Boolean, ignoreCache: Boolean): String? {
+        return try {
+            get(file, cacheFirst, ignoreCache)
+        }
+        catch (e: IOException) {
+            null
+        }
     }
 }

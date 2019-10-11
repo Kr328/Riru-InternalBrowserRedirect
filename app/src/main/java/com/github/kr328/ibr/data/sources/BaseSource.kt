@@ -1,7 +1,7 @@
 package com.github.kr328.ibr.data.sources
 
-import com.github.kr328.ibr.model.OnlineRuleSets
 import com.github.kr328.ibr.model.OnlineRuleSet
+import com.github.kr328.ibr.model.OnlineRuleSets
 
 interface BaseSource {
     fun queryAllPackages(): OnlineRuleSets?

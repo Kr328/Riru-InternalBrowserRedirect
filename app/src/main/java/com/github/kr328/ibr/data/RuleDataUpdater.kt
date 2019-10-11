@@ -27,44 +27,44 @@ class RuleDataUpdater(private val context: Context,
         }
 
     fun refresh(force: Boolean) {
-        pool.execute {
-            try {
-                if (!force && System.currentTimeMillis() - local.getLastUpdate() < Constants.DEFAULT_RULE_INVALIDATE)
-                    return@execute
-
-                currentState = RuleDataState.UPDATE_PACKAGES
-
-                val applications = context.packageManager.getInstalledApplications(0).map(ApplicationInfo::packageName)
-                val servicePackages = service.queryAllPackages()?.packages?.map(OnlineRuleSets.Data::packageName)?.toSet()
-                        ?: emptySet()
-                val remotePackages = remote.queryAllPackages().packages.map { it.packageName to it }.toMap()
-                val localPackages = local.queryAllPackages()?.packages?.map { it.packageName to it }?.toMap()
-                        ?: emptyMap()
-
-                val localStore = remotePackages.keys.intersect(applications)
-
-                localStore.dropWhile {
-                    localPackages[it]?.version == remotePackages[it]?.version
-                }.forEach {
-                    with(remote.queryPackage(it)) {
-                        local.savePackage(it, this)
-                        if (servicePackages.contains(it))
-                            service.savePackage(it, this)
-                    }
-                }
-
-                (localPackages.keys - localStore).forEach(local::removePackage)
-
-                local.saveAllPackages(OnlineRuleSets(remotePackages.filterKeys(localStore::contains).values.toList()))
-
-                callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true)) }
-            } catch (e: BaseSource.SourceException) {
-                Log.e(Constants.TAG, "Updating Remote Rules", e)
-                callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, false)) }
-            }
-
-            currentState = RuleDataState.IDLE
-        }
+//        pool.execute {
+//            try {
+//                if (!force && System.currentTimeMillis() - local.getLastUpdate() < Constants.DEFAULT_RULE_INVALIDATE)
+//                    return@execute
+//
+//                currentState = RuleDataState.UPDATE_PACKAGES
+//
+//                val applications = context.packageManager.getInstalledApplications(0).map(ApplicationInfo::packageName)
+//                val servicePackages = service.queryAllPackages()?.packages?.map(OnlineRuleSets.Data::packageName)?.toSet()
+//                        ?: emptySet()
+//                val remotePackages = remote.queryAllPackages().packages.map { it.packageName to it }.toMap()
+//                val localPackages = local.queryAllPackages()?.packages?.map { it.packageName to it }?.toMap()
+//                        ?: emptyMap()
+//
+//                val localStore = remotePackages.keys.intersect(applications)
+//
+//                localStore.dropWhile {
+//                    localPackages[it]?.version == remotePackages[it]?.version
+//                }.forEach {
+//                    with(remote.queryPackage(it)) {
+//                        local.savePackage(it, this)
+//                        if (servicePackages.contains(it))
+//                            service.savePackage(it, this)
+//                    }
+//                }
+//
+//                (localPackages.keys - localStore).forEach(local::removePackage)
+//
+//                local.saveAllPackages(OnlineRuleSets(remotePackages.filterKeys(localStore::contains).values.toList()))
+//
+//                callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, true)) }
+//            } catch (e: BaseSource.SourceException) {
+//                Log.e(Constants.TAG, "Updating Remote Rules", e)
+//                callbacks.forEach { it.onStateResult(RuleDataStateResult(RuleDataState.UPDATE_PACKAGES, false)) }
+//            }
+//
+//            currentState = RuleDataState.IDLE
+//        }
     }
 
     fun registerCallback(callback: RuleData.RuleDataCallback) = callbacks.add(callback)

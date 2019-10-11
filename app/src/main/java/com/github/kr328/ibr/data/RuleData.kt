@@ -5,8 +5,8 @@ import com.github.kr328.ibr.data.sources.LocalRepoSource
 import com.github.kr328.ibr.data.sources.RemoteRepoSource
 import com.github.kr328.ibr.data.state.RuleDataState
 import com.github.kr328.ibr.data.state.RuleDataStateResult
-import com.github.kr328.ibr.model.OnlineRuleSets
 import com.github.kr328.ibr.model.OnlineRuleSet
+import com.github.kr328.ibr.model.OnlineRuleSets
 import java.io.File
 
 class RuleData(context: Context, cache: File, repo: RemoteRepoSource.RemoteRepo) {
@@ -16,14 +16,13 @@ class RuleData(context: Context, cache: File, repo: RemoteRepoSource.RemoteRepo)
     private val updater = RuleDataUpdater(context, service, local, remote)
 
     fun getServiceStatus(): RemoteService.RCStatus = service.getStatus()
-    fun queryPreloadMetadata(): OnlineRuleSets = service.queryAllPackages() ?: OnlineRuleSets(emptyList())
+    fun queryPreloadMetadata(): OnlineRuleSets = OnlineRuleSets(emptyList())
     fun queryLocalMetadata(): OnlineRuleSets = local.queryAllPackages() ?: OnlineRuleSets(emptyList())
-    fun queryPackage(pkg: String): OnlineRuleSet? = local.queryPackage(pkg) ?: service.queryPackage(pkg)
+    fun queryPackage(pkg: String): OnlineRuleSet? = local.queryPackage(pkg)
 
-    fun isPackageEnabled(pkg: String): Boolean = service.queryPackage(pkg) != null
-    fun enablePackage(pkg: String) = local.queryPackage(pkg)?.let { service.savePackage(pkg, it) }
-    fun disablePackage(pkg: String) = service.removePackage(pkg)
-    fun updateServiceFeature(feature: String, enabled: Boolean) = service.updateSetting(feature, enabled)
+    fun isPackageEnabled(pkg: String): Boolean = false
+    fun enablePackage(pkg: String) = local.queryPackage(pkg)
+    fun disablePackage(pkg: String) {}
 
     fun registerCallback(callback: RuleDataCallback) = updater.registerCallback(callback)
     fun unregisterCallback(callback: RuleDataCallback) = updater.unregisterCallback(callback)

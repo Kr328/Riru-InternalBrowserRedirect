@@ -9,7 +9,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.github.kr328.ibr.R
-import java.lang.IllegalArgumentException
 
 class SettingAppInfo @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) :
         FrameLayout(context, attributeSet, defStyleAttr, defStyleRes) {

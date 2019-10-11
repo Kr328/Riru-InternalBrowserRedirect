@@ -27,7 +27,7 @@ magisk {
     zip.map(file("$buildDir/outputs/dex/classes.jar"), "/system/framework/boot-internal-browser-redirect.jar")
     zip.map(file("$buildDir/outputs/ndk/arm64-v8a/shared") ,"/system/lib64")
     zip.map(file("$buildDir/outputs/ndk/armeabi-v7a/shared") ,"/system/lib")
-    zip.map(Paths.get(project(":app").buildDir.absolutePath, "outputs", "apk", "release", "app-release.apk").toFile(), "/data/app.apk")
+    //zip.map(Paths.get(project(":app").buildDir.absolutePath, "outputs", "apk", "release", "app-release.apk").toFile(), "/data/app.apk")
 }
 
 repositories {

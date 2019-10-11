@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.github.kr328.ibr.data.RuleData
 import com.github.kr328.ibr.data.sources.RemoteRepoSource
+import com.github.kr328.ibr.middleware.AppListManager
 import com.github.kr328.ibr.reducer.AppReducer
-import com.github.kr328.ibr.state.AppState
 import org.rekotlin.Store
 
 class MainApplication : Application() {
@@ -20,11 +20,16 @@ class MainApplication : Application() {
     val general: SharedPreferences by lazy {
         getSharedPreferences(BuildConfig.APPLICATION_ID + ".general", Context.MODE_PRIVATE);
     }
-    val store = Store(
-            reducer = AppReducer::handle ,
-            state = null,
-            middleware = emptyList()
-    )
+
+    val store by lazy {
+        Store(
+                reducer = AppReducer::handle,
+                state = null,
+                middleware = listOf(
+                        AppListManager(this).handler
+                )
+        )
+    }
 
     companion object {
         fun fromContext(context: Context): MainApplication = context.applicationContext as MainApplication

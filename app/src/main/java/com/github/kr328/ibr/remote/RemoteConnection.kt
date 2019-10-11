@@ -6,6 +6,7 @@ import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.compat.ServiceManager
 import com.github.kr328.ibr.compat.SystemProperties
 import com.github.kr328.ibr.remote.server.IRemoteService
+import java.lang.IllegalArgumentException
 
 object RemoteConnection {
     private const val REDIRECT_SERIVCE_STATUE_KEY = "sys.ibr.status"
@@ -16,7 +17,14 @@ object RemoteConnection {
     private const val REDIRECT_SERVICE_STATUS_SERVICE_CREATED = "service_created"
     private const val REDIRECT_SERVICE_STATUS_RUNNING = "running"
 
-    val connection: IRemoteService by lazy {
+    val connection: IRemoteService
+        get() {
+            if ( privateConnection.version != Constants.REMOTE_SERVICE_VERSION )
+                throw RemoteException("Invalid service version")
+            return privateConnection
+        }
+
+    private val privateConnection: IRemoteService by lazy {
         openRemoteConnection()
     }
 
@@ -53,7 +61,7 @@ object RemoteConnection {
 
     fun currentStatus(): RCStatus {
         return try {
-            if (RemoteConnection.connection.version == Constants.REMOTE_SERVICE_VERSION)
+            if (RemoteConnection.privateConnection.version == Constants.REMOTE_SERVICE_VERSION)
                 RCStatus.RUNNING
             else
                 RCStatus.SERVICE_VERSION_NOT_MATCHES

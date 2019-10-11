@@ -1,7 +1,7 @@
 package com.github.kr328.ibr.data.sources
 
-import com.github.kr328.ibr.model.OnlineRuleSets
 import com.github.kr328.ibr.model.OnlineRuleSet
+import com.github.kr328.ibr.model.OnlineRuleSets
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import java.io.File

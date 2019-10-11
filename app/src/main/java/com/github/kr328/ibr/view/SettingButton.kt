@@ -9,7 +9,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.github.kr328.ibr.R
-import java.lang.IllegalArgumentException
 
 class SettingButton @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defaultStyleAttr: Int = 0, defaultStyleRes: Int = 0) :
         FrameLayout(context, attributeSet, defaultStyleAttr, defaultStyleRes) {
