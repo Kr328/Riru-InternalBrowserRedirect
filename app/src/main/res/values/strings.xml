@@ -42,6 +42,7 @@
     <string name="app_list_application_state_disabled">Disabled</string>
     <string name="app_list_application_state_unknown_rule">Unknown</string>
     <string name="app_list_application_state_online_rule">Online Rule</string>
+    <string name="app_list_application_state_local_rule">Local Rule</string>
     <string name="app_list_application_state_preload_rule">Preload Rule</string>
 
     <string name="app_list_application_menu_refresh">Refresh</string>

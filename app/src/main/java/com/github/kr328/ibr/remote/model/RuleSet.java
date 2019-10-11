@@ -42,7 +42,7 @@ public class RuleSet implements Parcelable {
 
     @Override
     public int describeContents() {
-        return "OnlineRuleSet".hashCode();
+        return "StoreRuleSet".hashCode();
     }
 
     @Override

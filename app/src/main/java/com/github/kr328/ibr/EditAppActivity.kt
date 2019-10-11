@@ -53,7 +53,7 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
     }
 
     override fun updateAppData(enabled: Boolean, appData: AppData) {
-        val switchEnable = appData.onlineRuleSet?.rules?.size ?: -1 > 0
+        val switchEnable = appData.storeRuleSet?.rules?.size ?: -1 > 0
 
         val oldSettings = (main.adapter as SettingsAdapter).settings
         val newSettings = listOf(
@@ -61,7 +61,7 @@ class EditAppActivity : AppCompatActivity(), EditAppController.Callback {
                 Settings.AppInfo(appData.icon, appData.name, appData.version, appData.packageName) {
                     startActivity(Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.parse("package:${appData.packageName}")))
                 }
-        ) + (appData.onlineRuleSet?.let { ruleSet -> listOf(
+        ) + (appData.storeRuleSet?.let { ruleSet -> listOf(
                 Settings.Title(getString(R.string.edit_app_application_rule_set)),
                 Settings.Button(getDrawable(R.drawable.ic_label), getString(R.string.edit_app_application_rule_set_tag), ruleSet.tag),
                 Settings.Button(getDrawable(R.drawable.ic_person), getString(R.string.edit_app_application_rule_set_author), ruleSet.authors.emptyUnknown()),

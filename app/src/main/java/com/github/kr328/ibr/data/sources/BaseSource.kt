@@ -1,13 +1,13 @@
 package com.github.kr328.ibr.data.sources
 
-import com.github.kr328.ibr.model.OnlineRuleSet
-import com.github.kr328.ibr.model.OnlineRuleSets
+import com.github.kr328.ibr.model.StoreRuleSet
+import com.github.kr328.ibr.model.StoreRuleSets
 
 interface BaseSource {
-    fun queryAllPackages(): OnlineRuleSets?
-    fun queryPackage(pkg: String): OnlineRuleSet?
-    fun saveAllPackages(data: OnlineRuleSets)
-    fun savePackage(pkg: String, data: OnlineRuleSet)
+    fun queryAllPackages(): StoreRuleSets?
+    fun queryPackage(pkg: String): StoreRuleSet?
+    fun saveAllPackages(data: StoreRuleSets)
+    fun savePackage(pkg: String, data: StoreRuleSet)
     fun removePackage(pkg: String)
 
     class SourceException(message: String, cause: Exception) : Exception(message, cause)

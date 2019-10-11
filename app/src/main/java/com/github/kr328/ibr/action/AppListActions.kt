@@ -15,4 +15,3 @@ class AppListRefreshAction : Action
 data class AppListProgressAction(val show: Boolean) : Action
 
 data class AppListUpdatedAction(val list: List<AppListElement>) : Action
-data class AppListUpdateAction(val cacheFirst: Boolean, val ignoreCache: Boolean) : Action
