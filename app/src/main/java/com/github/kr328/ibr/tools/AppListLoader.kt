@@ -29,10 +29,8 @@ class AppListLoader(private val context: Context) {
                     .map {
                         val status = mutableSetOf<AppListElement.RuleStatus>()
 
-                        if (enabled.contains(it.packageName)) {
-                            status += AppListElement.RuleStatus.PRELOAD
+                        if (enabled.contains(it.packageName))
                             status += AppListElement.RuleStatus.ENABLED
-                        }
                         if (local.contains(it.packageName))
                             status += AppListElement.RuleStatus.LOCAL
                         if (online.contains(it.packageName))

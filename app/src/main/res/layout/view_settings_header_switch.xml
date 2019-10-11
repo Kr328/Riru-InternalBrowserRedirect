@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/view_settings_header_switch"
         app:thumbTint="@android:color/white"
         app:trackTint="@color/color_header_switch"

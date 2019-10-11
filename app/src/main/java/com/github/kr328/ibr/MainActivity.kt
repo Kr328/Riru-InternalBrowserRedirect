@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
         setContentView(R.layout.activity_main)
 
         appList.adapter = AppListAdapter(this) {
-            //startActivity(Intent(this, EditAppActivity::class.java).setData(Uri.parse("package://$it")))
+            startActivity(Intent(this, EditAppActivity::class.java).setData(Uri.parse("package://$it")))
         }
         appList.layoutManager = LinearLayoutManager(this)
 

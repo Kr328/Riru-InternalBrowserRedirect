@@ -69,4 +69,5 @@
     <string name="edit_app_application_rule_set_unknown">未知</string>
     <string name="app_list_application_error_empty_app_list">未在本设备找到支持的应用</string>
     <string name="app_list_application_state_local_rule">本地规则</string>
+    <string name="app_list_application_menu_rule_set">新建策略组</string>
 </resources>

@@ -7,6 +7,6 @@ data class AppListElement(val packageName: String, val name: String, val ruleSta
             packageName == other.packageName && name == other.name && ruleStatus == other.ruleStatus
 
     enum class RuleStatus {
-        ENABLED, ONLINE, PRELOAD, LOCAL
+        ENABLED, ONLINE, LOCAL
     }
 }
