@@ -3,6 +3,7 @@ package com.github.kr328.ibr
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -55,28 +56,32 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
     }
 
     override fun newState(state: AppListState?) {
-        val data = state?.list ?: emptyList()
-        val progress = state?.progress == true
-        val adapter = appList.adapter as AppListAdapter
-        val oldData = adapter.appListElement
+        runOnUiThread {
+            val data = state?.list ?: emptyList()
+            val progress = state?.progress == true
+            val adapter = appList.adapter as AppListAdapter
+            val oldData = adapter.appListElement
 
-        val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                    oldData[oldItemPosition].packageName == data[newItemPosition].packageName
+            if ( data !== oldData ) {
+                val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+                    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                            oldData[oldItemPosition].packageName == data[newItemPosition].packageName
 
-            override fun getOldListSize(): Int = oldData.size
+                    override fun getOldListSize(): Int = oldData.size
 
-            override fun getNewListSize(): Int = data.size
+                    override fun getNewListSize(): Int = data.size
 
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                    oldData[oldItemPosition].equalsBase(data[newItemPosition])
-        })
+                    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                            oldData[oldItemPosition].equalsBase(data[newItemPosition])
+                })
 
-        result.dispatchUpdatesTo(adapter)
-        adapter.appListElement = data
+                result.dispatchUpdatesTo(adapter)
+                adapter.appListElement = data
+            }
 
-        if (swipe.isRefreshing != progress)
-            swipe.isRefreshing = progress
+            if (swipe.isRefreshing != progress)
+                swipe.isRefreshing = progress
+        }
     }
 
     override fun onStart() {

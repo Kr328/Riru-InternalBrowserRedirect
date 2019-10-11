@@ -8,7 +8,7 @@ import com.github.kr328.ibr.compat.SystemProperties
 import com.github.kr328.ibr.remote.server.IRemoteService
 
 object RemoteConnection {
-    private const val REDIRECT_SERIVCE_STATUE_KEY = "sys.ibr.status"
+    private const val REDIRECT_SERVICE_STATUE_KEY = "sys.ibr.status"
 
     private const val REDIRECT_SERVICE_STATUE_RIRU_LOADED = "riru_loaded"
     private const val REDIRECT_SERVICE_STATUS_SYSTEM_SERVER_FORKED = "system_server_forked"
@@ -65,7 +65,7 @@ object RemoteConnection {
             else
                 RCStatus.SERVICE_VERSION_NOT_MATCHES
         } catch (e: Exception) {
-            when (SystemProperties.get(REDIRECT_SERIVCE_STATUE_KEY, "")) {
+            when (SystemProperties.get(REDIRECT_SERVICE_STATUE_KEY, "")) {
                 "" -> RCStatus.RIRU_NOT_LOADED
                 REDIRECT_SERVICE_STATUE_RIRU_LOADED ->
                     RCStatus.RIRU_NOT_CALL_SYSTEM_SERVER_FORKED

@@ -51,6 +51,8 @@
 
     <string name="edit_app_application_enable">Enable</string>
 
+    <string name="edit_app_application_develop">Develop</string>
+    <string name="edit_app_application_debug_mode">Debug Mode</string>
     <string name="edit_app_application_rule_set">Rule Set</string>
     <string name="edit_app_application_rule_set_tag">TAG</string>
     <string name="edit_app_application_rule_set_author">Authors</string>

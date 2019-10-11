@@ -6,8 +6,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.github.kr328.ibr.view.SettingHeaderSwitch
+    <com.github.kr328.ibr.view.SettingAppInfo
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.github.kr328.ibr.view.SettingTitle
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        custom:title="@string/edit_app_application_enable" />
+        custom:title="@string/edit_app_application_develop" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/view_settings_switch"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:elevation="5dp"
+        android:gravity="center_vertical"
+        android:paddingStart="80dp"
+        android:paddingEnd="18dp"
+        android:text="@string/setting_develop_debug_mode"
+        android:textSize="18sp" />
+
 </LinearLayout>

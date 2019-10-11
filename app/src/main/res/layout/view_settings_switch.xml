@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+    <TextView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/view_settings_switch_summary"
+        android:id="@+id/view_settings_switch_title"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        app:layout_constraintStart_toStartOf="@id/view_settings_switch_title"
+        app:layout_constraintTop_toTopOf="@id/view_settings_switch_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/view_settings_switch_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/view_settings_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:gravity="center_vertical"
+        android:paddingStart="80dp"
+        android:paddingEnd="18dp"
+        android:textSize="18sp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
