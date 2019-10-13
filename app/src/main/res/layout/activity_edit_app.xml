@@ -1,29 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_edit_app_root"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.github.kr328.ibr.view.SettingAppInfo
+    android:id="@+id/activity_edit_app_swipe"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:id="@+id/activity_edit_app_root">
 
-    <com.github.kr328.ibr.view.SettingTitle
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        custom:title="@string/edit_app_application_develop" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/view_settings_switch"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:elevation="5dp"
-        android:gravity="center_vertical"
-        android:paddingStart="80dp"
-        android:paddingEnd="18dp"
-        android:text="@string/setting_develop_debug_mode"
-        android:textSize="18sp" />
+            <com.github.kr328.ibr.view.SettingAppInfo
+                android:id="@+id/activity_edit_app_app_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-</LinearLayout>
+            <com.github.kr328.ibr.view.SettingTitle
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:title="@string/edit_app_application_develop" />
+
+            <com.github.kr328.ibr.view.SettingSwitch
+                android:id="@+id/activity_edit_app_debug_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:title="@string/edit_app_application_debug_mode"
+                custom:summary="@string/edit_app_application_debug_mode_summary"
+                custom:icon="@drawable/ic_debug"/>
+
+            <com.github.kr328.ibr.view.SettingTitle
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:title="@string/edit_app_application_online_rule_set" />
+
+            <com.github.kr328.ibr.view.SettingSwitch
+                android:id="@+id/activity_edit_app_online_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:icon="@drawable/ic_input"
+                custom:title="@string/edit_app_application_online_rule_set_enable"
+                custom:summary="@string/edit_app_application_online_rule_set_enable_summary" />
+
+            <com.github.kr328.ibr.view.SettingButton
+                android:id="@+id/activity_edit_app_online_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:icon="@drawable/ic_label"
+                custom:title="@string/edit_app_application_online_rule_set_tag"
+                custom:summary="@string/edit_app_application_rule_set_unknown"/>
+
+            <com.github.kr328.ibr.view.SettingButton
+                android:id="@+id/activity_edit_app_online_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:icon="@drawable/ic_face"
+                custom:title="@string/edit_app_application_online_rule_set_author"
+                custom:summary="@string/edit_app_application_rule_set_unknown"/>
+
+            <com.github.kr328.ibr.view.SettingButton
+                android:id="@+id/activity_edit_app_online_last_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:icon="@drawable/ic_update"
+                custom:title="@string/edit_app_application_online_rule_set_last_update"
+                custom:summary="@string/edit_app_application_rule_set_unknown"/>
+
+            <com.github.kr328.ibr.view.SettingButton
+                android:id="@+id/activity_edit_app_view_rules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:icon="@drawable/ic_view_list"
+                custom:title="@string/edit_app_application_online_rule_set_view_rules"
+                custom:summary="@string/edit_app_application_online_rule_set_view_rules_summary"/>
+
+            <com.github.kr328.ibr.view.SettingTitle
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:title="@string/edit_app_application_local_rule_set" />
+
+            <com.github.kr328.ibr.view.SettingSwitch
+                android:id="@+id/activity_edit_app_local_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:icon="@drawable/ic_input"
+                custom:title="@string/edit_app_application_local_rule_set_enable"
+                custom:summary="@string/edit_app_application_local_rule_set_enable_summary"/>
+
+            <com.github.kr328.ibr.view.SettingButton
+                android:id="@+id/activity_edit_app_local_view_rules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:icon="@drawable/ic_view_list"
+                custom:title="@string/edit_app_application_local_rule_set_view_rules"
+                custom:summary="@string/edit_app_application_local_rule_set_view_rules_summary"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

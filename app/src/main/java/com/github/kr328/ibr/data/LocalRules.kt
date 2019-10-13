@@ -23,11 +23,11 @@ class LocalRules(context: Context) {
     }
 
     @Synchronized
-    fun queryRuleSet(packageName: String): StoreRuleSet {
+    fun queryRuleSet(packageName: String): StoreRuleSet? {
         val file = userData.resolve("rules/$packageName.json")
 
         if (!file.isFile)
-            return StoreRuleSet("", "", emptyList())
+            return null
 
         return Json(JsonConfiguration.Stable.copy(strictMode = false))
                 .parse(StoreRuleSet.serializer(), file.readText())

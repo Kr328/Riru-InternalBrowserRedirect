@@ -5,6 +5,7 @@ import org.rekotlin.Action
 
 object AppReducer {
     fun handle(action: Action, appState: AppState?): AppState = AppState(
-            appListState = AppListReducer.handle(action, appState?.appListState)
+            appListState = AppListReducer.handle(action, appState?.appListState),
+            editAppState = EditAppReducer.handle(action, appState?.editAppState)
     )
 }

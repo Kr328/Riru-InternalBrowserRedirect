@@ -53,10 +53,21 @@
 
     <string name="edit_app_application_develop">Develop</string>
     <string name="edit_app_application_debug_mode">Debug Mode</string>
-    <string name="edit_app_application_rule_set">Rule Set</string>
-    <string name="edit_app_application_rule_set_tag">TAG</string>
-    <string name="edit_app_application_rule_set_author">Authors</string>
-    <string name="edit_app_application_rule_set_version">Version</string>
+    <string name="edit_app_application_debug_mode_summary">Print all intent to log [TAG: InternalBrowserRedirect]</string>
+    <string name="edit_app_application_online_rule_set">Online Rule Set</string>
+    <string name="edit_app_application_online_rule_set_enable">Enable</string>
+    <string name="edit_app_application_online_rule_set_enable_summary">Enable online rule set</string>
+    <string name="edit_app_application_online_rule_set_tag">TAG</string>
+    <string name="edit_app_application_online_rule_set_author">Authors</string>
+    <string name="edit_app_application_online_rule_set_last_update">Last Update</string>
+    <string name="edit_app_application_online_rule_set_view_rules">View Rules</string>
+    <string name="edit_app_application_online_rule_set_view_rules_summary">View all online rules</string>
+    <string name="edit_app_application_local_rule_set">Local Rule Set</string>
+    <string name="edit_app_application_local_rule_set_enable">Enable</string>
+    <string name="edit_app_application_local_rule_set_enable_summary">Enable local rule set</string>
+    <string name="edit_app_application_local_rule_set_view_rules">View Rules</string>
+    <string name="edit_app_application_local_rule_set_view_rules_summary">View all local rules</string>
+
     <string name="edit_app_application_rule_set_unknown">Unknown</string>
     <string name="edit_app_application_rule">Rule</string>
 
@@ -64,9 +75,6 @@
     <string name="edit_app_application_update_failure">Online Rule Sync Failure</string>
     <string name="edit_app_application_unknown_app">Unknown App</string>
 
-    <string name="setting_develop">Develop</string>
-    <string name="setting_develop_debug_mode">Debug Mode</string>
-    <string name="setting_develop_debug_mode_summary">Print ALL intent to log [InternalBrowserRedirect]</string>
     <string name="setting_online_rule">Online Rule</string>
     <string name="setting_online_rule_user">Github User</string>
     <string name="setting_online_rule_repo">Github Repo</string>
