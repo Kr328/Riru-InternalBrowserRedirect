@@ -1,6 +1,6 @@
 package com.github.kr328.ibr.reducer
 
-import com.github.kr328.ibr.action.EditAppSetApplicationInfo
+import com.github.kr328.ibr.action.EditAppSetAppInfoAction
 import com.github.kr328.ibr.state.EditAppState
 import org.rekotlin.Action
 
@@ -9,10 +9,9 @@ object EditAppReducer {
         var result = state
 
         when (action) {
-            is EditAppSetApplicationInfo ->
+            is EditAppSetAppInfoAction ->
                 result = state?.copy(packageName = action.packageName, name = action.name, version = action.version, icon = action.icon) ?:
                         EditAppState(action.icon, action.name, action.packageName, action.version, false, null, false, null)
-
         }
 
         return result

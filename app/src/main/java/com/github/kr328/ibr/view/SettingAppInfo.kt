@@ -1,7 +1,10 @@
 package com.github.kr328.ibr.view
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.provider.Settings
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -33,8 +36,6 @@ class SettingAppInfo @JvmOverloads constructor(context: Context, attributeSet: A
             versionView.text = value
         }
 
-    override fun setOnClickListener(l: OnClickListener?) = clickView.setOnClickListener(l)
-
     private val iconView: ImageView
     private val nameView: TextView
     private val packageView: TextView
@@ -49,5 +50,10 @@ class SettingAppInfo @JvmOverloads constructor(context: Context, attributeSet: A
         packageView = root.findViewById(R.id.view_settings_app_info_package)
         versionView = root.findViewById(R.id.view_settings_app_info_version)
         clickView = root.findViewById(R.id.view_settings_app_info_view_info)
+
+        clickView.setOnClickListener {
+            context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    .setData(Uri.parse("package:${packageName}")))
+        }
     }
 }

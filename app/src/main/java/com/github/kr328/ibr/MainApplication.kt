@@ -3,6 +3,7 @@ package com.github.kr328.ibr
 import android.app.Application
 import android.content.Context
 import com.github.kr328.ibr.middleware.AppListManager
+import com.github.kr328.ibr.middleware.EditAppManager
 import com.github.kr328.ibr.reducer.AppReducer
 import org.rekotlin.StateType
 import org.rekotlin.Store
@@ -15,7 +16,8 @@ class MainApplication : Application() {
                 reducer = AppReducer::handle,
                 state = null,
                 middleware = listOf(
-                        AppListManager(this).handler
+                        AppListManager(this).handler,
+                        EditAppManager(this).handler
                 )
         ).apply {
             val original = dispatchFunction

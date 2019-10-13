@@ -6,4 +6,5 @@ import org.rekotlin.StateType
 
 data class EditAppState(val icon: Drawable, val name: CharSequence, val packageName: CharSequence, val version: CharSequence,
                         val onlineEnable: Boolean, val onlineRules: StoreRuleSet?,
-                        val localEnable: Boolean, val localRules: StoreRuleSet?) : StateType
+                        val localEnable: Boolean, val localRules: StoreRuleSet?,
+                        val isRefreshing: Boolean = false) : StateType

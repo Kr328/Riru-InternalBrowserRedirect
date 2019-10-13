@@ -3,4 +3,6 @@ package com.github.kr328.ibr.action
 import android.graphics.drawable.Drawable
 import org.rekotlin.Action
 
-data class EditAppSetApplicationInfo(val packageName: CharSequence, val version: CharSequence, val name: CharSequence, val icon: Drawable) : Action
+data class EditAppCreatedActivityAction(val packageName: CharSequence) : Action
+
+data class EditAppSetAppInfoAction(val packageName: CharSequence, val name: CharSequence, val version: CharSequence, val icon: Drawable) : Action
