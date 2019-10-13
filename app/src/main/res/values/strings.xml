@@ -61,12 +61,12 @@
     <string name="edit_app_application_online_rule_set_author">Authors</string>
     <string name="edit_app_application_online_rule_set_last_update">Last Update</string>
     <string name="edit_app_application_online_rule_set_view_rules">View Rules</string>
-    <string name="edit_app_application_online_rule_set_view_rules_summary">View all online rules</string>
+    <string name="edit_app_application_online_rule_set_view_rules_summary">%d Rules</string>
     <string name="edit_app_application_local_rule_set">Local Rule Set</string>
     <string name="edit_app_application_local_rule_set_enable">Enable</string>
     <string name="edit_app_application_local_rule_set_enable_summary">Enable local rule set</string>
     <string name="edit_app_application_local_rule_set_view_rules">View Rules</string>
-    <string name="edit_app_application_local_rule_set_view_rules_summary">View all local rules</string>
+    <string name="edit_app_application_local_rule_set_view_rules_summary">%d Rules</string>
 
     <string name="edit_app_application_rule_set_unknown">Unknown</string>
     <string name="edit_app_application_rule">Rule</string>

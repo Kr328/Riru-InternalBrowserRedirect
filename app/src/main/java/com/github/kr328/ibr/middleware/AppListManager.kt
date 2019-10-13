@@ -51,8 +51,8 @@ class AppListManager(context: Context, localRules: LocalRules, onlineRules: Onli
                             dispatch(AppListProgressAction(show = false))
                         }
                     }
+                    else -> next(action)
                 }
-                next(action)
             }
         }
     }

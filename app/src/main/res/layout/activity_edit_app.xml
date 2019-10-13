@@ -70,15 +70,7 @@
                     custom:summary="@string/edit_app_application_rule_set_unknown"/>
 
                 <com.github.kr328.ibr.view.SettingButton
-                    android:id="@+id/activity_edit_app_online_last_update"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    custom:icon="@drawable/ic_update"
-                    custom:title="@string/edit_app_application_online_rule_set_last_update"
-                    custom:summary="@string/edit_app_application_rule_set_unknown"/>
-
-                <com.github.kr328.ibr.view.SettingButton
-                    android:id="@+id/activity_edit_app_view_rules"
+                    android:id="@+id/activity_edit_app_online_view_rules"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     custom:icon="@drawable/ic_view_list"

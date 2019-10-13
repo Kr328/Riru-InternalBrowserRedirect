@@ -66,8 +66,6 @@ class SettingSwitch @JvmOverloads constructor(context: Context, attributeSet: At
             icon = getDrawable(R.styleable.custom_icon)
         }
 
-        Log.d(Constants.TAG, "$root")
-
         clickable.setOnClickListener {
             switch.performClick()
         }

@@ -69,7 +69,7 @@
     <string name="edit_app_application_local_rule_set_enable">"启用 "</string>
     <string name="edit_app_application_local_rule_set_enable_summary">启用本地规则集</string>
     <string name="edit_app_application_local_rule_set_view_rules">查看规则</string>
-    <string name="edit_app_application_local_rule_set_view_rules_summary">查看所有本地规则</string>
+    <string name="edit_app_application_local_rule_set_view_rules_summary">%d 条规则</string>
     <string name="edit_app_application_online_rule_set">在线规则集</string>
     <string name="edit_app_application_online_rule_set_author">作者</string>
     <string name="edit_app_application_online_rule_set_enable">启用</string>
@@ -77,5 +77,5 @@
     <string name="edit_app_application_online_rule_set_last_update">最后更新</string>
     <string name="edit_app_application_online_rule_set_tag">TAG</string>
     <string name="edit_app_application_online_rule_set_view_rules">查看规则</string>
-    <string name="edit_app_application_online_rule_set_view_rules_summary">查看所有在线规则</string>
+    <string name="edit_app_application_online_rule_set_view_rules_summary">%d 条规则</string>
 </resources>

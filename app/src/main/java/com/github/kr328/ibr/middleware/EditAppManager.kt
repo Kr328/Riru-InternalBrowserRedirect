@@ -3,12 +3,15 @@ package com.github.kr328.ibr.middleware
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
+import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.R
 import com.github.kr328.ibr.action.*
 import com.github.kr328.ibr.data.LocalRules
 import com.github.kr328.ibr.data.OnlineRules
 import com.github.kr328.ibr.state.AppState
 import org.rekotlin.Middleware
+import java.io.IOException
 import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 
@@ -23,7 +26,7 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                         executor.submit {
                             try {
                                 val pm = context.packageManager
-                                val pkg = pm.getPackageInfo(action.packageName.toString(), 0)
+                                val pkg = pm.getPackageInfo(action.packageName, 0)
 
                                 dispatch(EditAppSetAppInfoAction(pkg.packageName,
                                         pkg.applicationInfo.loadLabel(pm),
@@ -43,21 +46,41 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                             dispatch(EditAppSetRefreshingAction(true))
 
                             val local = localRules.queryRuleSet(action.packageName)
-                            var online = onlineRules.queryRuleSet(action.packageName,
-                                    cacheFirst = true, ignoreCache = false)
 
-                            dispatch(EditAppSetRuleSetAction(online, local))
+                            try {
+                                val online = onlineRules.queryRuleSet(action.packageName,
+                                        cacheFirst = false, ignoreCache = false)
 
-                            online = onlineRules.queryRuleSet(action.packageName,
-                                    cacheFirst = false, ignoreCache = false)
-
-                            dispatch(EditAppSetRuleSetAction(online, local))
+                                dispatch(EditAppSetRuleSetAction(online, local))
+                            }
+                            catch (e: Exception) {
+                                dispatch(EditAppSetRuleSetAction(null, local))
+                            }
 
                             dispatch(EditAppSetRefreshingAction(false))
                         }
                     }
+                    is EditAppRefreshAction -> {
+                        executor.submit {
+                            dispatch(EditAppSetRefreshingAction(true))
+
+                            val local = localRules.queryRuleSet(action.packageName)
+
+                            try {
+                                val online = onlineRules.queryRuleSet(action.packageName,
+                                        cacheFirst = false, ignoreCache = true)
+
+                                dispatch(EditAppSetRuleSetAction(online, local))
+                            }
+                            catch (e: Exception) {
+                                dispatch(EditAppSetRuleSetAction(null, local))
+                            }
+
+                            dispatch(EditAppSetRefreshingAction(false))
+                        }
+                    }
+                    else -> next(action)
                 }
-                next(action)
             }
         }
     }
