@@ -3,17 +3,13 @@ package com.github.kr328.ibr.middleware
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
-import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.R
 import com.github.kr328.ibr.action.*
 import com.github.kr328.ibr.data.LocalRules
 import com.github.kr328.ibr.data.OnlineRules
 import com.github.kr328.ibr.state.AppState
 import org.rekotlin.Middleware
-import java.io.IOException
 import java.util.concurrent.Executors
-import kotlin.concurrent.thread
 
 class EditAppManager(context: Context, localRules: LocalRules, onlineRules: OnlineRules) {
     private val executor = Executors.newSingleThreadExecutor()
@@ -52,8 +48,7 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                                         cacheFirst = false, ignoreCache = false)
 
                                 dispatch(EditAppSetRuleSetAction(online, local))
-                            }
-                            catch (e: Exception) {
+                            } catch (e: Exception) {
                                 dispatch(EditAppSetRuleSetAction(null, local))
                             }
 
@@ -71,8 +66,7 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                                         cacheFirst = false, ignoreCache = true)
 
                                 dispatch(EditAppSetRuleSetAction(online, local))
-                            }
-                            catch (e: Exception) {
+                            } catch (e: Exception) {
                                 dispatch(EditAppSetRuleSetAction(null, local))
                             }
 

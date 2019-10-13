@@ -1,7 +1,6 @@
 package com.github.kr328.ibr
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -27,8 +26,8 @@ class EditAppActivity : AppCompatActivity(), StoreSubscriber<EditAppState?> {
     private val onlineSwitch by lazy { findViewById<SettingSwitch>(R.id.activity_edit_app_online_enable) }
     private val tag by lazy { findViewById<SettingButton>(R.id.activity_edit_app_online_tag) }
     private val author by lazy { findViewById<SettingButton>(R.id.activity_edit_app_online_author) }
-    private val onlineRule by lazy { findViewById<SettingButton>(R.id.activity_edit_app_online_view_rules)}
-    private val localSwitch by lazy { findViewById<SettingSwitch>(R.id.activity_edit_app_local_enable)}
+    private val onlineRule by lazy { findViewById<SettingButton>(R.id.activity_edit_app_online_view_rules) }
+    private val localSwitch by lazy { findViewById<SettingSwitch>(R.id.activity_edit_app_local_enable) }
     private val localRule by lazy { findViewById<SettingButton>(R.id.activity_edit_app_local_view_rules) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,12 +87,11 @@ class EditAppActivity : AppCompatActivity(), StoreSubscriber<EditAppState?> {
             } else
                 online.visibility = View.GONE
 
-            if ( state.localRules != null) {
+            if (state.localRules != null) {
                 localSwitch.checked = state.localEnable
                 localRule.summary = getString(R.string.edit_app_application_local_rule_set_view_rules_summary,
                         state.localRules.rules.size)
-            }
-            else {
+            } else {
                 localRule.summary = getString(R.string.edit_app_application_local_rule_set_view_rules_summary, 0)
             }
         }

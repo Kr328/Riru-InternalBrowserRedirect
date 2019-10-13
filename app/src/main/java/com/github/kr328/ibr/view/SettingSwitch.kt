@@ -3,7 +3,6 @@ package com.github.kr328.ibr.view
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
@@ -11,7 +10,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
-import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.R
 
 class SettingSwitch @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defaultStyleAttr: Int = 0, defaultStyleRes: Int = 0) :
