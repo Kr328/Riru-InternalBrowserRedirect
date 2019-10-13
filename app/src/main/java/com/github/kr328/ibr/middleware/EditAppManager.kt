@@ -49,7 +49,10 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
 
                                 dispatch(EditAppSetRuleSetAction(online, local))
                             } catch (e: Exception) {
-                                dispatch(EditAppSetRuleSetAction(null, local))
+                                val online = runCatching { onlineRules.queryRuleSet(action.packageName,
+                                        cacheFirst = true, ignoreCache = false) }.getOrNull()
+
+                                dispatch(EditAppSetRuleSetAction(online, local))
                             }
 
                             dispatch(EditAppSetRefreshingAction(false))
@@ -67,7 +70,10 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
 
                                 dispatch(EditAppSetRuleSetAction(online, local))
                             } catch (e: Exception) {
-                                dispatch(EditAppSetRuleSetAction(null, local))
+                                val online = runCatching { onlineRules.queryRuleSet(action.packageName,
+                                        cacheFirst = true, ignoreCache = false) }.getOrNull()
+
+                                dispatch(EditAppSetRuleSetAction(online, local))
                             }
 
                             dispatch(EditAppSetRefreshingAction(false))
