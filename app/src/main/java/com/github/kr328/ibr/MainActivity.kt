@@ -3,7 +3,6 @@ package com.github.kr328.ibr
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
             val adapter = appList.adapter as AppListAdapter
             val oldData = adapter.appListElement
 
-            if ( data !== oldData ) {
+            if (data !== oldData) {
                 val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
                             oldData[oldItemPosition].packageName == data[newItemPosition].packageName

@@ -6,7 +6,10 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.CompoundButton
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.R
@@ -22,7 +25,7 @@ class SettingSwitch @JvmOverloads constructor(context: Context, attributeSet: At
         get() = summaryView.text
         set(value) {
             summaryView.text = value
-            if ( value.isEmpty() )
+            if (value.isEmpty())
                 summaryView.visibility = View.GONE
         }
     var icon: Drawable?
@@ -32,6 +35,14 @@ class SettingSwitch @JvmOverloads constructor(context: Context, attributeSet: At
         set(value) {
             iconView.setImageDrawable(value)
         }
+    var checked: Boolean
+        get() {
+            return switch.isChecked
+        }
+        set(value) {
+            switch.isChecked = value
+        }
+
     override fun setOnClickListener(l: OnClickListener?) = clickable.setOnClickListener(l)
     fun setOnCheckChangedListener(l: CompoundButton.OnCheckedChangeListener) = switch.setOnCheckedChangeListener(l)
 

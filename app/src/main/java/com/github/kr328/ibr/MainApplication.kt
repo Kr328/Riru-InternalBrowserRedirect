@@ -2,22 +2,24 @@ package com.github.kr328.ibr
 
 import android.app.Application
 import android.content.Context
+import com.github.kr328.ibr.data.LocalRules
+import com.github.kr328.ibr.data.OnlineRules
 import com.github.kr328.ibr.middleware.AppListManager
 import com.github.kr328.ibr.middleware.EditAppManager
 import com.github.kr328.ibr.reducer.AppReducer
-import org.rekotlin.StateType
 import org.rekotlin.Store
-import org.rekotlin.StoreType
 import java.util.concurrent.Executors
 
 class MainApplication : Application() {
+    private val onlineRules by lazy { OnlineRules(this) }
+    private val localRules by lazy { LocalRules(this) }
     val store by lazy {
         Store(
                 reducer = AppReducer::handle,
                 state = null,
                 middleware = listOf(
-                        AppListManager(this).handler,
-                        EditAppManager(this).handler
+                        AppListManager(this, localRules, onlineRules).handler,
+                        EditAppManager(this, localRules, onlineRules).handler
                 )
         ).apply {
             val original = dispatchFunction

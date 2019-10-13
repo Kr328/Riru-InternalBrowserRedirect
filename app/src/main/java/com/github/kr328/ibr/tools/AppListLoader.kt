@@ -10,10 +10,7 @@ import com.github.kr328.ibr.model.AppListElement
 import com.github.kr328.ibr.model.StoreRuleSets
 import com.github.kr328.ibr.remote.RemoteConnection
 
-class AppListLoader(private val context: Context) {
-    private val onlineRules = OnlineRules(context)
-    private val localRules = LocalRules(context)
-
+class AppListLoader(private val localRules: LocalRules, private val onlineRules: OnlineRules, private val context: Context) {
     fun load(cacheFirst: Boolean, ignoreCache: Boolean): List<AppListElement>? {
         return try {
             val pm = context.packageManager

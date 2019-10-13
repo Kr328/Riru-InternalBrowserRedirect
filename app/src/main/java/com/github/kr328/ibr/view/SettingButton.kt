@@ -21,7 +21,7 @@ class SettingButton @JvmOverloads constructor(context: Context, attributeSet: At
         get() = summaryView.text
         set(value) {
             summaryView.text = value
-            if ( value.isEmpty() )
+            if (value.isEmpty())
                 summaryView.visibility = View.GONE
         }
     var icon: Drawable?
@@ -49,7 +49,7 @@ class SettingButton @JvmOverloads constructor(context: Context, attributeSet: At
         context.theme.obtainStyledAttributes(attributeSet, R.styleable.custom, defaultStyleAttr, defaultStyleRes).apply {
             title = getString(R.styleable.custom_title) ?: ""
             summary = getString(R.styleable.custom_summary) ?: ""
-            icon= getDrawable(R.styleable.custom_icon)
+            icon = getDrawable(R.styleable.custom_icon)
         }
     }
 }

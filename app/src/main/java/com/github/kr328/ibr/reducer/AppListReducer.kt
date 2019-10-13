@@ -1,7 +1,5 @@
 package com.github.kr328.ibr.reducer
 
-import android.util.Log
-import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.action.AppListProgressAction
 import com.github.kr328.ibr.action.AppListUpdatedAction
 import com.github.kr328.ibr.state.AppListState
