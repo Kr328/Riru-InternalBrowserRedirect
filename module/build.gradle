@@ -1,17 +1,8 @@
 import java.nio.file.Paths
 
 apply plugin: 'java'
-apply plugin: 'rirutools.ndk'
 apply plugin: 'rirutools.dex'
 apply plugin: 'rirutools.magisk'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-ndk {
-    abiFilters = ["armeabi-v7a", "arm64-v8a"]
-    sourceDir = "src/main/cpp"
-}
 
 dex {
     platform = "android-29"
@@ -35,7 +26,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly project(":hideapi")
 }
 
-//magiskModule.dependsOn(project(":app").getTasks().getByName("assemble"))
+task extractClassesJar(type: Copy) {
+
+}
+
+project(":remote").afterEvaluate {
+    extractClassesJar.dependsOn(project(":remote").tasks.getByName("assemble"))
+}
+
+//magiskModule.dependsOn(project(":app").getTasks().getByName("assembleRelease"))

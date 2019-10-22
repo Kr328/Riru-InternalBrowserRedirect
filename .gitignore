@@ -36,3 +36,6 @@ keystore.properties
 
 # vscode
 .vscode
+
+# cxx
+.cxx
