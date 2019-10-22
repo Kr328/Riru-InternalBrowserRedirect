@@ -1,5 +1,3 @@
-import java.nio.file.Paths
-
 apply plugin: 'java'
 apply plugin: 'rirutools.dex'
 apply plugin: 'rirutools.magisk'
@@ -11,13 +9,17 @@ dex {
     exclude "android"
 }
 
+jar {
+    from zipTree(file("$buildDir/intermediates/aar/classes.jar"))
+}
+
 magisk {
     output "$buildDir/outputs/riru-internal-browser-redirect.zip"
     
     zip.map(file("src/main/raw/magisk"), "/")
     zip.map(file("$buildDir/outputs/dex/classes.jar"), "/system/framework/boot-internal-browser-redirect.jar")
-    zip.map(file("$buildDir/outputs/ndk/arm64-v8a/shared") ,"/system/lib64")
-    zip.map(file("$buildDir/outputs/ndk/armeabi-v7a/shared") ,"/system/lib")
+    zip.map(file("$buildDir/intermediates/aar/jni/arm64-v8a") ,"/system/lib64")
+    zip.map(file("$buildDir/intermediates/aar/jni/armeabi-v7a") ,"/system/lib")
     //zip.map(Paths.get(project(":app").buildDir.absolutePath, "outputs", "apk", "release", "app-release.apk").toFile(), "/data/app.apk")
 }
 
@@ -28,12 +30,14 @@ repositories {
 dependencies {
 }
 
-task extractClassesJar(type: Copy) {
-
+task extractAAR(type: Copy) {
+    from zipTree(project(":remote").file(project(":remote").buildDir.absolutePath + "/outputs/aar/remote-release.aar"))
+    into file("$buildDir/intermediates/aar")
 }
 
 project(":remote").afterEvaluate {
-    extractClassesJar.dependsOn(project(":remote").tasks.getByName("assemble"))
+    extractAAR.dependsOn(project(":remote").tasks.getByName("assemble"))
+    jar.dependsOn(extractAAR)
 }
 
 //magiskModule.dependsOn(project(":app").getTasks().getByName("assembleRelease"))

@@ -73,6 +73,7 @@ int nativeForkAndSpecializePost(JNIEnv *env, jclass clazz, jint res) {
     if (res == 0 && enable_inject) {
         invoke_inject_method(env, "app_forked");
     }
+    return 0;
 }
 
 EXPORT
