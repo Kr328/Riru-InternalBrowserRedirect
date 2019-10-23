@@ -34,4 +34,5 @@ android {
 
 dependencies {
     compileOnly project(":hideapi")
+    implementation project(":shared")
 }

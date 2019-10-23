@@ -1,4 +1,4 @@
-package com.github.kr328.ibr.remote.model;
+package com.github.kr328.ibr.remote.shared;
 
 import android.os.Parcel;
 import android.os.Parcelable;
