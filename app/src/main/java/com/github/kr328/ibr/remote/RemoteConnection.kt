@@ -5,7 +5,7 @@ import android.os.RemoteException
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.compat.ServiceManager
 import com.github.kr328.ibr.compat.SystemProperties
-import com.github.kr328.ibr.remote.server.IRemoteService
+import com.github.kr328.ibr.remote.shared.IRemoteService
 
 object RemoteConnection {
     private const val REDIRECT_SERVICE_STATUE_KEY = "sys.ibr.status"

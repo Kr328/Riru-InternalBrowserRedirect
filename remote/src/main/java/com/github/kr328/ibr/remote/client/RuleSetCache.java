@@ -4,7 +4,7 @@ import android.os.RemoteException;
 import android.os.SystemProperties;
 
 import com.github.kr328.ibr.remote.Constants;
-import com.github.kr328.ibr.remote.model.RuleSet;
+import com.github.kr328.ibr.remote.shared.RuleSet;
 
 import java.util.HashMap;
 

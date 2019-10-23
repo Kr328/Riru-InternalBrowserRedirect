@@ -8,7 +8,8 @@ import android.os.ServiceManager;
 import android.os.SystemProperties;
 
 import com.github.kr328.ibr.remote.Constants;
-import com.github.kr328.ibr.remote.model.RuleSet;
+import com.github.kr328.ibr.remote.shared.IRemoteService;
+import com.github.kr328.ibr.remote.shared.RuleSet;
 
 public class RemoteService extends IRemoteService.Stub {
     private IPackageManager packageManager;
@@ -56,18 +57,18 @@ public class RemoteService extends IRemoteService.Stub {
     }
 
     @Override
-    public RuleSet queryRuleSet(String packageName) {
+    public RuleSet queryRuleSet(String packageName) throws RemoteException {
         return StoreManager.getInstance().getRuleSet(packageName);
     }
 
     @Override
-    public void updateRuleSet(String packageName, RuleSet ruleSet) {
+    public void updateRuleSet(String packageName, RuleSet ruleSet) throws RemoteException {
         StoreManager.getInstance().updateRuleSet(packageName, ruleSet);
         SystemProperties.set(Constants.LAST_UPDATE_KEY, String.valueOf(System.currentTimeMillis()));
     }
 
     @Override
-    public void removeRuleSet(String packageName) {
+    public void removeRuleSet(String packageName) throws RemoteException {
         StoreManager.getInstance().removeRuleSet(packageName);
         SystemProperties.set(Constants.LAST_UPDATE_KEY, String.valueOf(System.currentTimeMillis()));
     }

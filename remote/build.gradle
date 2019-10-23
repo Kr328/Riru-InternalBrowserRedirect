@@ -12,6 +12,12 @@ android {
         versionName "1.0"
 
         consumerProguardFiles 'consumer-rules.pro'
+
+        externalNativeBuild {
+            cmake {
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
+        }
     }
 
     buildTypes {
@@ -29,10 +35,9 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-
 }
 
 dependencies {
     compileOnly project(":hideapi")
-    implementation project(":shared")
+    api project(":shared")
 }

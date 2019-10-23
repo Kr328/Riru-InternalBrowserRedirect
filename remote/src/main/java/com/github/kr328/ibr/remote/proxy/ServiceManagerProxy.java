@@ -2,6 +2,7 @@ package com.github.kr328.ibr.remote.proxy;
 
 import android.annotation.SuppressLint;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.IPermissionController;
 import android.os.IServiceManager;
@@ -20,15 +21,6 @@ import java.lang.reflect.Method;
 @SuppressLint("PrivateApi")
 public class ServiceManagerProxy implements IServiceManager {
     private static ServiceManagerProxy instance;
-    private static Method allowBlocking;
-
-    static {
-        try {
-            allowBlocking = Binder.class.getDeclaredMethod("allowBlocking", IBinder.class);
-        } catch (NoSuchMethodException e) {
-            Log.e(Constants.TAG, "allowBlocking", e);
-        }
-    }
 
     private IServiceManager original;
     private Callback callback;
@@ -70,7 +62,7 @@ public class ServiceManagerProxy implements IServiceManager {
         if (original == null) {
             try {
                 original = ServiceManagerNative
-                        .asInterface((IBinder) allowBlocking.invoke(null, BinderInternal.getContextObject()));
+                        .asInterface((BinderInternal.getContextObject()));
             } catch (Exception e) {
                 Log.w(Constants.TAG, "allowBlocking failure", e);
                 original = ServiceManagerNative.asInterface(BinderInternal.getContextObject());

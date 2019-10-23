@@ -3,13 +3,12 @@ package com.github.kr328.ibr.remote.client;
 import android.content.Intent;
 import android.content.pm.LabeledIntent;
 import android.os.Parcelable;
-import android.os.RemoteException;
 import android.util.Log;
 
 import com.github.kr328.ibr.remote.Constants;
 import com.github.kr328.ibr.remote.i18n.I18n;
 import com.github.kr328.ibr.remote.i18n.I18nFactory;
-import com.github.kr328.ibr.remote.model.RuleSet;
+import com.github.kr328.ibr.remote.shared.RuleSet;
 
 public class ClientActivityManagerProxy extends BaseClientActivityManagerProxy {
     private RuleSetCache cache = new RuleSetCache();

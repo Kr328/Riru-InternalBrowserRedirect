@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.github.kr328.ibr.remote.model.Rule;
-import com.github.kr328.ibr.remote.model.RuleSet;
+import com.github.kr328.ibr.remote.shared.Rule;
+import com.github.kr328.ibr.remote.shared.RuleSet;
 
 import java.util.Collections;
 import java.util.Map;

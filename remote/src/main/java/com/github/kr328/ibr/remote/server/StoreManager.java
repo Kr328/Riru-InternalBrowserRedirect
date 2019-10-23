@@ -3,7 +3,7 @@ package com.github.kr328.ibr.remote.server;
 import android.util.Log;
 
 import com.github.kr328.ibr.remote.Constants;
-import com.github.kr328.ibr.remote.model.RuleSet;
+import com.github.kr328.ibr.remote.shared.RuleSet;
 
 import org.json.JSONException;
 import org.json.JSONObject;

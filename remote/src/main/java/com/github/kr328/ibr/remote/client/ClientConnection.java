@@ -6,7 +6,7 @@ import android.os.ServiceManager;
 import android.util.Log;
 
 import com.github.kr328.ibr.remote.Constants;
-import com.github.kr328.ibr.remote.server.IClientService;
+import com.github.kr328.ibr.remote.shared.IClientService;
 
 class ClientConnection {
     private static IClientService connection;
