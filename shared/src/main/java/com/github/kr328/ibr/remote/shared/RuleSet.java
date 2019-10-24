@@ -36,7 +36,7 @@ public class RuleSet implements Parcelable {
 
     private RuleSet(Parcel in) {
         tag = in.readString();
-        in.readStringList(extras);
+        in.readStringList(extras = new ArrayList<>());
         rules = in.createTypedArrayList(Rule.CREATOR);
         debug = in.readInt() == 1;
     }

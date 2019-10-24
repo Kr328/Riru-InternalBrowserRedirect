@@ -2,11 +2,8 @@
 <resources>
     <string name="app_name">内置浏览器重定向</string>
 
-    <string name="app_list_application_state_online_rule">在线规则</string>
-    <string name="app_list_application_state_unknown_rule">未知</string>
-    <string name="app_list_application_state_preload_rule">预建规则</string>
-    <string name="app_list_application_state_enabled">已启用</string>
-    <string name="app_list_application_state_disabled">已禁用</string>
+    <string name="app_list_application_state_enabled">已启用 (%d 条规则)</string>
+    <string name="app_list_application_state_disabled">已禁用 (%d 条规则)</string>
     <string name="edit_app_application_enable">启用</string>
     <string name="edit_app_application_rule">策略</string>
     <string name="app_list_application_error_invalid_service_message_unknown">
@@ -61,7 +58,6 @@
     <string name="first_install_notification_success_installed_message">点此配置</string>
     <string name="edit_app_application_rule_set_unknown">未知</string>
     <string name="app_list_application_error_empty_app_list">未在本设备找到支持的应用</string>
-    <string name="app_list_application_state_local_rule">本地规则</string>
     <string name="app_list_application_menu_rule_set">新建策略组</string>
     <string name="edit_app_application_debug_mode">调试模式</string>
     <string name="edit_app_application_develop">开发</string>

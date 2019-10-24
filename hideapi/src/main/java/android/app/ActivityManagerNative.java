@@ -16,19 +16,3 @@ public abstract class ActivityManagerNative extends Binder implements IActivityM
         throw new IllegalArgumentException("Unsupported");
     }
 }
-
-class ActivityManagerProxy implements IActivityManager {
-    public ActivityManagerProxy(IBinder remote) {
-        throw new IllegalArgumentException("Stub!");
-    }
-
-    @Override
-    public int startActivity(IApplicationThread caller, String callingPackage, Intent intent, String resolvedType, IBinder resultTo, String resultWho, int requestCode, int flags, ProfilerInfo profilerInfo, Bundle options) throws RemoteException {
-        throw new IllegalArgumentException("Stub!");
-    }
-
-    @Override
-    public IBinder asBinder() {
-        throw new IllegalArgumentException("Stub!");
-    }
-}

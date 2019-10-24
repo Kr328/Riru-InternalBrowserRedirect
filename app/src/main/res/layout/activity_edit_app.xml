@@ -49,7 +49,7 @@
                     android:id="@+id/activity_edit_app_online_enable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:icon="@drawable/ic_input"
+                    custom:icon="@drawable/ic_unarchive"
                     custom:title="@string/edit_app_application_online_rule_set_enable"
                     custom:summary="@string/edit_app_application_online_rule_set_enable_summary" />
 
@@ -65,7 +65,7 @@
                     android:id="@+id/activity_edit_app_online_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:icon="@drawable/ic_face"
+                    custom:icon="@drawable/ic_account"
                     custom:title="@string/edit_app_application_online_rule_set_author"
                     custom:summary="@string/edit_app_application_rule_set_unknown"/>
 
@@ -93,7 +93,7 @@
                     android:id="@+id/activity_edit_app_local_enable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:icon="@drawable/ic_input"
+                    custom:icon="@drawable/ic_unarchive"
                     custom:title="@string/edit_app_application_local_rule_set_enable"
                     custom:summary="@string/edit_app_application_local_rule_set_enable_summary"/>
 

@@ -21,6 +21,9 @@ object EditAppReducer {
             is EditAppSetRefreshingAction -> {
                 result = state?.copy(isRefreshing = action.refreshing)
             }
+            is EditAppStoppedActivityAction -> {
+                result = null
+            }
         }
 
         return result

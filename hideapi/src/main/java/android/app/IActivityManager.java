@@ -17,22 +17,6 @@ public interface IActivityManager extends IInterface {
         public IBinder asBinder() {
             throw new IllegalArgumentException("Unsupported");
         }
-
-        static class Proxy implements IActivityManager {
-            Proxy(IBinder remote) {
-                throw new IllegalArgumentException("Unsupported");
-            }
-
-            @Override
-            public int startActivity(IApplicationThread caller, String callingPackage, Intent intent, String resolvedType, IBinder resultTo, String resultWho, int requestCode, int flags, ProfilerInfo profilerInfo, Bundle options) throws RemoteException {
-                throw new IllegalArgumentException("Unsupported");
-            }
-
-            @Override
-            public IBinder asBinder() {
-                throw new IllegalArgumentException("Unsupported");
-            }
-        }
     }
 
     int startActivity(IApplicationThread caller,  // 0
@@ -46,4 +30,5 @@ public interface IActivityManager extends IInterface {
                       ProfilerInfo profilerInfo,  // 8
                       Bundle options              // 9
                       ) throws RemoteException;
+    void forceStopPackage(String packageName, int userId) throws RemoteException;
 }

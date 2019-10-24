@@ -40,39 +40,14 @@ class AppListAdapter(private val context: Context, private val onClickListener: 
 
         holder.name.text = data.name
         holder.icon.setImageDrawable(data.icon)
-        holder.description.text = data.ruleStatus.toI18nString()
+        holder.description.text = context.getString(if (data.enable)
+            R.string.app_list_application_state_enabled
+        else
+            R.string.app_list_application_state_disabled, data.ruleCount)
 
-        if (data.ruleStatus.contains(AppListElement.RuleStatus.ENABLED))
+        if (data.enable)
             holder.description.setTextColor(context.getColor(R.color.colorAccent))
         else
             holder.description.setTextColor(Color.GRAY)
-    }
-
-    private fun Set<AppListElement.RuleStatus>.toI18nString(): String {
-        val sb = StringBuilder()
-
-        if (contains(AppListElement.RuleStatus.ENABLED))
-            sb.append(context.getString(R.string.app_list_application_state_enabled))
-        else
-            sb.append(context.getString(R.string.app_list_application_state_disabled))
-        sb.append(" (")
-
-        when {
-            contains(AppListElement.RuleStatus.ONLINE) and contains(AppListElement.RuleStatus.LOCAL) -> {
-                sb.append(context.getString(R.string.app_list_application_state_online_rule))
-                sb.append(", ")
-                sb.append(context.getString(R.string.app_list_application_state_local_rule))
-            }
-            contains(AppListElement.RuleStatus.ONLINE) ->
-                sb.append(context.getString(R.string.app_list_application_state_online_rule))
-            contains(AppListElement.RuleStatus.LOCAL) ->
-                sb.append(context.getString(R.string.app_list_application_state_local_rule))
-            else ->
-                sb.append(context.getString(R.string.app_list_application_state_preload_rule))
-        }
-
-        sb.append(")")
-
-        return sb.toString()
     }
 }

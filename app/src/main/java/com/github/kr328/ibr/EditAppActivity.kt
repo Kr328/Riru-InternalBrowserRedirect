@@ -1,13 +1,11 @@
 package com.github.kr328.ibr
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.github.kr328.ibr.action.EditAppCreatedActivityAction
-import com.github.kr328.ibr.action.EditAppRefreshAction
-import com.github.kr328.ibr.action.EditAppStartedActivityAction
-import com.github.kr328.ibr.action.EditAppUserSetEnabledAction
+import com.github.kr328.ibr.action.*
 import com.github.kr328.ibr.state.EditAppState
 import com.github.kr328.ibr.view.SettingAppInfo
 import com.github.kr328.ibr.view.SettingButton
@@ -65,6 +63,7 @@ class EditAppActivity : AppCompatActivity(), StoreSubscriber<EditAppState?> {
     override fun onStop() {
         super.onStop()
 
+        store.dispatch(EditAppStoppedActivityAction())
         store.unsubscribe(this)
     }
 
@@ -83,8 +82,9 @@ class EditAppActivity : AppCompatActivity(), StoreSubscriber<EditAppState?> {
             appInfo.packageName = state.packageName
             appInfo.icon = state.icon
 
+            onlineSwitch.checked = state.onlineEnable
+
             if (state.onlineRules != null) {
-                onlineSwitch.checked = state.onlineEnable
                 online.visibility = View.VISIBLE
                 onlineSwitch.checked = state.onlineEnable
                 tag.summary = state.onlineRules.tag
@@ -94,13 +94,9 @@ class EditAppActivity : AppCompatActivity(), StoreSubscriber<EditAppState?> {
             } else
                 online.visibility = View.GONE
 
-            if (state.localRules != null) {
-                localSwitch.checked = state.localEnable
-                localRule.summary = getString(R.string.edit_app_application_local_rule_set_view_rules_summary,
-                        state.localRules.rules.size)
-            } else {
-                localRule.summary = getString(R.string.edit_app_application_local_rule_set_view_rules_summary, 0)
-            }
+            localSwitch.checked = state.localEnable
+            localRule.summary = getString(R.string.edit_app_application_local_rule_set_view_rules_summary,
+                    state.localRules?.rules?.size ?: 0)
         }
     }
 }

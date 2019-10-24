@@ -24,18 +24,14 @@ class AppListLoader(private val localRules: LocalRules, private val onlineRules:
 
             packages.mapNotNull { pm.getApplicationInfoOrNull(it) }
                     .map {
-                        val status = mutableSetOf<AppListElement.RuleStatus>()
+                        val localRuleSet = localRules.queryRuleSet(it.packageName)
+                        val onlineRuleSet = onlineRules.queryRuleSetOrNull(it.packageName,
+                                cacheFirst = true, ignoreCache = false)
 
-                        if (enabled.contains(it.packageName))
-                            status += AppListElement.RuleStatus.ENABLED
-                        if (local.contains(it.packageName))
-                            status += AppListElement.RuleStatus.LOCAL
-                        if (online.contains(it.packageName))
-                            status += AppListElement.RuleStatus.ONLINE
-
-                        AppListElement(it.packageName,
+                        AppListElement(enabled.contains(it.packageName),
+                                it.packageName,
                                 it.loadLabel(pm).toString(),
-                                status,
+                                (localRuleSet?.rules?.size ?: 0) + (onlineRuleSet?.rules?.size ?: 0),
                                 it.loadIcon(pm))
                     }
         } catch (e: Exception) {
