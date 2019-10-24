@@ -5,6 +5,7 @@ import com.github.kr328.ibr.data.LocalRules
 import com.github.kr328.ibr.data.OnlineRules
 import com.github.kr328.ibr.remote.RemoteConnection
 import com.github.kr328.ibr.remote.shared.Rule
+import com.github.kr328.ibr.remote.shared.RuleSet
 import com.github.kr328.ibr.state.AppState
 import org.rekotlin.Middleware
 import java.util.concurrent.Executors
@@ -26,7 +27,7 @@ class RemoteManager(localRules: LocalRules, onlineRules: OnlineRules) {
                                 val local = localRules.queryRuleSet(action.packgeName)
                                 val online = onlineRules.queryRuleSetOrNull(action.packgeName, cacheFirst = true, ignoreCache = false)
 
-                                val ruleSet = RemoteConnection.connection.queryRuleSet(action.packgeName)
+                                val ruleSet: RuleSet = RemoteConnection.connection.queryRuleSet(action.packgeName) ?: RuleSet()
 
                                 ruleSet.rules = ((local?.rules?.takeIf { state.editAppState.localEnable } ?: emptyList())
                                         + (online?.rules?.takeIf { state.editAppState.onlineEnable } ?: emptyList())).map {

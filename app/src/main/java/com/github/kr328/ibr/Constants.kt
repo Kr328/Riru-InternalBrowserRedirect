@@ -11,7 +11,6 @@ object Constants {
 
     const val DEFAULT_RULE_INVALIDATE = 24 * 60 * 60 * 1000L
 
-    const val REMOTE_SERVICE_VERSION = 5
     const val ACTIVITY_CONNECT_TRANSACT_CODE = 24519
 
     const val CACHE_ONLINE_RULE_PATH = "online-rules"

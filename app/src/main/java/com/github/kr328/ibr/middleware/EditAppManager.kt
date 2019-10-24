@@ -9,6 +9,7 @@ import com.github.kr328.ibr.data.LocalRules
 import com.github.kr328.ibr.data.OnlineRules
 import com.github.kr328.ibr.remote.RemoteConnection
 import com.github.kr328.ibr.remote.shared.Rule
+import com.github.kr328.ibr.remote.shared.RuleSet
 import com.github.kr328.ibr.state.AppState
 import org.rekotlin.Middleware
 import java.util.concurrent.Executors
@@ -43,7 +44,7 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                         executor.submit {
                             dispatch(EditAppSetRefreshingAction(true))
 
-                            val ruleSet = RemoteConnection.connection.queryRuleSet(action.packageName)
+                            val ruleSet: RuleSet? = RemoteConnection.connection.queryRuleSet(action.packageName)
 
                             val local = localRules.queryRuleSet(action.packageName)
 
@@ -51,13 +52,15 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                                 val online = onlineRules.queryRuleSet(action.packageName,
                                         cacheFirst = false, ignoreCache = false)
 
-                                dispatch(EditAppSetRuleSetEnabledAction(ruleSet.extras.contains("local"), ruleSet.extras.contains("online")))
+                                dispatch(EditAppSetRuleSetEnabledAction(ruleSet?.extras?.contains("local") == true,
+                                        ruleSet?.extras?.contains("online") == true))
                                 dispatch(EditAppSetRuleSetAction(online, local))
                             } catch (e: Exception) {
                                 val online = runCatching { onlineRules.queryRuleSet(action.packageName,
                                         cacheFirst = true, ignoreCache = false) }.getOrNull()
 
-                                dispatch(EditAppSetRuleSetEnabledAction(ruleSet.extras.contains("local"), ruleSet.extras.contains("online")))
+                                dispatch(EditAppSetRuleSetEnabledAction(ruleSet?.extras?.contains("local") == true,
+                                        ruleSet?.extras?.contains("online") == true))
                                 dispatch(EditAppSetRuleSetAction(online, local))
                             }
 
@@ -70,7 +73,7 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                         executor.submit {
                             dispatch(EditAppSetRefreshingAction(true))
 
-                            val ruleSet = RemoteConnection.connection.queryRuleSet(action.packageName)
+                            val ruleSet: RuleSet? = RemoteConnection.connection.queryRuleSet(action.packageName)
 
                             val local = localRules.queryRuleSet(action.packageName)
 
@@ -78,13 +81,15 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                                 val online = onlineRules.queryRuleSet(action.packageName,
                                         cacheFirst = false, ignoreCache = true)
 
-                                dispatch(EditAppSetRuleSetEnabledAction(ruleSet.extras.contains("local"), ruleSet.extras.contains("online")))
+                                dispatch(EditAppSetRuleSetEnabledAction(ruleSet?.extras?.contains("local") == true,
+                                        ruleSet?.extras?.contains("online") == true))
                                 dispatch(EditAppSetRuleSetAction(online, local))
                             } catch (e: Exception) {
                                 val online = runCatching { onlineRules.queryRuleSet(action.packageName,
                                         cacheFirst = true, ignoreCache = false) }.getOrNull()
 
-                                dispatch(EditAppSetRuleSetEnabledAction(ruleSet.extras.contains("local"), ruleSet.extras.contains("online")))
+                                dispatch(EditAppSetRuleSetEnabledAction(ruleSet?.extras?.contains("local") == true,
+                                        ruleSet?.extras?.contains("online") == true))
                                 dispatch(EditAppSetRuleSetAction(online, local))
                             }
 

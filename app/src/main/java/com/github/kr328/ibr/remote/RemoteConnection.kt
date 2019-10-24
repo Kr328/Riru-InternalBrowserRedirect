@@ -6,6 +6,7 @@ import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.compat.ServiceManager
 import com.github.kr328.ibr.compat.SystemProperties
 import com.github.kr328.ibr.remote.shared.IRemoteService
+import com.github.kr328.ibr.remote.shared.SharedVersion
 
 object RemoteConnection {
     private const val REDIRECT_SERVICE_STATUE_KEY = "sys.ibr.status"
@@ -18,7 +19,7 @@ object RemoteConnection {
 
     val connection: IRemoteService
         get() {
-            if (privateConnection.version != Constants.REMOTE_SERVICE_VERSION)
+            if (privateConnection.version != SharedVersion.VERSION_INT)
                 throw RemoteException("Invalid service version")
             return privateConnection
         }
@@ -60,7 +61,7 @@ object RemoteConnection {
 
     fun currentStatus(): RCStatus {
         return try {
-            if (RemoteConnection.privateConnection.version == Constants.REMOTE_SERVICE_VERSION)
+            if (RemoteConnection.privateConnection.version == SharedVersion.VERSION_INT)
                 RCStatus.RUNNING
             else
                 RCStatus.SERVICE_VERSION_NOT_MATCHES

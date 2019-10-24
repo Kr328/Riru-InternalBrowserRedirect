@@ -10,6 +10,7 @@ import android.os.SystemProperties;
 import com.github.kr328.ibr.remote.Constants;
 import com.github.kr328.ibr.remote.shared.IRemoteService;
 import com.github.kr328.ibr.remote.shared.RuleSet;
+import com.github.kr328.ibr.remote.shared.SharedVersion;
 
 public class RemoteService extends IRemoteService.Stub {
     private IPackageManager packageManager;
@@ -48,7 +49,7 @@ public class RemoteService extends IRemoteService.Stub {
 
     @Override
     public int getVersion() {
-        return Constants.VERSION;
+        return SharedVersion.VERSION_INT;
     }
 
     @Override
