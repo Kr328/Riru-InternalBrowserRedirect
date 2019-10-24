@@ -32,7 +32,13 @@ class OnlineRules(context: Context) {
             Json(JsonConfiguration.Stable.copy(strictMode = false))
                     .parse(StoreRuleSets.serializer(), httpClient.get("packages.json", cacheFirst, ignoreCache))
 
-    fun queryRuleSet(packageName: String, cacheFirst: Boolean, ignoreCache: Boolean): StoreRuleSet? =
+    fun queryRuleSet(packageName: String, cacheFirst: Boolean, ignoreCache: Boolean): StoreRuleSet =
             Json(JsonConfiguration.Stable.copy(strictMode = false))
                     .parse(StoreRuleSet.serializer(), httpClient.get("rules/$packageName.json", cacheFirst, ignoreCache))
+
+    fun queryRuleSetOrNull(packageName: String, cacheFirst: Boolean, ignoreCache: Boolean): StoreRuleSet? =
+            httpClient.getOrNull("rules/$packageName.json", cacheFirst, ignoreCache)?.let {
+                Json(JsonConfiguration.Stable.copy(strictMode = false))
+                        .parse(StoreRuleSet.serializer(), it)
+            }
 }

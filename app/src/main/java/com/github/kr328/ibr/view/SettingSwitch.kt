@@ -42,7 +42,7 @@ class SettingSwitch @JvmOverloads constructor(context: Context, attributeSet: At
         }
 
     override fun setOnClickListener(l: OnClickListener?) = clickable.setOnClickListener(l)
-    fun setOnCheckChangedListener(l: CompoundButton.OnCheckedChangeListener) = switch.setOnCheckedChangeListener(l)
+    fun setOnCheckChangedListener(l: (CompoundButton, Boolean) -> Unit) = switch.setOnCheckedChangeListener(l)
 
     private val titleView: TextView
     private val summaryView: TextView

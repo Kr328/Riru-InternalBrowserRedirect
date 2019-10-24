@@ -7,6 +7,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.kr328.ibr.action.EditAppCreatedActivityAction
 import com.github.kr328.ibr.action.EditAppRefreshAction
 import com.github.kr328.ibr.action.EditAppStartedActivityAction
+import com.github.kr328.ibr.action.EditAppUserSetEnabledAction
 import com.github.kr328.ibr.state.EditAppState
 import com.github.kr328.ibr.view.SettingAppInfo
 import com.github.kr328.ibr.view.SettingButton
@@ -38,6 +39,12 @@ class EditAppActivity : AppCompatActivity(), StoreSubscriber<EditAppState?> {
         swipe.isRefreshing = true
         swipe.setOnRefreshListener {
             store.dispatch(EditAppRefreshAction(currentPackageName))
+        }
+        onlineSwitch.setOnCheckChangedListener { _, _ ->
+            store.dispatch(EditAppUserSetEnabledAction(currentPackageName, onlineSwitch.checked, localSwitch.checked))
+        }
+        localSwitch.setOnCheckChangedListener { _, _ ->
+            store.dispatch(EditAppUserSetEnabledAction(currentPackageName, onlineSwitch.checked, localSwitch.checked))
         }
 
         store.dispatch(EditAppCreatedActivityAction(currentPackageName))

@@ -6,6 +6,7 @@ import com.github.kr328.ibr.data.LocalRules
 import com.github.kr328.ibr.data.OnlineRules
 import com.github.kr328.ibr.middleware.AppListManager
 import com.github.kr328.ibr.middleware.EditAppManager
+import com.github.kr328.ibr.middleware.RemoteManager
 import com.github.kr328.ibr.reducer.AppReducer
 import org.rekotlin.Store
 import java.util.concurrent.Executors
@@ -19,7 +20,8 @@ class MainApplication : Application() {
                 state = null,
                 middleware = listOf(
                         AppListManager(this, localRules, onlineRules).handler,
-                        EditAppManager(this, localRules, onlineRules).handler
+                        EditAppManager(this, localRules, onlineRules).handler,
+                        RemoteManager(localRules, onlineRules).handler
                 )
         ).apply {
             val original = dispatchFunction
