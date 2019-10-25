@@ -3,7 +3,7 @@ apply plugin: 'rirutools.dex'
 
 dex {
     output = "api.jar"
-    
+
     platform = "android-29"
     buildTools = "29.0.2"
 }

@@ -1,9 +1,6 @@
 package android.os;
 
 public class ShellCallback implements Parcelable {
-    private ShellCallback(Parcel in) {
-    }
-
     public static final Creator<ShellCallback> CREATOR = new Creator<ShellCallback>() {
         @Override
         public ShellCallback createFromParcel(Parcel in) {
@@ -15,6 +12,9 @@ public class ShellCallback implements Parcelable {
             return new ShellCallback[size];
         }
     };
+
+    private ShellCallback(Parcel in) {
+    }
 
     @Override
     public int describeContents() {
