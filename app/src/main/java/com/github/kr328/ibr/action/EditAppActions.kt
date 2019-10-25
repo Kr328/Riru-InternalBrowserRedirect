@@ -6,7 +6,7 @@ import org.rekotlin.Action
 
 data class EditAppCreatedActivityAction(val packageName: String) : Action
 data class EditAppStartedActivityAction(val packageName: String) : Action
-class EditAppStoppedActivityAction(): Action
+class EditAppStoppedActivityAction : Action
 data class EditAppUserSetEnabledAction(val packageName: String, val onlineEnable: Boolean, val localEnable: Boolean) : Action
 
 data class EditAppRefreshAction(val packageName: String) : Action

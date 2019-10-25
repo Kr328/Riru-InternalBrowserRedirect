@@ -31,7 +31,8 @@ class AppListLoader(private val localRules: LocalRules, private val onlineRules:
                         AppListElement(enabled.contains(it.packageName),
                                 it.packageName,
                                 it.loadLabel(pm).toString(),
-                                (localRuleSet?.rules?.size ?: 0) + (onlineRuleSet?.rules?.size ?: 0),
+                                (localRuleSet?.rules?.size ?: 0) + (onlineRuleSet?.rules?.size
+                                        ?: 0),
                                 it.loadIcon(pm))
                     }
         } catch (e: Exception) {

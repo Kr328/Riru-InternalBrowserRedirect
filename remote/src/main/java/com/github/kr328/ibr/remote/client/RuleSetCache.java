@@ -14,13 +14,13 @@ class RuleSetCache {
 
     RuleSet getRuleSet(String packageName) throws RemoteException {
         String serviceLastUpdate = SystemProperties.get(Constants.LAST_UPDATE_KEY, "");
-        if ( serviceLastUpdate.isEmpty() || !lastUpdate.equals(serviceLastUpdate) ) {
+        if (serviceLastUpdate.isEmpty() || !lastUpdate.equals(serviceLastUpdate)) {
             cache.clear();
             lastUpdate = serviceLastUpdate;
         }
 
         RuleSet result = cache.get(packageName);
-        if ( result == null )
+        if (result == null)
             return cache.put(packageName, ClientConnection.getConnection().queryRuleSet(packageName));
 
         return result;

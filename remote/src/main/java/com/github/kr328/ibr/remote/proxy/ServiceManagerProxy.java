@@ -1,8 +1,6 @@
 package com.github.kr328.ibr.remote.proxy;
 
 import android.annotation.SuppressLint;
-import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.IPermissionController;
 import android.os.IServiceManager;
@@ -15,7 +13,6 @@ import com.android.internal.os.BinderInternal;
 import com.github.kr328.ibr.remote.Constants;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 @SuppressWarnings("JavaReflectionMemberAccess")
 @SuppressLint("PrivateApi")
@@ -118,9 +115,11 @@ public class ServiceManagerProxy implements IServiceManager {
         public IBinder addService(String name, IBinder service) {
             return service;
         }
+
         public IBinder getService(String name, IBinder service) {
             return service;
         }
+
         public IBinder checkService(String name, IBinder service) {
             return service;
         }

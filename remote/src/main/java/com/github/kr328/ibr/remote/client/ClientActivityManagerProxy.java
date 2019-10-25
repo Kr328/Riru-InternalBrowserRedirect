@@ -24,7 +24,7 @@ public class ClientActivityManagerProxy extends BaseClientActivityManagerProxy {
         try {
             RuleSet ruleSet = cache.getRuleSet(payloads.callingPackage);
 
-            if ( ruleSet == null )
+            if (ruleSet == null)
                 return;
 
             if (ruleSet.debug) {

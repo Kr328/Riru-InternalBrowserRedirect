@@ -12,7 +12,7 @@ class ClientConnection {
     private static IClientService connection;
 
     static IClientService getConnection() {
-        if ( connection == null )
+        if (connection == null)
             openConnection();
 
         return connection;
@@ -33,8 +33,7 @@ class ClientConnection {
         } catch (Exception e) {
             Log.e(Constants.TAG, "Unable to connect client service", e);
             connection = new IClientService.Default();
-        }
-        finally {
+        } finally {
             data.recycle();
             reply.recycle();
         }

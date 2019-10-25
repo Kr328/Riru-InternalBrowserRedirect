@@ -15,10 +15,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 class StoreManager {
-    private HashMap<String, RuleSet> ruleSets = new HashMap<>();
     private static StoreManager INSTANCE = new StoreManager();
+    private HashMap<String, RuleSet> ruleSets = new HashMap<>();
 
-    private StoreManager() {}
+    private StoreManager() {
+    }
 
     static StoreManager getInstance() {
         return INSTANCE;

@@ -20,6 +20,11 @@ public class RemoteService extends IRemoteService.Stub {
     private IPackageManager packageManager;
     private IActivityManager activityManager;
 
+    RemoteService() {
+        StoreManager.getInstance().load();
+        SystemProperties.set(Constants.LAST_UPDATE_KEY, String.valueOf(System.currentTimeMillis()));
+    }
+
     private IPackageManager getPackageManager() {
         if (packageManager == null)
             packageManager = IPackageManager.Stub.asInterface(ServiceManager.getService("package"));
@@ -27,7 +32,7 @@ public class RemoteService extends IRemoteService.Stub {
     }
 
     private IActivityManager getActivityManager() {
-        if ( activityManager == null ) {
+        if (activityManager == null) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
                 activityManager = ActivityManagerNative.Stub.asInterface(ServiceManager.getService("activity"));
             else
@@ -57,11 +62,6 @@ public class RemoteService extends IRemoteService.Stub {
         return true;
     }
 
-    RemoteService() {
-        StoreManager.getInstance().load();
-        SystemProperties.set(Constants.LAST_UPDATE_KEY, String.valueOf(System.currentTimeMillis()));
-    }
-
     @Override
     public int getVersion() {
         return SharedVersion.VERSION_INT;
@@ -79,7 +79,7 @@ public class RemoteService extends IRemoteService.Stub {
 
     @Override
     public void updateRuleSet(String packageName, RuleSet ruleSet) throws RemoteException {
-        if ( StoreManager.getInstance().getRuleSet(packageName) == null ) {
+        if (StoreManager.getInstance().getRuleSet(packageName) == null) {
             long identity = Binder.clearCallingIdentity();
             getActivityManager().forceStopPackage(packageName, UserHandleUtils.getUserIdFromUid(Binder.getCallingUid()));
             Binder.restoreCallingIdentity(identity);
@@ -92,7 +92,7 @@ public class RemoteService extends IRemoteService.Stub {
 
     @Override
     public void removeRuleSet(String packageName) throws RemoteException {
-        if ( StoreManager.getInstance().getRuleSet(packageName) != null ) {
+        if (StoreManager.getInstance().getRuleSet(packageName) != null) {
             long identity = Binder.clearCallingIdentity();
             getActivityManager().forceStopPackage(packageName, UserHandleUtils.getUserIdFromUid(Binder.getCallingUid()));
             Binder.restoreCallingIdentity(identity);

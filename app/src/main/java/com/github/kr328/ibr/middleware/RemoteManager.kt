@@ -1,7 +1,5 @@
 package com.github.kr328.ibr.middleware
 
-import android.util.Log
-import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.action.RemoteUpdateRuleSetAction
 import com.github.kr328.ibr.data.LocalRules
 import com.github.kr328.ibr.data.OnlineRules
@@ -10,7 +8,6 @@ import com.github.kr328.ibr.remote.shared.Rule
 import com.github.kr328.ibr.remote.shared.RuleSet
 import com.github.kr328.ibr.state.AppState
 import org.rekotlin.Middleware
-import java.lang.Exception
 import java.util.concurrent.Executors
 
 class RemoteManager(localRules: LocalRules, onlineRules: OnlineRules) {
@@ -19,21 +16,24 @@ class RemoteManager(localRules: LocalRules, onlineRules: OnlineRules) {
     val handler: Middleware<AppState> = { _, getState ->
         { next ->
             { action ->
-                when ( action ) {
+                when (action) {
                     is RemoteUpdateRuleSetAction -> {
                         executor.submit {
                             val state = getState()
 
-                            if ( state?.editAppState?.localEnable != true && state?.editAppState?.onlineEnable != true )
+                            if (state?.editAppState?.localEnable != true && state?.editAppState?.onlineEnable != true)
                                 RemoteConnection.connection.removeRuleSet(action.packgeName)
                             else {
                                 val local = localRules.queryRuleSet(action.packgeName)
                                 val online = onlineRules.queryRuleSetOrNull(action.packgeName, cacheFirst = true, ignoreCache = false)
 
-                                val ruleSet: RuleSet = RemoteConnection.connection.queryRuleSet(action.packgeName) ?: RuleSet()
+                                val ruleSet: RuleSet = RemoteConnection.connection.queryRuleSet(action.packgeName)
+                                        ?: RuleSet()
 
-                                ruleSet.rules = ((local?.rules?.takeIf { state.editAppState.localEnable } ?: emptyList())
-                                        + (online?.rules?.takeIf { state.editAppState.onlineEnable } ?: emptyList())).map {
+                                ruleSet.rules = ((local?.rules?.takeIf { state.editAppState.localEnable }
+                                        ?: emptyList())
+                                        + (online?.rules?.takeIf { state.editAppState.onlineEnable }
+                                        ?: emptyList())).map {
                                     Rule().apply {
                                         tag = it.tag
                                         urlPath = it.urlSource

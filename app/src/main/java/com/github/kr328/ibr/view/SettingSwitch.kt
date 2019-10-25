@@ -42,7 +42,7 @@ class SettingSwitch @JvmOverloads constructor(context: Context, attributeSet: At
             switch.isChecked = value
             switch.setOnCheckedChangeListener(onCheckedListener)
         }
-    private var onCheckedListener: (CompoundButton, Boolean) -> Unit = {_, _ -> }
+    private var onCheckedListener: (CompoundButton, Boolean) -> Unit = { _, _ -> }
 
     override fun setOnClickListener(l: OnClickListener?) = clickable.setOnClickListener(l)
     fun setOnCheckChangedListener(l: (CompoundButton, Boolean) -> Unit) {
