@@ -7,7 +7,7 @@ import android.content.pm.PackageManager
 import com.github.kr328.ibr.data.LocalRules
 import com.github.kr328.ibr.data.OnlineRules
 import com.github.kr328.ibr.model.AppListElement
-import com.github.kr328.ibr.model.StoreRuleSets
+import com.github.kr328.ibr.model.RuleSetsStore
 import com.github.kr328.ibr.remote.RemoteConnection
 
 class AppListLoader(private val localRules: LocalRules, private val onlineRules: OnlineRules, private val context: Context) {
@@ -16,9 +16,9 @@ class AppListLoader(private val localRules: LocalRules, private val onlineRules:
             val pm = context.packageManager
 
             val enabled = RemoteConnection.connection.queryEnabledPackages().toSet()
-            val local = localRules.queryRuleSets().packages.map(StoreRuleSets.Data::packageName).toSet()
+            val local = localRules.queryRuleSets().packages.map(RuleSetsStore.Data::packageName).toSet()
             val online = onlineRules.queryRuleSets(cacheFirst, ignoreCache)
-                    .packages.map(StoreRuleSets.Data::packageName).toSet()
+                    .packages.map(RuleSetsStore.Data::packageName).toSet()
 
             val packages = enabled.union(local).union(online)
 
