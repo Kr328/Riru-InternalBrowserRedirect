@@ -1,7 +1,10 @@
 package com.github.kr328.ibr.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
 interface RuleSetDao {
@@ -23,9 +26,6 @@ interface RuleSetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOnlineRuleSets(onlineRuleSets: List<OnlineRuleSetEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addOnlineRuleSet(onlineRuleSet: OnlineRuleSetEntity)
-
     @Query("DELETE FROM online_rule_set WHERE package_name in (:packages)")
     fun removeOnlineRuleSets(packages: Collection<String>)
 
@@ -34,4 +34,7 @@ interface RuleSetDao {
 
     @Query("SELECT * FROM online_rule_set")
     fun observeOnlineRuleSets(): LiveData<List<OnlineRuleSetEntity>>
+
+    @Query("SELECT * FROM online_rule_set WHERE package_name = :packageName")
+    fun observerOnlineRuleSet(packageName: String): LiveData<OnlineRuleSetEntity>
 }

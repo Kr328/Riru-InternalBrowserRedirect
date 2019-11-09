@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EditAppActivity" android:exported="false"/>
+        <activity android:name=".AppEditActivity" android:exported="false"/>
         <activity android:name=".SettingsActivity" android:exported="false" />
         <activity android:name=".FirstInstallActivity" android:exported="true"
             android:theme="@android:style/Theme.NoDisplay" />

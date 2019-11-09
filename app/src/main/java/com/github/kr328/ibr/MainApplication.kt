@@ -3,7 +3,6 @@ package com.github.kr328.ibr
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.github.kr328.ibr.components.Components
 import com.github.kr328.ibr.data.LocalRules
 import com.github.kr328.ibr.data.OnlineRuleRemote
 import com.github.kr328.ibr.data.RuleDatabase

@@ -8,12 +8,15 @@ import androidx.lifecycle.MediatorLiveData
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.command.CommandChannel
-import com.github.kr328.ibr.data.*
+import com.github.kr328.ibr.data.LocalRuleSetEntity
+import com.github.kr328.ibr.data.OnlineRuleEntity
+import com.github.kr328.ibr.data.OnlineRuleSetEntity
+import com.github.kr328.ibr.data.OutOfDateEntity
 import com.github.kr328.ibr.model.AppListElement
+import com.github.kr328.ibr.model.RuleSetStore
 import com.github.kr328.ibr.model.RuleSetsStore
 import com.github.kr328.ibr.remote.RemoteConnection
 import java.util.concurrent.Executors
-import java.util.stream.Collectors
 import kotlin.streams.toList
 
 class AppListComponent(private val application: MainApplication) {
@@ -100,34 +103,37 @@ class AppListComponent(private val application: MainApplication) {
             val removePackages = currentPackages - targetPackages
             val newPackages = targetPackages - currentPackages
 
-            ruleSetDao.removeOnlineRuleSets(removePackages)
-            newPackages.parallelStream().map { pkg ->
+
+            val newRuleSets = newPackages.parallelStream().map { pkg ->
                 try {
                     pkg to application.onlineRuleRemote.queryRuleSet(pkg, cacheFirst = false, ignoreCache = true)
                 } catch (e: Exception) {
                     Log.w(Constants.TAG, "Download $pkg rule failure")
                     null
                 }
-            }.filter {
-                it != null
-            }.map {
-                it!!
-            }.peek {
-                ruleSetDao.addOnlineRuleSet(OnlineRuleSetEntity(it.first, it.second.tag, it.second.authors))
-            }.flatMap {
-                it.second.rules.mapIndexed { index, rule ->
-                    OnlineRuleEntity(it.first,
-                            index,
-                            rule.tag,
-                            rule.urlSource.toString(),
-                            rule.urlFilters.ignore.pattern,
-                            rule.urlFilters.force.pattern)
-                }.stream()
-            }.toList().apply(ruleDao::saveAllOnlineRules)
+            }.toList().filterNotNull()
 
-            application.database.outOfDateDao()
-                    .saveOutOfDate(OutOfDateEntity("set:online_rule_set",
-                            System.currentTimeMillis() + Constants.DEFAULT_RULE_INVALIDATE))
+            application.database.runInTransaction {
+                ruleSetDao.addOnlineRuleSets(newRuleSets.map {
+                    OnlineRuleSetEntity(it.first, it.second.tag, it.second.authors)
+                })
+                ruleSetDao.removeOnlineRuleSets(removePackages)
+
+                newRuleSets.flatMap {
+                    it.second.rules.mapIndexed { index, rule ->
+                        OnlineRuleEntity(it.first,
+                                index,
+                                rule.tag,
+                                rule.urlSource.toString(),
+                                rule.urlFilters.ignore.pattern,
+                                rule.urlFilters.force.pattern)
+                    }
+                }.apply(ruleDao::saveAllOnlineRules)
+
+                application.database.outOfDateDao()
+                        .saveOutOfDate(OutOfDateEntity("set:online_rule_set",
+                                System.currentTimeMillis() + Constants.DEFAULT_RULE_INVALIDATE))
+            }
         } catch (e: Exception) {
             Log.w(Constants.TAG, "Update rule set failure", e)
         }
