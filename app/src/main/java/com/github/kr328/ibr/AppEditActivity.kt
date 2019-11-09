@@ -19,6 +19,7 @@ class AppEditActivity : AppCompatActivity() {
 
     private val swipe by lazy { findViewById<SwipeRefreshLayout>(R.id.activity_edit_app_swipe) }
     private val appInfo by lazy { findViewById<SettingAppInfo>(R.id.activity_edit_app_app_info) }
+    private val debugSwitch by lazy { findViewById<SettingSwitch>(R.id.activity_edit_app_debug_mode) }
     private val onlineSwitch by lazy { findViewById<SettingSwitch>(R.id.activity_edit_app_online_enable) }
     private val tag by lazy { findViewById<SettingButton>(R.id.activity_edit_app_online_tag) }
     private val author by lazy { findViewById<SettingButton>(R.id.activity_edit_app_online_author) }
@@ -33,11 +34,15 @@ class AppEditActivity : AppCompatActivity() {
         swipe.setOnRefreshListener {
 
         }
-        onlineSwitch.setOnCheckChangedListener { _, _ ->
 
+        debugSwitch.setOnCheckChangedListener { _, checked ->
+            component.commandChannel.sendCommand(AppEditComponent.COMMAND_SET_DEBUG_ENABLED, checked)
         }
-        localSwitch.setOnCheckChangedListener { _, _ ->
-
+        onlineSwitch.setOnCheckChangedListener { _, checked ->
+            component.commandChannel.sendCommand(AppEditComponent.COMMAND_SET_ONLINE_ENABLED, checked)
+        }
+        localSwitch.setOnCheckChangedListener { _, checked ->
+            component.commandChannel.sendCommand(AppEditComponent.COMMAND_SET_LOCAL_ENABLED, checked)
         }
 
         component.onlineRuleSet.observe(this) {
@@ -59,7 +64,14 @@ class AppEditActivity : AppCompatActivity() {
             appInfo.name = it.name
             appInfo.version = it.version
             appInfo.icon = it.icon
+
             root.visibility = View.VISIBLE
+        }
+
+        component.commandChannel.registerReceiver(AppEditComponent.COMMAND_INITIAL_FEATURE_ENABLED) {_, e: AppEditComponent.FeatureEnabled? ->
+            debugSwitch.checked = e?.debug ?: false
+            onlineSwitch.checked = e?.online ?: false
+            localSwitch.checked = e?.local ?: false
         }
 
         if ( component.onlineRuleSet.value == null )
@@ -68,5 +80,11 @@ class AppEditActivity : AppCompatActivity() {
             online.visibility = View.VISIBLE
 
         root.visibility = View.INVISIBLE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        component.shutdown()
     }
 }

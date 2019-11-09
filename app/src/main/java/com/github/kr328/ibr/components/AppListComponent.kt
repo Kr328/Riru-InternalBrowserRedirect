@@ -20,8 +20,8 @@ import kotlin.streams.toList
 
 class AppListComponent(private val application: MainApplication) {
     companion object {
-        const val REFRESH_ONLINE_RULES = "refresh_online_rules"
-        const val SHOW_REFRESHING = "show_refreshing"
+        const val COMMAND_REFRESH_ONLINE_RULES = "refresh_online_rules"
+        const val COMMAND_SHOW_REFRESHING = "show_refreshing"
     }
 
     private val executor = Executors.newSingleThreadExecutor()
@@ -40,15 +40,19 @@ class AppListComponent(private val application: MainApplication) {
             return@addSource
         }
 
-        commandChannel.registerReceiver(REFRESH_ONLINE_RULES) { _, force: Boolean? ->
+        commandChannel.registerReceiver(COMMAND_REFRESH_ONLINE_RULES) { _, force: Boolean? ->
             executor.submit {
                 refreshOnlineRuleSet(force ?: false)
             }
         }
     }
 
+    fun shutdown() {
+        executor.shutdown()
+    }
+
     private fun loadAppList(local: List<LocalRuleSetEntity>?, online: List<OnlineRuleSetEntity>?) {
-        commandChannel.sendCommand(SHOW_REFRESHING, true, 250)
+        commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, true, 250)
 
         try {
             val pm = application.packageManager
@@ -79,15 +83,15 @@ class AppListComponent(private val application: MainApplication) {
             Log.w(Constants.TAG, "Load data failure", e)
         }
 
-        commandChannel.cancelCommand(SHOW_REFRESHING)
-        commandChannel.sendCommand(SHOW_REFRESHING, false)
+        commandChannel.cancelCommand(COMMAND_SHOW_REFRESHING)
+        commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, false)
     }
 
     private fun refreshOnlineRuleSet(force: Boolean) {
         if (!force && (application.database.outOfDateDao().queryOutOfDate("set:online_rule_set")
                         ?: -1L) > System.currentTimeMillis()) return
 
-        commandChannel.sendCommand(SHOW_REFRESHING, true)
+        commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, true)
 
         try {
             val ruleSet = application.onlineRuleRemote.queryRuleSets()
@@ -137,7 +141,7 @@ class AppListComponent(private val application: MainApplication) {
             Log.w(Constants.TAG, "Update rule set failure", e)
         }
 
-        commandChannel.sendCommand(SHOW_REFRESHING, false)
+        commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, false)
     }
 
     private fun PackageManager.getApplicationInfoOrNull(packageName: String): ApplicationInfo? {

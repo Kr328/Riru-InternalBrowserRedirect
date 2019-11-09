@@ -74,4 +74,6 @@
     <string name="edit_app_application_online_rule_set_tag">TAG</string>
     <string name="edit_app_application_online_rule_set_view_rules">查看规则</string>
     <string name="edit_app_application_online_rule_set_view_rules_summary">%d 条规则</string>
+    <string name="edit_app_application_title">应用设置</string>
+    <string name="setting_title">设置</string>
 </resources>

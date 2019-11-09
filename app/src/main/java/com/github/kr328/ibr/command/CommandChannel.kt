@@ -3,7 +3,7 @@ package com.github.kr328.ibr.command
 import android.os.Handler
 import android.os.Message
 
-class CommandChannel() {
+class CommandChannel {
     private class H(val handle: (Message) -> Unit) : Handler() {
         override fun handleMessage(msg: Message) {
             handle(msg)

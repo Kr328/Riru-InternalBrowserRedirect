@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         appList.layoutManager = LinearLayoutManager(this)
 
         swipe.setOnRefreshListener {
-            component.commandChannel.sendCommand(AppListComponent.REFRESH_ONLINE_RULES, true)
+            component.commandChannel.sendCommand(AppListComponent.COMMAND_REFRESH_ONLINE_RULES, true)
         }
 
         component.elements.observe(this, this::updateList)
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        component.commandChannel.registerReceiver(AppListComponent.SHOW_REFRESHING) { _, show: Boolean? ->
+        component.commandChannel.registerReceiver(AppListComponent.COMMAND_SHOW_REFRESHING) { _, show: Boolean? ->
             runOnUiThread {
                 if ( show != swipe.isRefreshing ) {
                     swipe.isRefreshing = show ?: false
@@ -65,13 +65,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        component.commandChannel.sendCommand(AppListComponent.REFRESH_ONLINE_RULES, false)
+        component.commandChannel.sendCommand(AppListComponent.COMMAND_REFRESH_ONLINE_RULES, false)
     }
 
     override fun onStop() {
         super.onStop()
 
-        component.commandChannel.unregisterReceiver(AppListComponent.SHOW_REFRESHING)
+        component.commandChannel.unregisterReceiver(AppListComponent.COMMAND_SHOW_REFRESHING)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        component.shutdown()
     }
 
     private fun updateList(list: List<AppListElement>) {
