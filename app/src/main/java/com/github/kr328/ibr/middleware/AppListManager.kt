@@ -3,14 +3,14 @@ package com.github.kr328.ibr.middleware
 import android.content.Context
 import com.github.kr328.ibr.action.*
 import com.github.kr328.ibr.data.LocalRules
-import com.github.kr328.ibr.data.OnlineRules
+import com.github.kr328.ibr.data.OnlineRuleRemote
 import com.github.kr328.ibr.state.AppState
 import com.github.kr328.ibr.tools.AppListLoader
 import org.rekotlin.Middleware
 import java.util.concurrent.Executors
 
-class AppListManager(context: Context, localRules: LocalRules, onlineRules: OnlineRules) {
-    private val loader = AppListLoader(localRules, onlineRules, context)
+class AppListManager(context: Context, localRules: LocalRules, onlineRuleRemote: OnlineRuleRemote) {
+    private val loader = AppListLoader(localRules, onlineRuleRemote, context)
     private val executor = Executors.newSingleThreadExecutor()
 
     val handler: Middleware<AppState> = { dispatch, _ ->

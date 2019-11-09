@@ -10,7 +10,7 @@ import com.github.kr328.ibr.utils.SimpleCachedHttpClient
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 
-class OnlineRules(context: Context) {
+class OnlineRuleRemote(context: Context) {
     private val preference = context.getSharedPreferences(BuildConfig.APPLICATION_ID + ".general", Context.MODE_PRIVATE)
     private val httpClient = SimpleCachedHttpClient(context.cacheDir.resolve(Constants.CACHE_ONLINE_RULE_PATH), buildBaseUrl())
 

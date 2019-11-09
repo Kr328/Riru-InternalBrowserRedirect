@@ -5,19 +5,19 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 
 import com.github.kr328.ibr.data.LocalRules
-import com.github.kr328.ibr.data.OnlineRules
+import com.github.kr328.ibr.data.OnlineRuleRemote
 import com.github.kr328.ibr.model.AppListElement
 import com.github.kr328.ibr.model.RuleSetsStore
 import com.github.kr328.ibr.remote.RemoteConnection
 
-class AppListLoader(private val localRules: LocalRules, private val onlineRules: OnlineRules, private val context: Context) {
+class AppListLoader(private val localRules: LocalRules, private val onlineRuleRemote: OnlineRuleRemote, private val context: Context) {
     fun load(cacheFirst: Boolean, ignoreCache: Boolean): List<AppListElement>? {
         return try {
             val pm = context.packageManager
 
             val enabled = RemoteConnection.connection.queryEnabledPackages().toSet()
             val local = localRules.queryRuleSets().packages.map(RuleSetsStore.Data::packageName).toSet()
-            val online = onlineRules.queryRuleSets(cacheFirst, ignoreCache)
+            val online = onlineRuleRemote.queryRuleSets(cacheFirst, ignoreCache)
                     .packages.map(RuleSetsStore.Data::packageName).toSet()
 
             val packages = enabled.union(local).union(online)
@@ -25,7 +25,7 @@ class AppListLoader(private val localRules: LocalRules, private val onlineRules:
             packages.mapNotNull { pm.getApplicationInfoOrNull(it) }
                     .map {
                         val localRuleSet = localRules.queryRuleSet(it.packageName)
-                        val onlineRuleSet = onlineRules.queryRuleSetOrNull(it.packageName,
+                        val onlineRuleSet = onlineRuleRemote.queryRuleSetOrNull(it.packageName,
                                 cacheFirst = true, ignoreCache = false)
 
                         AppListElement(enabled.contains(it.packageName),

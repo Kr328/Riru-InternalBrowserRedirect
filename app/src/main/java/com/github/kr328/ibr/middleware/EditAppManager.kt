@@ -6,14 +6,14 @@ import android.graphics.drawable.ColorDrawable
 import com.github.kr328.ibr.R
 import com.github.kr328.ibr.action.*
 import com.github.kr328.ibr.data.LocalRules
-import com.github.kr328.ibr.data.OnlineRules
+import com.github.kr328.ibr.data.OnlineRuleRemote
 import com.github.kr328.ibr.remote.RemoteConnection
 import com.github.kr328.ibr.remote.shared.RuleSet
 import com.github.kr328.ibr.state.AppState
 import org.rekotlin.Middleware
 import java.util.concurrent.Executors
 
-class EditAppManager(context: Context, localRules: LocalRules, onlineRules: OnlineRules) {
+class EditAppManager(context: Context, localRules: LocalRules, onlineRuleRemote: OnlineRuleRemote) {
     private val executor = Executors.newSingleThreadExecutor()
 
     val handler: Middleware<AppState> = { dispatch, _ ->
@@ -48,7 +48,7 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                             val local = localRules.queryRuleSet(action.packageName)
 
                             try {
-                                val online = onlineRules.queryRuleSet(action.packageName,
+                                val online = onlineRuleRemote.queryRuleSet(action.packageName,
                                         cacheFirst = false, ignoreCache = false)
 
                                 dispatch(EditAppSetRuleSetEnabledAction(ruleSet?.extras?.contains("local") == true,
@@ -56,7 +56,7 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                                 dispatch(EditAppSetRuleSetAction(online, local))
                             } catch (e: Exception) {
                                 val online = runCatching {
-                                    onlineRules.queryRuleSet(action.packageName,
+                                    onlineRuleRemote.queryRuleSet(action.packageName,
                                             cacheFirst = true, ignoreCache = false)
                                 }.getOrNull()
 
@@ -79,7 +79,7 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                             val local = localRules.queryRuleSet(action.packageName)
 
                             try {
-                                val online = onlineRules.queryRuleSet(action.packageName,
+                                val online = onlineRuleRemote.queryRuleSet(action.packageName,
                                         cacheFirst = false, ignoreCache = true)
 
                                 dispatch(EditAppSetRuleSetEnabledAction(ruleSet?.extras?.contains("local") == true,
@@ -87,7 +87,7 @@ class EditAppManager(context: Context, localRules: LocalRules, onlineRules: Onli
                                 dispatch(EditAppSetRuleSetAction(online, local))
                             } catch (e: Exception) {
                                 val online = runCatching {
-                                    onlineRules.queryRuleSet(action.packageName,
+                                    onlineRuleRemote.queryRuleSet(action.packageName,
                                             cacheFirst = true, ignoreCache = false)
                                 }.getOrNull()
 

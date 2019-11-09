@@ -7,21 +7,19 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.github.kr328.ibr.action.AppListRefreshAction
-import com.github.kr328.ibr.action.AppListStartedAction
 import com.github.kr328.ibr.adapters.AppListAdapter
-import com.github.kr328.ibr.state.AppListState
-import org.rekotlin.StoreSubscriber
+import com.github.kr328.ibr.components.AppListComponent
+import com.github.kr328.ibr.model.AppListElement
 
-class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
-    private val store by lazy { MainApplication.fromContext(this).store }
-
+class MainActivity : AppCompatActivity() {
     private val swipe: SwipeRefreshLayout by lazy { findViewById<SwipeRefreshLayout>(R.id.activity_main_main_swipe) }
     private val appList: RecyclerView by lazy { findViewById<RecyclerView>(R.id.activity_main_main_list) }
+    private val component: AppListComponent by lazy { AppListComponent(MainApplication.fromContext(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +31,10 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
         appList.layoutManager = LinearLayoutManager(this)
 
         swipe.setOnRefreshListener {
-            store.dispatch(AppListRefreshAction())
+            component.commandChannel.sendCommand(AppListComponent.REFRESH_ONLINE_RULES, true)
         }
+
+        component.elements.observe(this, this::updateList)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -54,51 +54,44 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppListState?> {
         return true
     }
 
-    override fun newState(state: AppListState?) {
-        runOnUiThread {
-            val data = state?.list ?: emptyList()
-            val progress = state?.progress == true
-            val adapter = appList.adapter as AppListAdapter
-            val oldData = adapter.appListElement
-
-            if (data !== oldData) {
-                val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-                    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                            oldData[oldItemPosition].packageName == data[newItemPosition].packageName
-
-                    override fun getOldListSize(): Int = oldData.size
-
-                    override fun getNewListSize(): Int = data.size
-
-                    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                            oldData[oldItemPosition].equalsBase(data[newItemPosition])
-                })
-
-                result.dispatchUpdatesTo(adapter)
-                adapter.appListElement = data
-            }
-
-            if (swipe.isRefreshing != progress)
-                swipe.isRefreshing = progress
-        }
-    }
-
     override fun onStart() {
         super.onStart()
 
-        store.subscribe(this) { appState ->
-            appState.select {
-                it.appListState
+        component.commandChannel.registerReceiver(AppListComponent.SHOW_REFRESHING) { _, show: Boolean? ->
+            runOnUiThread {
+                if ( show != swipe.isRefreshing ) {
+                    swipe.isRefreshing = show ?: false
+                }
             }
         }
 
-        store.dispatch(AppListStartedAction())
+        component.commandChannel.sendCommand(AppListComponent.REFRESH_ONLINE_RULES, false)
     }
 
     override fun onStop() {
         super.onStop()
 
-        store.unsubscribe(this)
+        component.commandChannel.unregisterReceiver(AppListComponent.SHOW_REFRESHING)
+    }
+
+    private fun updateList(list: List<AppListElement>) {
+        val adapter = appList.adapter as AppListAdapter
+        val oldData = adapter.appListElement
+
+        val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                    oldData[oldItemPosition].packageName == list[newItemPosition].packageName
+
+            override fun getOldListSize(): Int = list.size
+
+            override fun getNewListSize(): Int = oldData.size
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                    oldData[oldItemPosition].equalsBase(list[newItemPosition])
+        })
+
+        adapter.appListElement = list
+        result.dispatchUpdatesTo(adapter)
     }
 
     //    private fun onError(error: AppListController.ErrorType, extras: Any) {
