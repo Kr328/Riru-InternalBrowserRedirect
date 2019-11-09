@@ -1,15 +1,11 @@
 package com.github.kr328.ibr.components
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.command.CommandChannel
-import com.github.kr328.ibr.data.LocalRuleSetEntity
-import com.github.kr328.ibr.data.OnlineRuleSetEntity
 import com.github.kr328.ibr.model.AppEditData
-import java.lang.Exception
 import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 

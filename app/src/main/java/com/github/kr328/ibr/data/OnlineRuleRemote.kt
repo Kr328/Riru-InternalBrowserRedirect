@@ -6,13 +6,13 @@ import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.SettingsActivity
 import com.github.kr328.ibr.model.RuleSetStore
 import com.github.kr328.ibr.model.RuleSetsStore
-import com.github.kr328.ibr.utils.SimpleCachedHttpClient
+import com.github.kr328.ibr.utils.SimpleRelativeHttpClient
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 
 class OnlineRuleRemote(context: Context) {
     private val preference = context.getSharedPreferences(BuildConfig.APPLICATION_ID + ".general", Context.MODE_PRIVATE)
-    private val httpClient = SimpleCachedHttpClient(context.cacheDir.resolve(Constants.CACHE_ONLINE_RULE_PATH), buildBaseUrl())
+    private val httpClient = SimpleRelativeHttpClient(buildBaseUrl())
 
     init {
         preference.registerOnSharedPreferenceChangeListener { _, _ ->
@@ -28,16 +28,16 @@ class OnlineRuleRemote(context: Context) {
         return "https://raw.githubusercontent.com/$user/$repo/$branch"
     }
 
-    fun queryRuleSets(cacheFirst: Boolean, ignoreCache: Boolean): RuleSetsStore =
+    fun queryRuleSets(): RuleSetsStore =
             Json(JsonConfiguration.Stable.copy(strictMode = false))
-                    .parse(RuleSetsStore.serializer(), httpClient.get("packages.json", cacheFirst, ignoreCache))
+                    .parse(RuleSetsStore.serializer(), httpClient.get("packages.json"))
 
-    fun queryRuleSet(packageName: String, cacheFirst: Boolean, ignoreCache: Boolean): RuleSetStore =
+    fun queryRuleSet(packageName: String): RuleSetStore =
             Json(JsonConfiguration.Stable.copy(strictMode = false))
-                    .parse(RuleSetStore.serializer(), httpClient.get("rules/$packageName.json", cacheFirst, ignoreCache))
+                    .parse(RuleSetStore.serializer(), httpClient.get("rules/$packageName.json"))
 
-    fun queryRuleSetOrNull(packageName: String, cacheFirst: Boolean, ignoreCache: Boolean): RuleSetStore? =
-            httpClient.getOrNull("rules/$packageName.json", cacheFirst, ignoreCache)?.let {
+    fun queryRuleSetOrNull(packageName: String): RuleSetStore? =
+            httpClient.getOrNull("rules/$packageName.json")?.let {
                 Json(JsonConfiguration.Stable.copy(strictMode = false))
                         .parse(RuleSetStore.serializer(), it)
             }

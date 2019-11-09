@@ -13,7 +13,6 @@ import com.github.kr328.ibr.data.OnlineRuleEntity
 import com.github.kr328.ibr.data.OnlineRuleSetEntity
 import com.github.kr328.ibr.data.OutOfDateEntity
 import com.github.kr328.ibr.model.AppListElement
-import com.github.kr328.ibr.model.RuleSetStore
 import com.github.kr328.ibr.model.RuleSetsStore
 import com.github.kr328.ibr.remote.RemoteConnection
 import java.util.concurrent.Executors
@@ -91,7 +90,7 @@ class AppListComponent(private val application: MainApplication) {
         commandChannel.sendCommand(SHOW_REFRESHING, true)
 
         try {
-            val ruleSet = application.onlineRuleRemote.queryRuleSets(cacheFirst = false, ignoreCache = true)
+            val ruleSet = application.onlineRuleRemote.queryRuleSets()
 
             val targetPackages = application.packageManager.getInstalledPackages(0).map(PackageInfo::packageName).toSet()
                     .intersect(ruleSet.packages.map(RuleSetsStore.Data::packageName).toSet())
@@ -106,7 +105,7 @@ class AppListComponent(private val application: MainApplication) {
 
             val newRuleSets = newPackages.parallelStream().map { pkg ->
                 try {
-                    pkg to application.onlineRuleRemote.queryRuleSet(pkg, cacheFirst = false, ignoreCache = true)
+                    pkg to application.onlineRuleRemote.queryRuleSet(pkg)
                 } catch (e: Exception) {
                     Log.w(Constants.TAG, "Download $pkg rule failure")
                     null

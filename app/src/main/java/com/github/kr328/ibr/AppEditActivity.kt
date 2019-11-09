@@ -5,13 +5,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.observe
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.github.kr328.ibr.action.*
 import com.github.kr328.ibr.components.AppEditComponent
-import com.github.kr328.ibr.state.EditAppState
 import com.github.kr328.ibr.view.SettingAppInfo
 import com.github.kr328.ibr.view.SettingButton
 import com.github.kr328.ibr.view.SettingSwitch
-import org.rekotlin.StoreSubscriber
 
 class AppEditActivity : AppCompatActivity() {
     private val component by lazy { AppEditComponent(MainApplication.fromContext(this),
