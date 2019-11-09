@@ -1,9 +1,13 @@
 package com.github.kr328.ibr.data
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 
 @Entity(tableName = "local_rule",
-        indices = arrayOf(Index("package_name")),
+        indices = [Index("package_name")],
+        primaryKeys = ["package_name", "index"],
         foreignKeys = [ForeignKey(entity = LocalRuleSetEntity::class,
                 parentColumns = ["package_name"],
                 childColumns = ["package_name"],
@@ -14,5 +18,4 @@ data class LocalRuleEntity(@ColumnInfo(name = "package_name") val packageName: S
                            @ColumnInfo(name = "tag") val tag: String,
                            @ColumnInfo(name = "url_source") val urlSource: String,
                            @ColumnInfo(name = "url_ignore") val urlIgnore: String,
-                           @ColumnInfo(name = "url_force") val urlForce: String,
-                           @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Long = 0)
+                           @ColumnInfo(name = "url_force") val urlForce: String)

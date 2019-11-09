@@ -7,11 +7,9 @@ import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.command.CommandChannel
 import com.github.kr328.ibr.model.AppEditData
-import com.github.kr328.ibr.remote.RemoteConnection
 import com.github.kr328.ibr.remote.shared.Rule
 import com.github.kr328.ibr.remote.shared.RuleSet
 import java.util.concurrent.Executors
-import kotlin.concurrent.thread
 
 class AppEditComponent(private val application: MainApplication,
                        val packageName: String) {
@@ -51,7 +49,7 @@ class AppEditComponent(private val application: MainApplication,
         }
         executor.submit {
             try {
-                val remote = RemoteConnection.connection.queryRuleSet(packageName)
+                val remote = application.remote.queryRuleSet(packageName) ?: return@submit
 
                 featureEnabled = FeatureEnabled(remote.debug,
                         remote.extras.contains("online"),
@@ -93,7 +91,7 @@ class AppEditComponent(private val application: MainApplication,
         executor.submit {
             try {
                 if ( !featureEnabled.online && !featureEnabled.local && !featureEnabled.debug ) {
-                    RemoteConnection.connection.removeRuleSet(packageName)
+                    application.remote.removeRuleSet(packageName)
                     return@submit
                 }
 
@@ -129,7 +127,7 @@ class AppEditComponent(private val application: MainApplication,
                     ruleSet.extras.add("online")
                 }
 
-                RemoteConnection.connection.updateRuleSet(packageName, ruleSet)
+                application.remote.updateRuleSet(packageName, ruleSet)
             }
             catch (e: Exception) {
                 Log.w(Constants.TAG, "Update remote failure")

@@ -3,6 +3,7 @@ package com.github.kr328.ibr.components
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import com.github.kr328.ibr.Constants
@@ -14,7 +15,6 @@ import com.github.kr328.ibr.data.OnlineRuleSetEntity
 import com.github.kr328.ibr.data.OutOfDateEntity
 import com.github.kr328.ibr.model.AppListElement
 import com.github.kr328.ibr.model.RuleSetsStore
-import com.github.kr328.ibr.remote.RemoteConnection
 import java.util.concurrent.Executors
 import kotlin.streams.toList
 
@@ -25,6 +25,7 @@ class AppListComponent(private val application: MainApplication) {
     }
 
     private val executor = Executors.newSingleThreadExecutor()
+    private val handler = Handler()
 
     val elements: MediatorLiveData<List<AppListElement>> = MediatorLiveData()
     val commandChannel = CommandChannel()
@@ -34,10 +35,13 @@ class AppListComponent(private val application: MainApplication) {
         val online = application.database.ruleSetDao().observeOnlineRuleSets()
 
         elements.addSource(local) {
-            executor.submit {
-                loadAppList(local = local.value, online = online.value)
-            }
-            return@addSource
+            postLoadAppList(local = local.value, online = online.value)
+        }
+        elements.addSource(online) {
+            postLoadAppList(local = local.value, online = online.value)
+        }
+        elements.addSource(application.remote.enabledPackages) {
+            postLoadAppList(local = local.value, online = online.value)
         }
 
         commandChannel.registerReceiver(COMMAND_REFRESH_ONLINE_RULES) { _, force: Boolean? ->
@@ -51,13 +55,22 @@ class AppListComponent(private val application: MainApplication) {
         executor.shutdown()
     }
 
+    private fun postLoadAppList(local: List<LocalRuleSetEntity>?, online: List<OnlineRuleSetEntity>?) {
+        handler.removeMessages(0)
+        handler.postDelayed({
+            executor.submit {
+                loadAppList(local = local, online = online)
+            }
+        }, 250)
+    }
+
     private fun loadAppList(local: List<LocalRuleSetEntity>?, online: List<OnlineRuleSetEntity>?) {
         commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, true, 250)
 
         try {
             val pm = application.packageManager
 
-            val enabledPackages = RemoteConnection.connection.queryEnabledPackages().toSet()
+            val enabledPackages = application.remote.enabledPackages.value ?: emptySet<String>()
             val localPackages = local?.map(LocalRuleSetEntity::packageName)?.toSet() ?: emptySet()
             val onlinePackages = online?.map(OnlineRuleSetEntity::packageName)?.toSet()
                     ?: emptySet()
@@ -77,6 +90,7 @@ class AppListComponent(private val application: MainApplication) {
                                 localRules.size + onlineRules.size,
                                 it.loadIcon(pm))
                     }
+                    .sortedWith(compareByDescending(AppListElement::enable).thenBy(AppListElement::name))
 
             elements.postValue(result)
         } catch (e: Exception) {

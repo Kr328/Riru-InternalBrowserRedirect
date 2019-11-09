@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AppEditActivity" android:label="@string/edit_app_application_title" android:exported="false"/>
+        <activity android:name=".RuleViewerActivity" android:exported="false" />
         <activity android:name=".SettingsActivity" android:label="@string/setting_title" android:exported="false" />
         <activity android:name=".FirstInstallActivity" android:exported="true"
             android:theme="@android:style/Theme.NoDisplay" />
