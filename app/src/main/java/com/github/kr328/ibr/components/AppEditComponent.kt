@@ -3,6 +3,7 @@ package com.github.kr328.ibr.components
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.command.CommandChannel
@@ -36,6 +37,12 @@ class AppEditComponent(private val application: MainApplication,
     val localRuleCount = application.database.ruleDao().observeLocalRuleCount(packageName)
     val appDate = MutableLiveData<AppInfoData>()
 
+    private val foreverObserver = Observer<Int> {
+        executor.submit {
+            updateRemoteServiceData()
+        }
+    }
+
     init {
         executor.submit {
             try {
@@ -64,11 +71,7 @@ class AppEditComponent(private val application: MainApplication,
             }
         }
 
-        localRuleCount.observeForever {
-            executor.submit {
-                updateRemoteServiceData()
-            }
-        }
+        localRuleCount.observeForever(foreverObserver)
 
         commandChannel.registerReceiver(COMMAND_SET_DEBUG_ENABLED, this::setFeatureEnabled)
         commandChannel.registerReceiver(COMMAND_SET_LOCAL_ENABLED, this::setFeatureEnabled)
@@ -96,6 +99,7 @@ class AppEditComponent(private val application: MainApplication,
     }
 
     fun shutdown() {
+        localRuleCount.removeObserver(foreverObserver)
         executor.shutdown()
     }
 
