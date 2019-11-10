@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.kr328.ibr.adapters.RuleViewerAdapter
 import com.github.kr328.ibr.components.RuleViewerComponent
+import com.github.kr328.ibr.dialogs.RuleEditDialog
 import com.github.kr328.ibr.model.AppInfoData
-import com.github.kr328.ibr.model.RuleSetStore
 import com.github.kr328.ibr.view.SettingAppInfo
 import com.github.kr328.ibr.view.SettingButton
 import com.github.kr328.ibr.view.SettingTitle
@@ -31,7 +31,12 @@ class RuleViewerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rule_viewer)
 
-        root.adapter = RuleViewerAdapter(this)
+        root.adapter = RuleViewerAdapter(this).apply {
+            listener = {
+                RuleEditDialog(this@RuleViewerActivity, component.type, component.packageName, it.index).createAndShow()
+            }
+        }
+
         root.layoutManager = object : LinearLayoutManager(this) {
             override fun canScrollHorizontally(): Boolean = false
             override fun canScrollVertically(): Boolean = false
@@ -43,11 +48,14 @@ class RuleViewerActivity : AppCompatActivity() {
             "local" -> {
                 supportActionBar?.title = getString(R.string.rule_viewer_activity_title_edit)
                 title.title = getString(R.string.rule_viewer_activity_title_local)
+                add.setOnClickListener { component.commandChannel.
+                        sendCommand(RuleViewerComponent.COMMAND_CREATE_RULE, this@RuleViewerActivity) }
             }
             "online" -> {
                 supportActionBar?.title = getString(R.string.rule_viewer_activity_title_view)
                 title.title = getString(R.string.rule_viewer_activity_title_online)
                 add.visibility = View.GONE
+
             }
         }
 
@@ -62,23 +70,29 @@ class RuleViewerActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateList(list: List<RuleSetStore.Rule>) {
+    override fun onDestroy() {
+        super.onDestroy()
+
+        component.shutdown()
+    }
+
+    private fun updateList(newData: List<RuleViewerComponent.RuleData>) {
         val adapter = root.adapter as RuleViewerAdapter
         val oldData = adapter.rules
 
         val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                    oldData[oldItemPosition] === list[newItemPosition]
+                    oldData[oldItemPosition].index == newData[newItemPosition].index
 
-            override fun getOldListSize(): Int = list.size
+            override fun getOldListSize(): Int = oldData.size
 
-            override fun getNewListSize(): Int = oldData.size
+            override fun getNewListSize(): Int = newData.size
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                    oldData[oldItemPosition] == list[newItemPosition]
+                    oldData[oldItemPosition] == newData[newItemPosition]
         })
 
-        adapter.rules = list
         result.dispatchUpdatesTo(adapter)
+        adapter.rules = newData
     }
 }

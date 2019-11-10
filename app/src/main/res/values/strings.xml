@@ -78,6 +78,20 @@
     <string name="rule_viewer_activity_title_local">Local Rules</string>
     <string name="rule_viewer_activity_new_rule">New Rule</string>
 
+    <string name="rule_viewer_dialog_title_local">Edit Rule</string>
+    <string name="rule_viewer_dialog_title_online">View Rule</string>
+    <string name="rule_viewer_dialog_tag">Tag</string>
+    <string name="rule_viewer_dialog_url_source">URL Source</string>
+    <string name="rule_viewer_dialog_regex_ignore">Ignore URL Regex</string>
+    <string name="rule_viewer_dialog_regex_force">Force URL Regex</string>
+    <string name="rule_viewer_dialog_button_ok">OK</string>
+    <string name="rule_viewer_dialog_button_cancel">Cancel</string>
+    <string name="rule_viewer_dialog_button_delete">Delete</string>
+    <string name="rule_viewer_dialog_toast_invalid_tag">Invalid Tag</string>
+    <string name="rule_viewer_dialog_toast_invalid_url_source">Invalid url source</string>
+    <string name="rule_viewer_dialog_toast_invalid_ignore_regex">Invalid Ignore Regex</string>
+    <string name="rule_viewer_dialog_toast_invalid_force_regex">Invalid Force Regex</string>
+
     <string name="setting_title">Settings</string>
     <string name="setting_online_rule">Online Rule</string>
     <string name="setting_online_rule_user">Github User</string>

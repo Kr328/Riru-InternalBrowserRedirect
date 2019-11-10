@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.kr328.ibr.R
+import com.github.kr328.ibr.components.RuleViewerComponent
 import com.github.kr328.ibr.model.RuleSetStore
 
 class RuleViewerAdapter(private val context: Context) : RecyclerView.Adapter<RuleViewerAdapter.Holder>() {
-    var rules: List<RuleSetStore.Rule> = emptyList()
+    var rules: List<RuleViewerComponent.RuleData> = emptyList()
+    var listener: (RuleViewerComponent.RuleData) -> Unit = {}
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val clickable = view.findViewById<View>(R.id.adapter_rule_item_clickable)
@@ -30,6 +32,9 @@ class RuleViewerAdapter(private val context: Context) : RecyclerView.Adapter<Rul
         val current = rules[position]
 
         holder.title.text = current.tag
-        holder.summary.text = current.urlSource.toString()
+        holder.summary.text = current.urlSource
+        holder.clickable.setOnClickListener {
+            listener(current)
+        }
     }
 }

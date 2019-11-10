@@ -80,23 +80,23 @@ class MainActivity : AppCompatActivity() {
         component.shutdown()
     }
 
-    private fun updateList(list: List<AppListElement>) {
+    private fun updateList(newData: List<AppListElement>) {
         val adapter = appList.adapter as AppListAdapter
         val oldData = adapter.appListElement
 
         val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                    oldData[oldItemPosition].packageName == list[newItemPosition].packageName
+                    oldData[oldItemPosition].packageName == newData[newItemPosition].packageName
 
-            override fun getOldListSize(): Int = list.size
+            override fun getOldListSize(): Int = oldData.size
 
-            override fun getNewListSize(): Int = oldData.size
+            override fun getNewListSize(): Int = newData.size
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                    oldData[oldItemPosition].equalsBase(list[newItemPosition])
+                    oldData[oldItemPosition].equalsBase(newData[newItemPosition])
         })
 
-        adapter.appListElement = list
+        adapter.appListElement = newData
         result.dispatchUpdatesTo(adapter)
     }
 

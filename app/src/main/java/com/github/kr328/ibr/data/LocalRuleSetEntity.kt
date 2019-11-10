@@ -4,5 +4,4 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 
 @Entity(tableName = "local_rule_set", primaryKeys = ["package_name"])
-data class LocalRuleSetEntity(@ColumnInfo(name = "package_name") val packageName: String,
-                              @ColumnInfo(name = "tag", defaultValue = "") val tag: String)
+data class LocalRuleSetEntity(@ColumnInfo(name = "package_name") val packageName: String)

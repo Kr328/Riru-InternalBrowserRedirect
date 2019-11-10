@@ -60,6 +60,12 @@ class AppEditComponent(private val application: MainApplication,
             }
         }
 
+        localRuleCount.observeForever {
+            executor.submit {
+                updateRemoteServiceData()
+            }
+        }
+
         commandChannel.registerReceiver(COMMAND_SET_DEBUG_ENABLED, this::setFeatureEnabled)
         commandChannel.registerReceiver(COMMAND_SET_LOCAL_ENABLED, this::setFeatureEnabled)
         commandChannel.registerReceiver(COMMAND_SET_ONLINE_ENABLED, this::setFeatureEnabled)

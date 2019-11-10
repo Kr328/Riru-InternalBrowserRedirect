@@ -20,7 +20,7 @@ interface RuleSetDao {
     @Query("DELETE FROM online_rule_set WHERE package_name = :packageName")
     fun removeLocalRuleSet(packageName: String)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addLocalRuleSet(localRuleSet: LocalRuleSetEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

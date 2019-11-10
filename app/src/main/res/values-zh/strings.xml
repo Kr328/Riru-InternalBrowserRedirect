@@ -81,4 +81,17 @@
     <string name="rule_viewer_activity_title_online">在线规则</string>
     <string name="rule_viewer_activity_title_local">本地规则</string>
     <string name="rule_viewer_activity_new_rule">新建规则</string>
+    <string name="rule_viewer_dialog_regex_force">强制URL正则表达式</string>
+    <string name="rule_viewer_dialog_regex_ignore">忽略URL正则表达式</string>
+    <string name="rule_viewer_dialog_tag">标签</string>
+    <string name="rule_viewer_dialog_url_source">URL来源</string>
+    <string name="rule_viewer_dialog_button_ok">确定</string>
+    <string name="rule_viewer_dialog_title_local">编辑规则</string>
+    <string name="rule_viewer_dialog_title_online">查看规则</string>
+    <string name="rule_viewer_dialog_button_cancel">取消</string>
+    <string name="rule_viewer_dialog_button_delete">删除</string>
+    <string name="rule_viewer_dialog_toast_invalid_force_regex">无效的强制正则表达式</string>
+    <string name="rule_viewer_dialog_toast_invalid_ignore_regex">无效的忽略正则表达式</string>
+    <string name="rule_viewer_dialog_toast_invalid_tag">无效的标签</string>
+    <string name="rule_viewer_dialog_toast_invalid_url_source">无效的URL来源</string>
 </resources>

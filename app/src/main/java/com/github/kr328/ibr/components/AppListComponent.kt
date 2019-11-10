@@ -141,9 +141,9 @@ class AppListComponent(private val application: MainApplication) {
                         OnlineRuleEntity(it.first,
                                 index,
                                 rule.tag,
-                                rule.urlSource.toString(),
-                                rule.urlFilters.ignore.pattern,
-                                rule.urlFilters.force.pattern)
+                                rule.urlSource,
+                                rule.urlFilters.ignore,
+                                rule.urlFilters.force)
                     }
                 }.apply(ruleDao::saveAllOnlineRules)
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:labelFor="@id/dialog_rule_viewer_tag"
+        android:text="@string/rule_viewer_dialog_tag"/>
+
+    <EditText
+        android:id="@+id/dialog_rule_viewer_tag"
+        android:inputType="text"
+        android:importantForAutofill="no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"/>
+
+    <TextView
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:labelFor="@id/dialog_rule_viewer_url_source"
+        android:text="@string/rule_viewer_dialog_url_source"/>
+
+    <EditText
+        android:id="@+id/dialog_rule_viewer_url_source"
+        android:inputType="textUri"
+        android:importantForAutofill="no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"/>
+
+    <TextView
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:labelFor="@id/dialog_rule_viewer_regex_ignore"
+        android:text="@string/rule_viewer_dialog_regex_ignore"/>
+
+    <EditText
+        android:id="@+id/dialog_rule_viewer_regex_ignore"
+        android:inputType="text"
+        android:importantForAutofill="no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"/>
+
+    <TextView
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:labelFor="@id/dialog_rule_viewer_regex_force"
+        android:text="@string/rule_viewer_dialog_regex_force"/>
+
+    <EditText
+        android:id="@+id/dialog_rule_viewer_regex_force"
+        android:inputType="text"
+        android:importantForAutofill="no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"/>
+</LinearLayout>
