@@ -48,8 +48,9 @@ class RuleViewerActivity : AppCompatActivity() {
             "local" -> {
                 supportActionBar?.title = getString(R.string.rule_viewer_activity_title_edit)
                 title.title = getString(R.string.rule_viewer_activity_title_local)
-                add.setOnClickListener { component.commandChannel.
-                        sendCommand(RuleViewerComponent.COMMAND_CREATE_RULE, this@RuleViewerActivity) }
+                add.setOnClickListener {
+                    component.commandChannel.sendCommand(RuleViewerComponent.COMMAND_CREATE_RULE, this@RuleViewerActivity)
+                }
             }
             "online" -> {
                 supportActionBar?.title = getString(R.string.rule_viewer_activity_title_view)

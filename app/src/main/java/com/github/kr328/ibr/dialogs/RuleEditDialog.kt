@@ -22,7 +22,7 @@ class RuleEditDialog(private val context: Context, type: String, packageName: St
     }
 
     fun createAndShow() {
-        when ( component.type ) {
+        when (component.type) {
             "online" -> createAndShowOnline()
             "local" -> createAndShowLocal()
         }
@@ -136,8 +136,7 @@ class RuleEditDialog(private val context: Context, type: String, packageName: St
         return try {
             Regex(regex)
             false
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             true
         }
     }

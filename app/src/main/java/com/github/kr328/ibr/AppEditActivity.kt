@@ -36,7 +36,7 @@ class AppEditActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_app)
 
         swipe.setOnRefreshListener {
-
+            component.commandChannel.sendCommand(AppEditComponent.COMMAND_REFRESH_ONLINE_RULES, null)
         }
 
         debugSwitch.setOnCheckChangedListener { _, checked ->
@@ -76,6 +76,14 @@ class AppEditActivity : AppCompatActivity() {
             debugSwitch.checked = e?.debug ?: false
             onlineSwitch.checked = e?.online ?: false
             localSwitch.checked = e?.local ?: false
+        }
+
+        component.commandChannel.registerReceiver(AppEditComponent.COMMAND_SHOW_REFRESHING) { _, e: Boolean? ->
+            if (e == null)
+                return@registerReceiver
+
+            if (swipe.isRefreshing != e)
+                swipe.isRefreshing = e
         }
 
         onlineRule.setOnClickListener {

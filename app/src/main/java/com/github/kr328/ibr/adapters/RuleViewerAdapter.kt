@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.kr328.ibr.R
 import com.github.kr328.ibr.components.RuleViewerComponent
-import com.github.kr328.ibr.model.RuleSetStore
 
 class RuleViewerAdapter(private val context: Context) : RecyclerView.Adapter<RuleViewerAdapter.Holder>() {
     var rules: List<RuleViewerComponent.RuleData> = emptyList()

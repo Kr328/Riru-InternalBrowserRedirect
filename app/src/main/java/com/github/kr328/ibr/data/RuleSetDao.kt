@@ -23,6 +23,9 @@ interface RuleSetDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addLocalRuleSet(localRuleSet: LocalRuleSetEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun addOnlineRuleSet(onlineRuleSet: OnlineRuleSetEntity)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOnlineRuleSets(onlineRuleSets: List<OnlineRuleSetEntity>)
 

@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.command.CommandChannel
+import com.github.kr328.ibr.data.OnlineRuleEntity
+import com.github.kr328.ibr.data.OnlineRuleSetEntity
 import com.github.kr328.ibr.model.AppInfoData
 import com.github.kr328.ibr.remote.shared.Rule
 import com.github.kr328.ibr.remote.shared.RuleSet
@@ -18,6 +20,8 @@ class AppEditComponent(private val application: MainApplication,
         const val COMMAND_SET_DEBUG_ENABLED = "set_debug_enabled"
         const val COMMAND_SET_ONLINE_ENABLED = "set_online_enabled"
         const val COMMAND_SET_LOCAL_ENABLED = "set_local_enabled"
+        const val COMMAND_REFRESH_ONLINE_RULES = "refresh_online_rules"
+        const val COMMAND_SHOW_REFRESHING = "show_refreshing"
     }
 
     data class FeatureEnabled(val debug: Boolean, val online: Boolean, val local: Boolean)
@@ -69,6 +73,26 @@ class AppEditComponent(private val application: MainApplication,
         commandChannel.registerReceiver(COMMAND_SET_DEBUG_ENABLED, this::setFeatureEnabled)
         commandChannel.registerReceiver(COMMAND_SET_LOCAL_ENABLED, this::setFeatureEnabled)
         commandChannel.registerReceiver(COMMAND_SET_ONLINE_ENABLED, this::setFeatureEnabled)
+
+        commandChannel.registerReceiver(COMMAND_REFRESH_ONLINE_RULES) { _, _: Any? ->
+            executor.submit {
+                try {
+                    val ruleSet = application.onlineRuleRemote.queryRuleSet(packageName)
+
+                    application.database.runInTransaction {
+                        application.database.ruleSetDao().removeOnlineRuleSet(packageName)
+                        application.database.ruleSetDao().addOnlineRuleSet(OnlineRuleSetEntity(packageName, ruleSet.tag, ruleSet.authors))
+                        application.database.ruleDao().saveAllOnlineRules(ruleSet.rules.mapIndexed { index, it ->
+                            OnlineRuleEntity(packageName, index, it.tag, it.urlSource, it.urlFilters.ignore, it.urlFilters.force)
+                        })
+                    }
+                } catch (e: Exception) {
+                    Log.w(Constants.TAG, "Update $packageName failure")
+                }
+
+                commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, false)
+            }
+        }
     }
 
     fun shutdown() {
@@ -92,6 +116,8 @@ class AppEditComponent(private val application: MainApplication,
     }
 
     private fun updateRemoteServiceData() {
+        Log.d(Constants.TAG, "Refreshing Remote Service")
+
         executor.submit {
             try {
                 if (!featureEnabled.online && !featureEnabled.local && !featureEnabled.debug) {

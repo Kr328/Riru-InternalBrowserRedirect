@@ -1,8 +1,6 @@
 package com.github.kr328.ibr.components
 
 import android.app.Activity
-import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.Transformations
 import com.github.kr328.ibr.Constants
@@ -10,7 +8,6 @@ import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.command.CommandChannel
 import com.github.kr328.ibr.dialogs.RuleEditDialog
 import com.github.kr328.ibr.model.AppInfoData
-import com.github.kr328.ibr.model.RuleSetStore
 import java.util.concurrent.Executors
 
 class RuleViewerComponent(private val application: MainApplication,
@@ -43,12 +40,13 @@ class RuleViewerComponent(private val application: MainApplication,
     }
 
     init {
-        commandChannel.registerReceiver(COMMAND_CREATE_RULE) {_, context: Activity? ->
-            if ( context == null )
+        commandChannel.registerReceiver(COMMAND_CREATE_RULE) { _, context: Activity? ->
+            if (context == null)
                 return@registerReceiver
 
             executor.submit {
-                val index = application.database.ruleDao().queryLocalRuleLatestIndexForPackage(packageName) ?: 0
+                val index = application.database.ruleDao().queryLocalRuleLatestIndexForPackage(packageName)
+                        ?: 0
 
                 context.runOnUiThread {
                     RuleEditDialog(context, type, packageName, index + 1).createAndShow()

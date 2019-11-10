@@ -5,7 +5,6 @@ import com.github.kr328.ibr.command.CommandChannel
 import com.github.kr328.ibr.data.LocalRuleEntity
 import com.github.kr328.ibr.data.LocalRuleSetEntity
 import com.github.kr328.ibr.model.RuleSetStore
-import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 
 class RuleEditDialogComponent(private val application: MainApplication,
@@ -23,8 +22,8 @@ class RuleEditDialogComponent(private val application: MainApplication,
     val commandChannel = CommandChannel()
 
     init {
-        commandChannel.registerReceiver(COMMAND_SAVE_RULE) {_, r: RuleData? ->
-            if ( r == null )
+        commandChannel.registerReceiver(COMMAND_SAVE_RULE) { _, r: RuleData? ->
+            if (r == null)
                 return@registerReceiver
 
             thread {
