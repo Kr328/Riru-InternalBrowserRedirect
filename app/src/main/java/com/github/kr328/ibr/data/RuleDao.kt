@@ -22,4 +22,10 @@ interface RuleDao {
 
     @Query("SELECT COUNT(*) FROM local_rule WHERE package_name = :packageName")
     fun observeLocalRuleCount(packageName: String): LiveData<Int>
+
+    @Query("SELECT * FROM local_rule WHERE package_name = :packageName")
+    fun observeLocalRuleForPackage(packageName: String): LiveData<List<LocalRuleEntity>>
+
+    @Query("SELECT * FROM online_rule WHERE package_name = :packageName")
+    fun observeOnlineRuleForPackage(packageName: String): LiveData<List<OnlineRuleEntity>>
 }

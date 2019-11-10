@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
 import com.github.kr328.ibr.command.CommandChannel
-import com.github.kr328.ibr.model.AppEditData
+import com.github.kr328.ibr.model.AppInfoData
 import com.github.kr328.ibr.remote.shared.Rule
 import com.github.kr328.ibr.remote.shared.RuleSet
 import java.util.concurrent.Executors
@@ -30,7 +30,7 @@ class AppEditComponent(private val application: MainApplication,
     val onlineRuleSet = application.database.ruleSetDao().observerOnlineRuleSet(packageName)
     val onlineRuleCount = application.database.ruleDao().observeOnlineRuleCount(packageName)
     val localRuleCount = application.database.ruleDao().observeLocalRuleCount(packageName)
-    val appDate = MutableLiveData<AppEditData>()
+    val appDate = MutableLiveData<AppInfoData>()
 
     init {
         executor.submit {
@@ -38,12 +38,11 @@ class AppEditComponent(private val application: MainApplication,
                 val pm = application.packageManager
                 val info = pm.getPackageInfo(packageName, 0)
 
-                appDate.postValue(AppEditData(info.packageName,
+                appDate.postValue(AppInfoData(info.packageName,
                         info.applicationInfo.loadLabel(pm).toString(),
                         info.versionName,
                         info.applicationInfo.loadIcon(pm)))
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.w(Constants.TAG, "Load application info failure", e)
             }
         }
@@ -56,8 +55,7 @@ class AppEditComponent(private val application: MainApplication,
                         remote.extras.contains("local"))
 
                 commandChannel.sendCommand(COMMAND_INITIAL_FEATURE_ENABLED, featureEnabled)
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.w(Constants.TAG, "Unable to get remote info", e)
             }
         }
@@ -72,7 +70,7 @@ class AppEditComponent(private val application: MainApplication,
     }
 
     private fun setFeatureEnabled(command: String, enabled: Boolean?) {
-        if ( enabled == null )
+        if (enabled == null)
             return
 
         when (command) {
@@ -90,7 +88,7 @@ class AppEditComponent(private val application: MainApplication,
     private fun updateRemoteServiceData() {
         executor.submit {
             try {
-                if ( !featureEnabled.online && !featureEnabled.local && !featureEnabled.debug ) {
+                if (!featureEnabled.online && !featureEnabled.local && !featureEnabled.debug) {
                     application.remote.removeRuleSet(packageName)
                     return@submit
                 }
@@ -99,7 +97,7 @@ class AppEditComponent(private val application: MainApplication,
 
                 ruleSet.debug = featureEnabled.debug
 
-                if ( featureEnabled.local ) {
+                if (featureEnabled.local) {
                     ruleSet.rules.addAll(application.database.ruleDao()
                             .queryLocalRulesForPackage(packageName)
                             .map {
@@ -113,7 +111,7 @@ class AppEditComponent(private val application: MainApplication,
                     ruleSet.extras.add("local")
                 }
 
-                if ( featureEnabled.online ) {
+                if (featureEnabled.online) {
                     ruleSet.rules.addAll(application.database.ruleDao()
                             .queryOnlineRulesForPackage(packageName)
                             .map {
@@ -128,8 +126,7 @@ class AppEditComponent(private val application: MainApplication,
                 }
 
                 application.remote.updateRuleSet(packageName, ruleSet)
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.w(Constants.TAG, "Update remote failure")
             }
         }

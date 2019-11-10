@@ -17,10 +17,10 @@ class CommandChannel {
         }
     }
 
-    inline fun <reified T>registerReceiver(command: String, crossinline receiver: (String, T?) -> Unit) {
+    inline fun <reified T> registerReceiver(command: String, crossinline receiver: (String, T?) -> Unit) {
         receivers[command.hashCode()] = {
-            if ( it is T? ) {
-                receiver(command, it);
+            if (it is T?) {
+                receiver(command, it)
             }
         }
     }
@@ -29,7 +29,7 @@ class CommandChannel {
         receivers.remove(command.hashCode())
     }
 
-    fun <T>sendCommand(command: String, arg: T? = null, delay: Long = 0) {
+    fun <T> sendCommand(command: String, arg: T? = null, delay: Long = 0) {
         handler.sendMessageDelayed(handler.obtainMessage(command.hashCode(), arg), delay)
     }
 

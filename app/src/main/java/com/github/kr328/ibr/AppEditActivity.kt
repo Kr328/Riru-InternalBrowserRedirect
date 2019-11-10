@@ -1,5 +1,7 @@
 package com.github.kr328.ibr
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +13,10 @@ import com.github.kr328.ibr.view.SettingButton
 import com.github.kr328.ibr.view.SettingSwitch
 
 class AppEditActivity : AppCompatActivity() {
-    private val component by lazy { AppEditComponent(MainApplication.fromContext(this),
-            intent.data?.host ?: { finish(); "" }()) }
+    private val component by lazy {
+        AppEditComponent(MainApplication.fromContext(this),
+                intent.data?.host ?: { finish(); "" }())
+    }
 
     private val root by lazy { findViewById<View>(R.id.activity_edit_app_root) }
     private val online by lazy { findViewById<View>(R.id.activity_edit_app_online) }
@@ -68,13 +72,25 @@ class AppEditActivity : AppCompatActivity() {
             root.visibility = View.VISIBLE
         }
 
-        component.commandChannel.registerReceiver(AppEditComponent.COMMAND_INITIAL_FEATURE_ENABLED) {_, e: AppEditComponent.FeatureEnabled? ->
+        component.commandChannel.registerReceiver(AppEditComponent.COMMAND_INITIAL_FEATURE_ENABLED) { _, e: AppEditComponent.FeatureEnabled? ->
             debugSwitch.checked = e?.debug ?: false
             onlineSwitch.checked = e?.online ?: false
             localSwitch.checked = e?.local ?: false
         }
 
-        if ( component.onlineRuleSet.value == null )
+        onlineRule.setOnClickListener {
+            startActivity(Intent(this, RuleViewerActivity::class.java)
+                    .setData(Uri.parse("pkg://${component.packageName}"))
+                    .putExtra("type", "online"))
+        }
+
+        localRule.setOnClickListener {
+            startActivity(Intent(this, RuleViewerActivity::class.java)
+                    .setData(Uri.parse("pkg://${component.packageName}"))
+                    .putExtra("type", "local"))
+        }
+
+        if (component.onlineRuleSet.value == null)
             online.visibility = View.GONE
         else
             online.visibility = View.VISIBLE

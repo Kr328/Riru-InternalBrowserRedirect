@@ -13,8 +13,7 @@ class LiveRemoteService {
         thread {
             try {
                 enabledPackages.postValue(RemoteConnection.connection.queryEnabledPackages().toList())
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.w(Constants.TAG, "Initial enabled package failure", e)
             }
         }

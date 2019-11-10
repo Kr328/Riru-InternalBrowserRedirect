@@ -3,7 +3,6 @@ package com.github.kr328.ibr
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -60,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
         component.commandChannel.registerReceiver(AppListComponent.COMMAND_SHOW_REFRESHING) { _, show: Boolean? ->
             runOnUiThread {
-                if ( show != swipe.isRefreshing ) {
+                if (show != swipe.isRefreshing) {
                     swipe.isRefreshing = show ?: false
                 }
             }

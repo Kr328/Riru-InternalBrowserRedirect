@@ -76,4 +76,9 @@
     <string name="edit_app_application_online_rule_set_view_rules_summary">%d 条规则</string>
     <string name="edit_app_application_title">应用设置</string>
     <string name="setting_title">设置</string>
+    <string name="rule_viewer_activity_title_edit">编辑规则</string>
+    <string name="rule_viewer_activity_title_view">查看规则</string>
+    <string name="rule_viewer_activity_title_online">在线规则</string>
+    <string name="rule_viewer_activity_title_local">本地规则</string>
+    <string name="rule_viewer_activity_new_rule">新建规则</string>
 </resources>

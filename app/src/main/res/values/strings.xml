@@ -72,6 +72,12 @@
     <string name="edit_app_application_update_failure">Online Rule Sync Failure</string>
     <string name="edit_app_application_unknown_app">Unknown App</string>
 
+    <string name="rule_viewer_activity_title_edit">Edit Rules</string>
+    <string name="rule_viewer_activity_title_view">View Rules</string>
+    <string name="rule_viewer_activity_title_online">Online Rules</string>
+    <string name="rule_viewer_activity_title_local">Local Rules</string>
+    <string name="rule_viewer_activity_new_rule">New Rule</string>
+
     <string name="setting_title">Settings</string>
     <string name="setting_online_rule">Online Rule</string>
     <string name="setting_online_rule_user">Github User</string>
