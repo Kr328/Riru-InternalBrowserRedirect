@@ -40,7 +40,7 @@ class AppListComponent(private val application: MainApplication) {
         elements.addSource(online) {
             postLoadAppList(local = local.value, online = online.value)
         }
-        elements.addSource(application.remote.enabledPackages) {
+        elements.addSource(application.remoteService.enabledPackages) {
             postLoadAppList(local = local.value, online = online.value)
         }
 
@@ -70,7 +70,7 @@ class AppListComponent(private val application: MainApplication) {
         try {
             val pm = application.packageManager
 
-            val enabledPackages = application.remote.enabledPackages.value ?: emptySet<String>()
+            val enabledPackages = application.remoteService.enabledPackages.value ?: emptySet<String>()
             val localPackages = local?.map(LocalRuleSetEntity::packageName)?.toSet() ?: emptySet()
             val onlinePackages = online?.map(OnlineRuleSetEntity::packageName)?.toSet()
                     ?: emptySet()
@@ -108,7 +108,7 @@ class AppListComponent(private val application: MainApplication) {
         commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, true)
 
         try {
-            val ruleSet = application.onlineRuleRemote.queryRuleSets()
+            val ruleSet = application.onlineRuleRepo.queryRuleSets()
 
             val targetPackages = application.packageManager.getInstalledPackages(0).map(PackageInfo::packageName).toSet()
                     .intersect(ruleSet.packages.map(RuleSetsStore.Data::packageName).toSet())
@@ -123,7 +123,7 @@ class AppListComponent(private val application: MainApplication) {
 
             val newRuleSets = newPackages.parallelStream().map { pkg ->
                 try {
-                    pkg to application.onlineRuleRemote.queryRuleSet(pkg)
+                    pkg to application.onlineRuleRepo.queryRuleSet(pkg)
                 } catch (e: Exception) {
                     Log.w(Constants.TAG, "Download $pkg rule failure")
                     null

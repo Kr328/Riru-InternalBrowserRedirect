@@ -11,29 +11,43 @@ import com.github.kr328.ibr.components.AppEditComponent
 import com.github.kr328.ibr.view.SettingAppInfo
 import com.github.kr328.ibr.view.SettingButton
 import com.github.kr328.ibr.view.SettingSwitch
+import java.lang.IllegalArgumentException
 
 class AppEditActivity : AppCompatActivity() {
-    private val component by lazy {
-        AppEditComponent(MainApplication.fromContext(this),
-                intent.data?.host ?: { finish(); "" }())
-    }
+    private lateinit var component: AppEditComponent
 
-    private val root by lazy { findViewById<View>(R.id.activity_edit_app_root) }
-    private val online by lazy { findViewById<View>(R.id.activity_edit_app_online) }
+    private lateinit var root: View
+    private lateinit var online: View
 
-    private val swipe by lazy { findViewById<SwipeRefreshLayout>(R.id.activity_edit_app_swipe) }
-    private val appInfo by lazy { findViewById<SettingAppInfo>(R.id.activity_edit_app_app_info) }
-    private val debugSwitch by lazy { findViewById<SettingSwitch>(R.id.activity_edit_app_debug_mode) }
-    private val onlineSwitch by lazy { findViewById<SettingSwitch>(R.id.activity_edit_app_online_enable) }
-    private val tag by lazy { findViewById<SettingButton>(R.id.activity_edit_app_online_tag) }
-    private val author by lazy { findViewById<SettingButton>(R.id.activity_edit_app_online_author) }
-    private val onlineRule by lazy { findViewById<SettingButton>(R.id.activity_edit_app_online_view_rules) }
-    private val localSwitch by lazy { findViewById<SettingSwitch>(R.id.activity_edit_app_local_enable) }
-    private val localRule by lazy { findViewById<SettingButton>(R.id.activity_edit_app_local_view_rules) }
+    private lateinit var swipe: SwipeRefreshLayout
+    private lateinit var appInfo: SettingAppInfo
+    private lateinit var debugSwitch: SettingSwitch
+    private lateinit var onlineSwitch: SettingSwitch
+    private lateinit var tag: SettingButton
+    private lateinit var author: SettingButton
+    private lateinit var onlineRule: SettingButton
+    private lateinit var localSwitch: SettingSwitch
+    private lateinit var localRule: SettingButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_app)
+
+        component = AppEditComponent(MainApplication.fromContext(this),
+                intent.data?.host ?: throw IllegalArgumentException())
+
+        root = findViewById(R.id.activity_edit_app_root)
+        online = findViewById(R.id.activity_edit_app_online)
+
+        swipe = findViewById(R.id.activity_edit_app_swipe)
+        appInfo = findViewById(R.id.activity_edit_app_app_info)
+        debugSwitch = findViewById(R.id.activity_edit_app_debug_mode)
+        onlineSwitch = findViewById(R.id.activity_edit_app_online_enable)
+        tag = findViewById(R.id.activity_edit_app_online_tag)
+        author = findViewById<SettingButton>(R.id.activity_edit_app_online_author)
+        onlineRule = findViewById<SettingButton>(R.id.activity_edit_app_online_view_rules)
+        localSwitch = findViewById<SettingSwitch>(R.id.activity_edit_app_local_enable)
+        localRule = findViewById<SettingButton>(R.id.activity_edit_app_local_view_rules)
 
         swipe.setOnRefreshListener {
             component.commandChannel.sendCommand(AppEditComponent.COMMAND_REFRESH_ONLINE_RULES, null)

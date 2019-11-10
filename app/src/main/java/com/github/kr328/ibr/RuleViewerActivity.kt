@@ -16,20 +16,25 @@ import com.github.kr328.ibr.view.SettingButton
 import com.github.kr328.ibr.view.SettingTitle
 
 class RuleViewerActivity : AppCompatActivity() {
-    private val component by lazy {
-        RuleViewerComponent(MainApplication.fromContext(this),
-                intent.data?.host ?: throw IllegalArgumentException(),
-                intent.getStringExtra("type") ?: throw IllegalArgumentException())
-    }
+    private lateinit var component: RuleViewerComponent
 
-    private val appInfo by lazy { findViewById<SettingAppInfo>(R.id.activity_rule_viewer_app_info) }
-    private val title by lazy { findViewById<SettingTitle>(R.id.activity_rule_viewer_title) }
-    private val add by lazy { findViewById<SettingButton>(R.id.activity_rule_viewer_add_rule) }
-    private val root by lazy { findViewById<RecyclerView>(R.id.activity_rule_viewer_list) }
+    private lateinit var appInfo: SettingAppInfo
+    private lateinit var title: SettingTitle
+    private lateinit var add: SettingButton
+    private lateinit var root: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rule_viewer)
+
+        component = RuleViewerComponent(MainApplication.fromContext(this),
+                intent.data?.host ?: throw IllegalArgumentException(),
+                intent.getStringExtra("type") ?: throw IllegalArgumentException())
+
+        appInfo = findViewById(R.id.activity_rule_viewer_app_info)
+        title = findViewById(R.id.activity_rule_viewer_title)
+        add = findViewById(R.id.activity_rule_viewer_add_rule)
+        root = findViewById(R.id.activity_rule_viewer_list)
 
         root.adapter = RuleViewerAdapter(this).apply {
             listener = {

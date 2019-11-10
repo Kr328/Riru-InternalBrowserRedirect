@@ -17,13 +17,19 @@ import com.github.kr328.ibr.components.AppListComponent
 import com.github.kr328.ibr.model.AppListElement
 
 class MainActivity : AppCompatActivity() {
-    private val swipe: SwipeRefreshLayout by lazy { findViewById<SwipeRefreshLayout>(R.id.activity_main_main_swipe) }
-    private val appList: RecyclerView by lazy { findViewById<RecyclerView>(R.id.activity_main_main_list) }
-    private val component: AppListComponent by lazy { AppListComponent(MainApplication.fromContext(this)) }
+    private lateinit var component: AppListComponent
+
+    private lateinit var swipe: SwipeRefreshLayout
+    private lateinit var appList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        component = AppListComponent(MainApplication.fromContext(this))
+
+        swipe = findViewById(R.id.activity_main_main_swipe)
+        appList = findViewById(R.id.activity_main_main_list)
 
         appList.adapter = AppListAdapter(this) {
             startActivity(Intent(this, AppEditActivity::class.java).setData(Uri.parse("package://$it")))
@@ -44,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.activity_main_menu_new_rule_set -> {}
             R.id.activity_main_menu_settings ->
                 startActivity(Intent(this, SettingsActivity::class.java))
             R.id.activity_main_menu_about ->

@@ -52,7 +52,7 @@ class AppEditComponent(private val application: MainApplication,
         }
         executor.submit {
             try {
-                val remote = application.remote.queryRuleSet(packageName) ?: return@submit
+                val remote = application.remoteService.queryRuleSet(packageName) ?: return@submit
 
                 featureEnabled = FeatureEnabled(remote.debug,
                         remote.extras.contains("online"),
@@ -60,7 +60,7 @@ class AppEditComponent(private val application: MainApplication,
 
                 commandChannel.sendCommand(COMMAND_INITIAL_FEATURE_ENABLED, featureEnabled)
             } catch (e: Exception) {
-                Log.w(Constants.TAG, "Unable to get remote info", e)
+                Log.w(Constants.TAG, "Unable to get remoteService info", e)
             }
         }
 
@@ -77,7 +77,7 @@ class AppEditComponent(private val application: MainApplication,
         commandChannel.registerReceiver(COMMAND_REFRESH_ONLINE_RULES) { _, _: Any? ->
             executor.submit {
                 try {
-                    val ruleSet = application.onlineRuleRemote.queryRuleSet(packageName)
+                    val ruleSet = application.onlineRuleRepo.queryRuleSet(packageName)
 
                     application.database.runInTransaction {
                         application.database.ruleSetDao().removeOnlineRuleSet(packageName)
@@ -121,7 +121,7 @@ class AppEditComponent(private val application: MainApplication,
         executor.submit {
             try {
                 if (!featureEnabled.online && !featureEnabled.local && !featureEnabled.debug) {
-                    application.remote.removeRuleSet(packageName)
+                    application.remoteService.removeRuleSet(packageName)
                     return@submit
                 }
 
@@ -157,9 +157,9 @@ class AppEditComponent(private val application: MainApplication,
                     ruleSet.extras.add("online")
                 }
 
-                application.remote.updateRuleSet(packageName, ruleSet)
+                application.remoteService.updateRuleSet(packageName, ruleSet)
             } catch (e: Exception) {
-                Log.w(Constants.TAG, "Update remote failure")
+                Log.w(Constants.TAG, "Update remoteService failure")
             }
         }
     }
