@@ -23,6 +23,7 @@ class AppEditComponent(private val application: MainApplication,
         const val COMMAND_SET_LOCAL_ENABLED = "set_local_enabled"
         const val COMMAND_REFRESH_ONLINE_RULES = "refresh_online_rules"
         const val COMMAND_SHOW_REFRESHING = "show_refreshing"
+        const val COMMAND_REMOVE_LOCAL_RULE_SET = "remove_local_rule_set"
     }
 
     data class FeatureEnabled(val debug: Boolean, val online: Boolean, val local: Boolean)
@@ -94,6 +95,12 @@ class AppEditComponent(private val application: MainApplication,
                 }
 
                 commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, false)
+            }
+        }
+
+        commandChannel.registerReceiver(COMMAND_REMOVE_LOCAL_RULE_SET) {_, _: String? ->
+            executor.submit {
+                application.database.ruleSetDao().removeLocalRuleSet(packageName)
             }
         }
     }

@@ -29,7 +29,7 @@ class CommandChannel {
         receivers.remove(command.hashCode())
     }
 
-    fun <T> sendCommand(command: String, arg: T? = null, delay: Long = 0) {
+    fun sendCommand(command: String, arg: Any? = null, delay: Long = 0) {
         handler.sendMessageDelayed(handler.obtainMessage(command.hashCode(), arg), delay)
     }
 

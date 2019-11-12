@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/activity_edit_remove_rule_set"
+        android:title="@string/edit_app_application_menu_remove_local_rule_set" />
+</menu>

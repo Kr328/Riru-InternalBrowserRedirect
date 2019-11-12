@@ -3,6 +3,9 @@ package com.github.kr328.ibr
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.observe
@@ -34,9 +37,11 @@ class AppEditActivity : AppCompatActivity() {
         }
 
         component.onlineRuleSet.observe(this) {
-            activity_edit_app_online_root.visibility = View.VISIBLE
-            activity_edit_app_online_tag.summary = it.tag
-            activity_edit_app_online_author.summary = it.author
+            if ( it != null ) {
+                activity_edit_app_online_root.visibility = View.VISIBLE
+                activity_edit_app_online_tag.summary = it.tag
+                activity_edit_app_online_author.summary = it.author
+            }
         }
 
         component.onlineRuleCount.observe(this) {
@@ -93,6 +98,18 @@ class AppEditActivity : AppCompatActivity() {
                     View.VISIBLE
 
         activity_edit_app_root.visibility = View.INVISIBLE
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_edit_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if ( item.itemId == R.id.activity_edit_remove_rule_set )
+            component.commandChannel.sendCommand(AppEditComponent.COMMAND_REMOVE_LOCAL_RULE_SET)
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

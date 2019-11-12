@@ -48,6 +48,8 @@
     <string name="edit_app_application_title">Application Preference</string>
     <string name="edit_app_application_enable">Enable</string>
 
+    <string name="edit_app_application_menu_remove_local_rule_set">Remove Local RuleSet</string>
+
     <string name="edit_app_application_develop">Develop</string>
     <string name="edit_app_application_debug_mode">Debug Mode</string>
     <string name="edit_app_application_debug_mode_summary">Print all intent to log [TAG: InternalBrowserRedirect]</string>

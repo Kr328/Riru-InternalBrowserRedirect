@@ -43,7 +43,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.activity_main_menu_new_rule_set -> {}
+            R.id.activity_main_menu_new_rule_set ->
+                component.commandChannel.sendCommand(AppListComponent.COMMAND_SHOW_ADD_RULE_SET, this)
             R.id.activity_main_menu_settings ->
                 startActivity(Intent(this, SettingsActivity::class.java))
             R.id.activity_main_menu_about ->

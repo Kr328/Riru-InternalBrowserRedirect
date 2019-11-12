@@ -94,4 +94,5 @@
     <string name="rule_viewer_dialog_toast_invalid_ignore_regex">无效的忽略正则表达式</string>
     <string name="rule_viewer_dialog_toast_invalid_tag">无效的标签</string>
     <string name="rule_viewer_dialog_toast_invalid_url_source">无效的URL来源</string>
+    <string name="edit_app_application_menu_remove_local_rule_set">移除本地规则集</string>
 </resources>

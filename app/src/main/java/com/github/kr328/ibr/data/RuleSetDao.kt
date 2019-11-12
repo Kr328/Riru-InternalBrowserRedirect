@@ -14,10 +14,10 @@ interface RuleSetDao {
     @Query("SELECT * FROM online_rule_set")
     fun getOnlineRuleSets(): List<OnlineRuleSetEntity>
 
-    @Query("DELETE FROM local_rule_set WHERE package_name = :packageName")
+    @Query("DELETE FROM online_rule_set WHERE package_name = :packageName")
     fun removeOnlineRuleSet(packageName: String)
 
-    @Query("DELETE FROM online_rule_set WHERE package_name = :packageName")
+    @Query("DELETE FROM local_rule_set WHERE package_name = :packageName")
     fun removeLocalRuleSet(packageName: String)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -39,5 +39,5 @@ interface RuleSetDao {
     fun observeOnlineRuleSets(): LiveData<List<OnlineRuleSetEntity>>
 
     @Query("SELECT * FROM online_rule_set WHERE package_name = :packageName")
-    fun observerOnlineRuleSet(packageName: String): LiveData<OnlineRuleSetEntity>
+    fun observerOnlineRuleSet(packageName: String): LiveData<OnlineRuleSetEntity?>
 }

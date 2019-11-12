@@ -1,5 +1,7 @@
 package com.github.kr328.ibr.components
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -8,6 +10,7 @@ import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.MainApplication
+import com.github.kr328.ibr.adapters.AppItemAdapter
 import com.github.kr328.ibr.command.CommandChannel
 import com.github.kr328.ibr.data.LocalRuleSetEntity
 import com.github.kr328.ibr.data.OnlineRuleEntity
@@ -22,6 +25,7 @@ class AppListComponent(private val application: MainApplication) {
     companion object {
         const val COMMAND_REFRESH_ONLINE_RULES = "refresh_online_rules"
         const val COMMAND_SHOW_REFRESHING = "show_refreshing"
+        const val COMMAND_SHOW_ADD_RULE_SET = "show_add_rule_set"
     }
 
     private val executor = Executors.newSingleThreadExecutor()
@@ -47,6 +51,29 @@ class AppListComponent(private val application: MainApplication) {
         commandChannel.registerReceiver(COMMAND_REFRESH_ONLINE_RULES) { _, force: Boolean? ->
             executor.submit {
                 refreshOnlineRuleSet(force ?: false)
+            }
+        }
+
+        commandChannel.registerReceiver(COMMAND_SHOW_ADD_RULE_SET) {_, activity: Activity? ->
+            if ( activity == null )
+                return@registerReceiver
+
+            executor.submit {
+                val pm = activity.packageManager
+
+                val result = pm.getInstalledApplications(0)
+                        .filter { it.flags and ApplicationInfo.FLAG_SYSTEM == 0 }
+                        .map { AppItemAdapter.Item(it.loadLabel(pm).toString(), it.packageName) }
+                        .sortedBy { it.name }
+
+                activity.runOnUiThread {
+                    AlertDialog.Builder(activity)
+                            .setAdapter(AppItemAdapter(activity, result)) {d, index ->
+                                createLocalRuleSet(result[index].packageName)
+                                d.dismiss()
+                            }
+                            .show()
+                }
             }
         }
     }
@@ -156,6 +183,12 @@ class AppListComponent(private val application: MainApplication) {
         }
 
         commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, false)
+    }
+
+    private fun createLocalRuleSet(packageName: String) {
+        executor.submit {
+            application.database.ruleSetDao().addLocalRuleSet(LocalRuleSetEntity(packageName))
+        }
     }
 
     private fun PackageManager.getApplicationInfoOrNull(packageName: String): ApplicationInfo? {
