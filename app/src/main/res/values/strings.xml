@@ -45,6 +45,9 @@
     <string name="app_list_application_menu_settings">Settings</string>
     <string name="app_list_application_menu_help">Help</string>
 
+    <string name="app_list_application_query_data_failure">Query Data Failure</string>
+    <string name="app_list_application_refresh_failure">Refresh Failure</string>
+
     <string name="edit_app_application_title">Application Preference</string>
     <string name="edit_app_application_enable">Enable</string>
 
@@ -70,9 +73,10 @@
     <string name="edit_app_application_rule_set_unknown">Unknown</string>
     <string name="edit_app_application_rule">Rule</string>
 
-    <string name="edit_app_application_updating">Online Rule Updating</string>
-    <string name="edit_app_application_update_failure">Online Rule Sync Failure</string>
-    <string name="edit_app_application_unknown_app">Unknown App</string>
+    <string name="edit_app_application_exception_load_app_info_failure">Load App Info Failure</string>
+    <string name="edit_app_application_exception_query_data_failure">Query From Service Failure</string>
+    <string name="edit_app_application_exception_refresh_failure">Refresh Failure</string>
+    <string name="edit_app_application_exception_push_data_to_service_failure">Push Data to Service Failure</string>
 
     <string name="rule_viewer_activity_title_edit">Edit Rules</string>
     <string name="rule_viewer_activity_title_view">View Rules</string>

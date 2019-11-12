@@ -24,6 +24,14 @@ class AppEditComponent(private val application: MainApplication,
         const val COMMAND_REFRESH_ONLINE_RULES = "refresh_online_rules"
         const val COMMAND_SHOW_REFRESHING = "show_refreshing"
         const val COMMAND_REMOVE_LOCAL_RULE_SET = "remove_local_rule_set"
+        const val COMMAND_SHOW_EXCEPTION = "show_exception"
+    }
+
+    enum class ExceptionType {
+        LOAD_APP_INFO_FAILURE,
+        QUERY_DATA_FROM_SERVICE_FAILURE,
+        REFRESH_FAILURE,
+        PUSH_DATA_TO_SERVICE_FAILURE
     }
 
     data class FeatureEnabled(val debug: Boolean, val online: Boolean, val local: Boolean)
@@ -55,6 +63,7 @@ class AppEditComponent(private val application: MainApplication,
                         info.versionName,
                         info.applicationInfo.loadIcon(pm)))
             } catch (e: Exception) {
+                commandChannel.sendCommand(COMMAND_SHOW_EXCEPTION, ExceptionType.LOAD_APP_INFO_FAILURE)
                 Log.w(Constants.TAG, "Load application info failure", e)
             }
         }
@@ -68,6 +77,7 @@ class AppEditComponent(private val application: MainApplication,
 
                 commandChannel.sendCommand(COMMAND_INITIAL_FEATURE_ENABLED, featureEnabled)
             } catch (e: Exception) {
+                commandChannel.sendCommand(COMMAND_SHOW_EXCEPTION, ExceptionType.QUERY_DATA_FROM_SERVICE_FAILURE)
                 Log.w(Constants.TAG, "Unable to get remoteService info", e)
             }
         }
@@ -91,7 +101,8 @@ class AppEditComponent(private val application: MainApplication,
                         })
                     }
                 } catch (e: Exception) {
-                    Log.w(Constants.TAG, "Update $packageName failure")
+                    commandChannel.sendCommand(COMMAND_SHOW_EXCEPTION, ExceptionType.REFRESH_FAILURE)
+                    Log.w(Constants.TAG, "Update $packageName failure", e)
                 }
 
                 commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, false)
@@ -127,8 +138,6 @@ class AppEditComponent(private val application: MainApplication,
     }
 
     private fun updateRemoteServiceData() {
-        Log.d(Constants.TAG, "Refreshing Remote Service")
-
         executor.submit {
             try {
                 if (!featureEnabled.online && !featureEnabled.local && !featureEnabled.debug) {
@@ -170,7 +179,8 @@ class AppEditComponent(private val application: MainApplication,
 
                 application.remoteService.updateRuleSet(packageName, ruleSet)
             } catch (e: Exception) {
-                Log.w(Constants.TAG, "Update remoteService failure")
+                commandChannel.sendCommand(COMMAND_SHOW_EXCEPTION, ExceptionType.PUSH_DATA_TO_SERVICE_FAILURE)
+                Log.w(Constants.TAG, "Update remoteService failure", e)
             }
         }
     }

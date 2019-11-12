@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.observe
 import com.github.kr328.ibr.components.AppEditComponent
@@ -20,6 +21,10 @@ class AppEditActivity : AppCompatActivity() {
 
         component = AppEditComponent(MainApplication.fromContext(this),
                 intent.data?.host ?: throw IllegalArgumentException())
+
+        component.commandChannel.registerReceiver(AppEditComponent.COMMAND_SHOW_EXCEPTION) {_, exception: AppEditComponent.ExceptionType? ->
+            showException(exception)
+        }
 
         activity_edit_app_swipe.setOnRefreshListener {
             component.commandChannel.sendCommand(AppEditComponent.COMMAND_REFRESH_ONLINE_RULES, null)
@@ -115,5 +120,31 @@ class AppEditActivity : AppCompatActivity() {
         super.onDestroy()
 
         component.shutdown()
+    }
+
+    private fun showException(exception: AppEditComponent.ExceptionType?) {
+        when (exception) {
+            AppEditComponent.ExceptionType.LOAD_APP_INFO_FAILURE -> {
+                Toast.makeText(this,
+                        R.string.edit_app_application_exception_load_app_info_failure,
+                        Toast.LENGTH_LONG).show()
+                finish()
+            }
+            AppEditComponent.ExceptionType.QUERY_DATA_FROM_SERVICE_FAILURE -> {
+                Toast.makeText(this,
+                        R.string.edit_app_application_exception_query_data_failure,
+                        Toast.LENGTH_LONG).show()
+            }
+            AppEditComponent.ExceptionType.REFRESH_FAILURE -> {
+                Toast.makeText(this,
+                        R.string.edit_app_application_exception_refresh_failure,
+                        Toast.LENGTH_LONG).show()
+            }
+            AppEditComponent.ExceptionType.PUSH_DATA_TO_SERVICE_FAILURE -> {
+                Toast.makeText(this,
+                        R.string.edit_app_application_exception_push_data_to_service_failure,
+                        Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

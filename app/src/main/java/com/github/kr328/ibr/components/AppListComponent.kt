@@ -26,6 +26,12 @@ class AppListComponent(private val application: MainApplication) {
         const val COMMAND_REFRESH_ONLINE_RULES = "refresh_online_rules"
         const val COMMAND_SHOW_REFRESHING = "show_refreshing"
         const val COMMAND_SHOW_ADD_RULE_SET = "show_add_rule_set"
+        const val COMMAND_SHOW_EXCEPTION = "show_exception"
+    }
+
+    enum class ExceptionType {
+        QUERY_DATA_FAILURE,
+        REFRESH_FAILURE
     }
 
     private val executor = Executors.newSingleThreadExecutor()
@@ -122,6 +128,7 @@ class AppListComponent(private val application: MainApplication) {
 
             elements.postValue(result)
         } catch (e: Exception) {
+            commandChannel.sendCommand(COMMAND_SHOW_EXCEPTION, ExceptionType.QUERY_DATA_FAILURE)
             Log.w(Constants.TAG, "Load data failure", e)
         }
 
@@ -180,6 +187,7 @@ class AppListComponent(private val application: MainApplication) {
                                 System.currentTimeMillis() + Constants.DEFAULT_RULE_INVALIDATE))
             }
         } catch (e: Exception) {
+            commandChannel.sendCommand(COMMAND_SHOW_EXCEPTION, ExceptionType.REFRESH_FAILURE)
             Log.w(Constants.TAG, "Update rule set failure", e)
         }
 

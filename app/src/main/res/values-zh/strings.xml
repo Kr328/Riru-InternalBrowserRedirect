@@ -36,16 +36,13 @@
     </string>
     <string name="app_list_application_error_invalid_service_message_service_version_not_matches">
         服务端版本与控制器不匹配 \n
-        请检查 Riru - InternalBrowserRedirect 和 此应用 的 版本
+        请检查 Riru - InternalBrowserRedirect 的版本
     </string>
     <string name="app_list_application_error_invalid_service_title">无效的重定向服务</string>
     <string name="app_list_application_error_invalid_service_button_ok">确认</string>
     <string name="app_list_application_error_update_failure">在线规则同步失败</string>
     <string name="app_list_application_menu_help">帮助</string>
     <string name="app_list_application_menu_settings">设置</string>
-    <string name="edit_app_application_updating">在线规则正在更新</string>
-    <string name="edit_app_application_update_failure">在线规则同步失败</string>
-    <string name="edit_app_application_unknown_app">未知应用</string>
     <string name="edit_app_application_debug_mode_summary">将会打印所有的 Intent 到日志 [InternalBrowserRedirect]</string>
     <string name="setting_online_rule">在线规则</string>
     <string name="setting_online_rule_branch">仓库分支</string>
@@ -95,4 +92,10 @@
     <string name="rule_viewer_dialog_toast_invalid_tag">无效的标签</string>
     <string name="rule_viewer_dialog_toast_invalid_url_source">无效的URL来源</string>
     <string name="edit_app_application_menu_remove_local_rule_set">移除本地规则集</string>
+    <string name="app_list_application_query_data_failure">查询数据失败</string>
+    <string name="app_list_application_refresh_failure">刷新失败</string>
+    <string name="edit_app_application_exception_load_app_info_failure">载入应用信息失败</string>
+    <string name="edit_app_application_exception_push_data_to_service_failure">推送数据到服务端失败</string>
+    <string name="edit_app_application_exception_query_data_failure">从服务端查询数据失败</string>
+    <string name="edit_app_application_exception_refresh_failure">刷新失败</string>
 </resources>
