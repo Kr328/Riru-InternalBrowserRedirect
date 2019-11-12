@@ -26,10 +26,6 @@ class AppEditActivity : AppCompatActivity() {
             showException(exception)
         }
 
-        activity_edit_app_swipe.setOnRefreshListener {
-            component.commandChannel.sendCommand(AppEditComponent.COMMAND_REFRESH_ONLINE_RULES, null)
-        }
-
         activity_edit_app_debug_mode.setOnCheckChangedListener { _, checked ->
             component.commandChannel.sendCommand(AppEditComponent.COMMAND_SET_DEBUG_ENABLED, checked)
         }
@@ -71,16 +67,6 @@ class AppEditActivity : AppCompatActivity() {
             activity_edit_app_debug_mode.checked = e?.debug ?: false
             activity_edit_app_online_enable.checked = e?.online ?: false
             activity_edit_app_local_enable.checked = e?.local ?: false
-        }
-
-        component.commandChannel.registerReceiver(AppEditComponent.COMMAND_SHOW_REFRESHING) { _, e: Boolean? ->
-            if (e == null)
-                return@registerReceiver
-
-            with(activity_edit_app_swipe) {
-                if (isRefreshing != e)
-                    isRefreshing = e
-            }
         }
 
         activity_edit_app_online_view_rules.setOnClickListener {

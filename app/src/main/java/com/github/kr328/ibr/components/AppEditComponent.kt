@@ -21,8 +21,6 @@ class AppEditComponent(private val application: MainApplication,
         const val COMMAND_SET_DEBUG_ENABLED = "set_debug_enabled"
         const val COMMAND_SET_ONLINE_ENABLED = "set_online_enabled"
         const val COMMAND_SET_LOCAL_ENABLED = "set_local_enabled"
-        const val COMMAND_REFRESH_ONLINE_RULES = "refresh_online_rules"
-        const val COMMAND_SHOW_REFRESHING = "show_refreshing"
         const val COMMAND_REMOVE_LOCAL_RULE_SET = "remove_local_rule_set"
         const val COMMAND_SHOW_EXCEPTION = "show_exception"
     }
@@ -87,27 +85,6 @@ class AppEditComponent(private val application: MainApplication,
         commandChannel.registerReceiver(COMMAND_SET_DEBUG_ENABLED, this::setFeatureEnabled)
         commandChannel.registerReceiver(COMMAND_SET_LOCAL_ENABLED, this::setFeatureEnabled)
         commandChannel.registerReceiver(COMMAND_SET_ONLINE_ENABLED, this::setFeatureEnabled)
-
-        commandChannel.registerReceiver(COMMAND_REFRESH_ONLINE_RULES) { _, _: Any? ->
-            executor.submit {
-                try {
-                    val ruleSet = application.onlineRuleRepo.queryRuleSet(packageName)
-
-                    application.database.runInTransaction {
-                        application.database.ruleSetDao().removeOnlineRuleSet(packageName)
-                        application.database.ruleSetDao().addOnlineRuleSet(OnlineRuleSetEntity(packageName, ruleSet.tag, ruleSet.authors))
-                        application.database.ruleDao().saveAllOnlineRules(ruleSet.rules.mapIndexed { index, it ->
-                            OnlineRuleEntity(packageName, index, it.tag, it.urlSource, it.urlFilters.ignore, it.urlFilters.force)
-                        })
-                    }
-                } catch (e: Exception) {
-                    commandChannel.sendCommand(COMMAND_SHOW_EXCEPTION, ExceptionType.REFRESH_FAILURE)
-                    Log.w(Constants.TAG, "Update $packageName failure", e)
-                }
-
-                commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, false)
-            }
-        }
 
         commandChannel.registerReceiver(COMMAND_REMOVE_LOCAL_RULE_SET) { _, _: String? ->
             executor.submit {

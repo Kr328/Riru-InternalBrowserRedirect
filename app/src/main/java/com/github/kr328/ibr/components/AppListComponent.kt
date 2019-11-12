@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.MediatorLiveData
@@ -18,6 +19,8 @@ import com.github.kr328.ibr.data.OnlineRuleSetEntity
 import com.github.kr328.ibr.data.OutOfDateEntity
 import com.github.kr328.ibr.model.AppListElement
 import com.github.kr328.ibr.model.RuleSetsStore
+import com.github.kr328.ibr.remote.RemoteConnection
+import com.github.kr328.ibr.remote.shared.Rule
 import java.util.concurrent.Executors
 import kotlin.streams.toList
 
@@ -153,25 +156,24 @@ class AppListComponent(private val application: MainApplication) {
 
             val currentPackages = ruleSetDao.getOnlineRuleSets().map(OnlineRuleSetEntity::packageName).toSet()
             val removePackages = currentPackages - targetPackages
-            val newPackages = targetPackages - currentPackages
+            val updatePackages = if ( force ) targetPackages else targetPackages - currentPackages
 
-
-            val newRuleSets = newPackages.parallelStream().map { pkg ->
+            val updateRuleSets = updatePackages.parallelStream().map { pkg ->
                 try {
                     pkg to application.onlineRuleRepo.queryRuleSet(pkg)
                 } catch (e: Exception) {
-                    Log.w(Constants.TAG, "Download $pkg rule failure")
+                    Log.w(Constants.TAG, "Download $pkg rule failure", e)
                     null
                 }
             }.toList().filterNotNull()
 
             application.database.runInTransaction {
-                ruleSetDao.addOnlineRuleSets(newRuleSets.map {
+                ruleSetDao.addOnlineRuleSets(updateRuleSets.map {
                     OnlineRuleSetEntity(it.first, it.second.tag, it.second.authors)
                 })
                 ruleSetDao.removeOnlineRuleSets(removePackages)
 
-                newRuleSets.flatMap {
+                updateRuleSets.flatMap {
                     it.second.rules.mapIndexed { index, rule ->
                         OnlineRuleEntity(it.first,
                                 index,
@@ -186,12 +188,48 @@ class AppListComponent(private val application: MainApplication) {
                         .saveOutOfDate(OutOfDateEntity("set:online_rule_set",
                                 System.currentTimeMillis() + Constants.DEFAULT_RULE_INVALIDATE))
             }
+
+            refreshService()
         } catch (e: Exception) {
             commandChannel.sendCommand(COMMAND_SHOW_EXCEPTION, ExceptionType.REFRESH_FAILURE)
             Log.w(Constants.TAG, "Update rule set failure", e)
         }
 
         commandChannel.sendCommand(COMMAND_SHOW_REFRESHING, false)
+    }
+
+    private fun refreshService() {
+        for ( packageName in RemoteConnection.connection.queryEnabledPackages() ) {
+            val ruleSet = RemoteConnection.connection.queryRuleSet(packageName)
+
+            ruleSet.rules.clear()
+
+            if ( ruleSet.extras.contains("local") ) {
+                ruleSet.rules.addAll(application.database
+                        .ruleDao()
+                        .queryLocalRulesForPackage(packageName)
+                        .map { Rule().apply {
+                            tag = it.tag
+                            urlPath = Uri.parse(it.urlSource)
+                            regexIgnore = it.urlIgnore
+                            regexForce = it.urlForce
+                        }})
+            }
+
+            if ( ruleSet.extras.contains("online") ) {
+                ruleSet.rules.addAll(application.database
+                        .ruleDao()
+                        .queryOnlineRulesForPackage(packageName)
+                        .map { Rule().apply {
+                            tag = it.tag
+                            urlPath = Uri.parse(it.urlSource)
+                            regexIgnore = it.urlIgnore
+                            regexForce = it.urlForce
+                        }})
+            }
+
+            RemoteConnection.connection.updateRuleSet(packageName, ruleSet)
+        }
     }
 
     private fun createLocalRuleSet(packageName: String) {

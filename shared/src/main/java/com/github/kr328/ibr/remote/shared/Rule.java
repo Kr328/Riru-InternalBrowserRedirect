@@ -32,9 +32,13 @@ public class Rule implements Parcelable {
         urlPath = Uri.parse(in.readString());
         regexIgnore = in.readString();
         regexForce = in.readString();
+
+        tag = tag == null ? "" : tag;
+        regexIgnore = regexIgnore == null ? "" : regexIgnore;
+        regexForce = regexForce == null ? "" : regexForce;
     }
 
-    public static Rule parseFromJson(JSONObject jsonObject) throws JSONException {
+    static Rule parseFromJson(JSONObject jsonObject) throws JSONException {
         Rule result = new Rule();
 
         result.tag = jsonObject.getString("tag");
@@ -61,7 +65,7 @@ public class Rule implements Parcelable {
         parcel.writeString(regexForce);
     }
 
-    public JSONObject toJson() throws JSONException {
+    JSONObject toJson() throws JSONException {
         JSONObject result = new JSONObject();
 
         result.put("tag", tag);
