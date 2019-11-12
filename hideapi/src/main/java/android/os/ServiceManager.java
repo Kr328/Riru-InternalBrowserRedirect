@@ -10,4 +10,9 @@ public final class ServiceManager {
     public static IBinder getService(String name) {
         throw new IllegalArgumentException("Unsupported");
     }
+
+
+    public static void addService(String name, IBinder binder) {
+        throw new IllegalArgumentException("Stub!");
+    }
 }

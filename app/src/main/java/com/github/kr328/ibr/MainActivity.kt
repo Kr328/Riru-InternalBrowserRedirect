@@ -10,17 +10,13 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.kr328.ibr.adapters.AppListAdapter
 import com.github.kr328.ibr.components.AppListComponent
 import com.github.kr328.ibr.model.AppListElement
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var component: AppListComponent
-
-    private lateinit var swipe: SwipeRefreshLayout
-    private lateinit var appList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,15 +24,12 @@ class MainActivity : AppCompatActivity() {
 
         component = AppListComponent(MainApplication.fromContext(this))
 
-        swipe = findViewById(R.id.activity_main_main_swipe)
-        appList = findViewById(R.id.activity_main_main_list)
-
-        appList.adapter = AppListAdapter(this) {
+        activity_main_main_list.adapter = AppListAdapter(this) {
             startActivity(Intent(this, AppEditActivity::class.java).setData(Uri.parse("package://$it")))
         }
-        appList.layoutManager = LinearLayoutManager(this)
+        activity_main_main_list.layoutManager = LinearLayoutManager(this)
 
-        swipe.setOnRefreshListener {
+        activity_main_main_swipe.setOnRefreshListener {
             component.commandChannel.sendCommand(AppListComponent.COMMAND_REFRESH_ONLINE_RULES, true)
         }
 
@@ -66,8 +59,10 @@ class MainActivity : AppCompatActivity() {
 
         component.commandChannel.registerReceiver(AppListComponent.COMMAND_SHOW_REFRESHING) { _, show: Boolean? ->
             runOnUiThread {
-                if (show != swipe.isRefreshing) {
-                    swipe.isRefreshing = show ?: false
+                with (activity_main_main_swipe) {
+                    if (show != isRefreshing) {
+                        isRefreshing = show ?: false
+                    }
                 }
             }
         }
@@ -88,7 +83,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateList(newData: List<AppListElement>) {
-        val adapter = appList.adapter as AppListAdapter
+        val adapter = activity_main_main_list.adapter as AppListAdapter
         val oldData = adapter.appListElement
 
         val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {

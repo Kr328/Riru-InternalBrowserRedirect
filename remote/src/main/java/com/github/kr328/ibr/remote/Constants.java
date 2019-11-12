@@ -12,9 +12,8 @@ public class Constants {
     public static final Pattern PATTERN_CONFIG_FILE = Pattern.compile("rules.([a-zA-Z.]+).json");
     public static final String TEMPLATE_CONFIG_FILE_NAME = "rules.%s.json";
 
-    // Service Transact
-    public static final int ACTIVITY_CONNECT_SERVER_CODE = 24519;
-    public static final int ACTIVITY_CONNECT_CLIENT_CODE = 24520;
+    // Client Service
+    public static final String CLIENT_SERVICE_NAME = "internal_browser_redirect_client";
 
     // Service Status
     public static final String SERVICE_STATUE_KEY = "sys.ibr.status";

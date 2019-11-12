@@ -4,7 +4,6 @@ import android.os.Build;
 import android.util.Log;
 
 import com.github.kr328.ibr.remote.client.ClientInjector;
-import com.github.kr328.ibr.remote.proxy.ServiceManagerProxy;
 import com.github.kr328.ibr.remote.server.ServerInjector;
 
 @SuppressWarnings("unused")
@@ -12,9 +11,6 @@ public class Injector {
     public static void inject(String argument) {
         try {
             switch (argument) {
-                case "init":
-                    injectInitialize();
-                    break;
                 case "app_forked":
                     injectApplication();
                     break;
@@ -27,15 +23,7 @@ public class Injector {
         }
     }
 
-    private static void injectInitialize() throws ReflectiveOperationException {
-        Log.i(Constants.TAG, "Initializing");
-
-        ServiceManagerProxy.install();
-
-        Log.i(Constants.TAG, "Inject successfully");
-    }
-
-    private static void injectSystemServer() throws ReflectiveOperationException {
+    private static void injectSystemServer() {
         Log.i(Constants.TAG, "In system_server pid = " + android.os.Process.myPid() + " SDK_INT = " + Build.VERSION.SDK_INT);
 
         ServerInjector.inject();

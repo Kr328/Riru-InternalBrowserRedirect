@@ -10,9 +10,4 @@ object Constants {
     const val HELP_URL = "https://kr328.github.io/Riru-InternalBrowserRedirect-Rules/lang-detect"
 
     const val DEFAULT_RULE_INVALIDATE = 24 * 60 * 60 * 1000L
-
-    const val ACTIVITY_CONNECT_TRANSACT_CODE = 24519
-
-    const val CACHE_ONLINE_RULE_PATH = "online-rules"
-    const val LOCAL_RULE_PATH = "local-rules"
 }

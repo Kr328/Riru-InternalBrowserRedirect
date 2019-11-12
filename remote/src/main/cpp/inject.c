@@ -12,8 +12,6 @@ void init_inject_class_method(JNIEnv *env) {
 
     LOGI("inject_class=%p inject_method=%p", inject_class, inject_method);
 
-    invoke_inject_method(env, "init");
-
     (*env)->ExceptionClear(env);
 }
 

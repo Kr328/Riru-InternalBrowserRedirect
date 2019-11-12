@@ -14,9 +14,9 @@ class RuleViewerAdapter(private val context: Context) : RecyclerView.Adapter<Rul
     var listener: (RuleViewerComponent.RuleData) -> Unit = {}
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
-        val clickable = view.findViewById<View>(R.id.adapter_rule_item_clickable)
-        val title = view.findViewById<TextView>(R.id.adapter_rule_item_title)
-        val summary = view.findViewById<TextView>(R.id.adapter_rule_item_summary)
+        val clickable: View = view.findViewById(R.id.adapter_rule_item_clickable)
+        val title: TextView = view.findViewById(R.id.adapter_rule_item_title)
+        val summary: TextView = view.findViewById(R.id.adapter_rule_item_summary)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

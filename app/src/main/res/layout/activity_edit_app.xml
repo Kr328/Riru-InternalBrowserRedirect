@@ -35,7 +35,7 @@
                 custom:icon="@drawable/ic_debug"/>
 
             <LinearLayout
-                android:id="@+id/activity_edit_app_online"
+                android:id="@+id/activity_edit_app_online_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -79,7 +79,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/activity_edit_app_local"
+                android:id="@+id/activity_edit_app_local_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">

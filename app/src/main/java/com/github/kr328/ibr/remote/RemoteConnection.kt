@@ -1,11 +1,10 @@
 package com.github.kr328.ibr.remote
 
-import android.os.Parcel
 import android.os.RemoteException
-import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.compat.ServiceManager
 import com.github.kr328.ibr.compat.SystemProperties
 import com.github.kr328.ibr.remote.shared.IRemoteService
+import com.github.kr328.ibr.remote.shared.ServiceName
 import com.github.kr328.ibr.remote.shared.SharedVersion
 
 object RemoteConnection {
@@ -29,22 +28,8 @@ object RemoteConnection {
     }
 
     private fun openRemoteConnection(): IRemoteService {
-        val data = Parcel.obtain()
-        val reply = Parcel.obtain()
-
-        try {
-            val activity = ServiceManager.getService("activity")
-
-            data.writeInterfaceToken(IRemoteService::class.java.name)
-
-            activity.transact(Constants.ACTIVITY_CONNECT_TRANSACT_CODE, data, reply, 0)
-
-            return IRemoteService.Stub.asInterface(reply.readStrongBinder())
-                    ?: throw RemoteException("Unable to connect RemoteService")
-        } finally {
-            data.recycle()
-            reply.recycle()
-        }
+        return IRemoteService.Stub.asInterface(ServiceManager.getService(ServiceName.SERVER))
+                ?: throw RemoteException("Unable to connect RemoteService")
     }
 
     enum class RCStatus {
