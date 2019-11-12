@@ -1,7 +1,6 @@
 package com.github.kr328.ibr.adapters
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,8 @@ class AppItemAdapter(private val context: Context,
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        return (convertView ?: LayoutInflater.from(context).inflate(R.layout.adapter_app_item, parent, false)).apply {
+        return (convertView
+                ?: LayoutInflater.from(context).inflate(R.layout.adapter_app_item, parent, false)).apply {
             val current = appInfoData[position]
 
             adapter_app_item_icon.setImageDrawable(context.packageManager.getApplicationIcon(current.packageName))

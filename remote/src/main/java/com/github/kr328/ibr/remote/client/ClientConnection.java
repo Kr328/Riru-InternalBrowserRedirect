@@ -19,7 +19,7 @@ class ClientConnection {
     private static void openConnection() throws RemoteException {
         connection = IClientService.Stub.asInterface(ServiceManager.getService(ServiceName.CLIENT));
 
-        if ( connection == null )
+        if (connection == null)
             throw new RemoteException("Unable to connect system_server");
     }
 }

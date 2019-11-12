@@ -83,7 +83,7 @@ public class RuleSet implements Parcelable {
             ruleArray.put(rule.toJson());
 
         JSONArray extrasArray = new JSONArray();
-        for ( String extra : extras )
+        for (String extra : extras)
             extrasArray.put(extra);
 
         result.put("tag", tag);

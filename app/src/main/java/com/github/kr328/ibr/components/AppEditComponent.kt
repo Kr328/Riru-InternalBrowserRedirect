@@ -98,7 +98,7 @@ class AppEditComponent(private val application: MainApplication,
             }
         }
 
-        commandChannel.registerReceiver(COMMAND_REMOVE_LOCAL_RULE_SET) {_, _: String? ->
+        commandChannel.registerReceiver(COMMAND_REMOVE_LOCAL_RULE_SET) { _, _: String? ->
             executor.submit {
                 application.database.ruleSetDao().removeLocalRuleSet(packageName)
             }

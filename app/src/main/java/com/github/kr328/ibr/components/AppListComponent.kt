@@ -54,8 +54,8 @@ class AppListComponent(private val application: MainApplication) {
             }
         }
 
-        commandChannel.registerReceiver(COMMAND_SHOW_ADD_RULE_SET) {_, activity: Activity? ->
-            if ( activity == null )
+        commandChannel.registerReceiver(COMMAND_SHOW_ADD_RULE_SET) { _, activity: Activity? ->
+            if (activity == null)
                 return@registerReceiver
 
             executor.submit {
@@ -68,7 +68,7 @@ class AppListComponent(private val application: MainApplication) {
 
                 activity.runOnUiThread {
                     AlertDialog.Builder(activity)
-                            .setAdapter(AppItemAdapter(activity, result)) {d, index ->
+                            .setAdapter(AppItemAdapter(activity, result)) { d, index ->
                                 createLocalRuleSet(result[index].packageName)
                                 d.dismiss()
                             }
@@ -97,7 +97,8 @@ class AppListComponent(private val application: MainApplication) {
         try {
             val pm = application.packageManager
 
-            val enabledPackages = application.remoteService.enabledPackages.value ?: emptySet<String>()
+            val enabledPackages = application.remoteService.enabledPackages.value
+                    ?: emptySet<String>()
             val localPackages = local?.map(LocalRuleSetEntity::packageName)?.toSet() ?: emptySet()
             val onlinePackages = online?.map(OnlineRuleSetEntity::packageName)?.toSet()
                     ?: emptySet()

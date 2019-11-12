@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         component.commandChannel.registerReceiver(AppListComponent.COMMAND_SHOW_REFRESHING) { _, show: Boolean? ->
             runOnUiThread {
-                with (activity_main_main_swipe) {
+                with(activity_main_main_swipe) {
                     if (show != isRefreshing) {
                         isRefreshing = show ?: false
                     }

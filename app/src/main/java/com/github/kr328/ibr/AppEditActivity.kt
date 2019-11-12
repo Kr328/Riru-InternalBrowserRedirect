@@ -3,7 +3,6 @@ package com.github.kr328.ibr
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -37,7 +36,7 @@ class AppEditActivity : AppCompatActivity() {
         }
 
         component.onlineRuleSet.observe(this) {
-            if ( it != null ) {
+            if (it != null) {
                 activity_edit_app_online_root.visibility = View.VISIBLE
                 activity_edit_app_online_tag.summary = it.tag
                 activity_edit_app_online_author.summary = it.author
@@ -53,7 +52,7 @@ class AppEditActivity : AppCompatActivity() {
         }
 
         component.appDate.observe(this) {
-            with (activity_edit_app_app_info) {
+            with(activity_edit_app_app_info) {
                 packageName = it.packageName
                 name = it.name
                 version = it.version
@@ -73,7 +72,7 @@ class AppEditActivity : AppCompatActivity() {
             if (e == null)
                 return@registerReceiver
 
-            with ( activity_edit_app_swipe ) {
+            with(activity_edit_app_swipe) {
                 if (isRefreshing != e)
                     isRefreshing = e
             }
@@ -106,7 +105,7 @@ class AppEditActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if ( item.itemId == R.id.activity_edit_remove_rule_set )
+        if (item.itemId == R.id.activity_edit_remove_rule_set)
             component.commandChannel.sendCommand(AppEditComponent.COMMAND_REMOVE_LOCAL_RULE_SET)
 
         return super.onOptionsItemSelected(item)
