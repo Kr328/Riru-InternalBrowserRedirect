@@ -98,4 +98,12 @@
     <string name="edit_app_application_exception_push_data_to_service_failure">推送数据到服务端失败</string>
     <string name="edit_app_application_exception_query_data_failure">从服务端查询数据失败</string>
     <string name="edit_app_application_exception_refresh_failure">刷新失败</string>
+    <string name="about_activity_developer">开发者</string>
+    <string name="about_activity_donate">捐赠</string>
+    <string name="about_activity_donate_summary">" 感谢您的支持"</string>
+    <string name="about_activity_rules_repo">规则仓库</string>
+    <string name="about_activity_source_code">源代码</string>
+    <string name="about_activity_telegram_grouo">Telegram 群组</string>
+    <string name="about_activity_title">关于</string>
+    <string name="app_list_application_about">关于</string>
 </resources>

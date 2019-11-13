@@ -113,13 +113,13 @@
 
     <string name="about_activity_title">About</string>
     <string name="about_activity_developer">Developer</string>
-    <string name="about_activity_developer_value">Kr328</string>
+    <string name="about_activity_developer_value" translatable="false">Kr328</string>
     <string name="about_activity_telegram_grouo">Telegram Group</string>
-    <string name="about_activity_telegram_group_value">https://t.me/kr328_riru_modules</string>
+    <string name="about_activity_telegram_group_value" translatable="false">https://t.me/kr328_riru_modules</string>
     <string name="about_activity_source_code">Source Code</string>
-    <string name="about_activity_source_code_value">https://github.com/Kr328/Riru-InternalBrowserRedirect</string>
+    <string name="about_activity_source_code_value" translatable="false">https://github.com/Kr328/Riru-InternalBrowserRedirect</string>
     <string name="about_activity_rules_repo">Rules Repo</string>
-    <string name="about_activity_rules_repo_value">https://github.com/Kr328/Riru-InternalBrowserRedirect-Rules</string>
+    <string name="about_activity_rules_repo_value" translatable="false">https://github.com/Kr328/Riru-InternalBrowserRedirect-Rules</string>
     <string name="about_activity_donate">Donate</string>
     <string name="about_activity_donate_summary">Thanks for your support</string>
 </resources>
