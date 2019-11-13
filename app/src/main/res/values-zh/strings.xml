@@ -100,7 +100,7 @@
     <string name="edit_app_application_exception_refresh_failure">刷新失败</string>
     <string name="about_activity_developer">开发者</string>
     <string name="about_activity_donate">捐赠</string>
-    <string name="about_activity_donate_summary">" 感谢您的支持"</string>
+    <string name="about_activity_donate_summary">感谢您的支持</string>
     <string name="about_activity_rules_repo">规则仓库</string>
     <string name="about_activity_source_code">源代码</string>
     <string name="about_activity_telegram_grouo">Telegram 群组</string>
