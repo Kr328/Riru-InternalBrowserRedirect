@@ -27,5 +27,9 @@
     </Preference>
     <Preference
         android:title="@string/about_activity_donate"
-        android:summary="@string/about_activity_donate_summary" />
+        android:summary="@string/about_activity_donate_summary">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://github.com/Kr328/Riru-InternalBrowserRedirect/blob/master/DONATE.md" />
+    </Preference>
 </androidx.preference.PreferenceScreen>
