@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:title="@string/about_activity_developer"
+        android:summary="@string/about_activity_developer_value" />
+    <Preference
+        android:title="@string/about_activity_telegram_grouo"
+        android:summary="@string/about_activity_telegram_group_value">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="@string/about_activity_telegram_group_value" />
+    </Preference>
+    <Preference
+        android:title="@string/about_activity_source_code"
+        app:summary="@string/about_activity_source_code_value">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="@string/about_activity_source_code_value" />
+    </Preference>
+    <Preference
+        android:title="@string/about_activity_rules_repo"
+        android:summary="@string/about_activity_rules_repo_value">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="@string/about_activity_rules_repo_value"/>
+    </Preference>
+    <Preference
+        android:title="@string/about_activity_donate"
+        android:summary="@string/about_activity_donate_summary" />
+</androidx.preference.PreferenceScreen>

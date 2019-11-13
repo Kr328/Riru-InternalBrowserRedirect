@@ -64,8 +64,10 @@ class MainActivity : AppCompatActivity() {
                 component.commandChannel.sendCommand(AppListComponent.COMMAND_SHOW_ADD_RULE_SET, this)
             R.id.activity_main_menu_settings ->
                 startActivity(Intent(this, SettingsActivity::class.java))
-            R.id.activity_main_menu_about ->
+            R.id.activity_main_menu_help ->
                 CustomTabsIntent.Builder().build().launchUrl(this, Uri.parse(Constants.HELP_URL))
+            R.id.activity_main_menu_about ->
+                startActivity(Intent(this, AboutActivity::class.java))
             else -> return super.onOptionsItemSelected(item)
         }
 
