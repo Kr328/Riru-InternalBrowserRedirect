@@ -4,6 +4,7 @@ import android.os.RemoteException;
 import android.os.SystemProperties;
 
 import com.github.kr328.ibr.remote.Constants;
+import com.github.kr328.ibr.remote.shared.IClientService;
 import com.github.kr328.ibr.remote.shared.RuleSet;
 
 import java.util.HashMap;
@@ -20,8 +21,9 @@ class RuleSetCache {
         }
 
         RuleSet result = cache.get(packageName);
-        if (result == null)
-            return cache.put(packageName, ClientConnection.getConnection().queryRuleSet(packageName));
+        IClientService connection = ClientConnection.getConnection();
+        if (result == null && connection != null )
+            return cache.put(packageName, connection.queryRuleSet(packageName));
 
         return result;
     }

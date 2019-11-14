@@ -42,43 +42,39 @@ public class RemoteService extends IRemoteService.Stub {
     }
 
     private void enforcePermission() throws RemoteException {
-        String[] pkgs = getPackageManager().getPackagesForUid(Binder.getCallingUid());
-        for (String pkg : pkgs) {
+        String[] packages = getPackageManager().getPackagesForUid(Binder.getCallingUid());
+        for (String pkg : packages) {
             if (Constants.APPLICATION_ID.equals(pkg))
                 return;
         }
         throw new RemoteException("Permission denied");
     }
 
-    boolean transactInstance(Parcel data, Parcel reply) throws RemoteException {
-        SystemProperties.set(Constants.SERVICE_STATUE_KEY, "running");
-
-        data.enforceInterface(IRemoteService.class.getName());
-
+    @Override
+    public int getVersion() throws RemoteException {
         enforcePermission();
 
-        reply.writeStrongBinder(this);
-
-        return true;
-    }
-
-    @Override
-    public int getVersion() {
         return SharedVersion.VERSION_INT;
     }
 
     @Override
-    public String[] queryEnabledPackages() {
+    public String[] queryEnabledPackages() throws RemoteException {
+        enforcePermission();
+
         return StoreManager.getInstance().getRuleSets().keySet().toArray(new String[0]);
     }
 
     @Override
-    public RuleSet queryRuleSet(String packageName) {
+    public RuleSet queryRuleSet(String packageName) throws RemoteException {
+        enforcePermission();
+
         return StoreManager.getInstance().getRuleSet(packageName);
     }
 
     @Override
     public void updateRuleSet(String packageName, RuleSet ruleSet) throws RemoteException {
+        enforcePermission();
+
         if (StoreManager.getInstance().getRuleSet(packageName) == null) {
             long identity = Binder.clearCallingIdentity();
             getActivityManager().forceStopPackage(packageName, UserHandleUtils.getUserIdFromUid(Binder.getCallingUid()));
@@ -92,6 +88,8 @@ public class RemoteService extends IRemoteService.Stub {
 
     @Override
     public void removeRuleSet(String packageName) throws RemoteException {
+        enforcePermission();
+
         if (StoreManager.getInstance().getRuleSet(packageName) != null) {
             long identity = Binder.clearCallingIdentity();
             getActivityManager().forceStopPackage(packageName, UserHandleUtils.getUserIdFromUid(Binder.getCallingUid()));
