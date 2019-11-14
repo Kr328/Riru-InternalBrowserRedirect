@@ -1,6 +1,8 @@
 package com.github.kr328.ibr.data
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
 import com.github.kr328.ibr.BuildConfig
 import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.SettingsActivity
@@ -10,14 +12,16 @@ import com.github.kr328.ibr.utils.SimpleRelativeHttpClient
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 
-class OnlineRuleRemote(context: Context) {
+class OnlineRuleRemote(context: Context): SharedPreferences.OnSharedPreferenceChangeListener {
     private val preference = context.getSharedPreferences(BuildConfig.APPLICATION_ID + ".general", Context.MODE_PRIVATE)
     private val httpClient = SimpleRelativeHttpClient(buildBaseUrl())
 
     init {
-        preference.registerOnSharedPreferenceChangeListener { _, _ ->
-            httpClient.baseUrl = buildBaseUrl()
-        }
+        preference.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        httpClient.baseUrl = buildBaseUrl()
     }
 
     private fun buildBaseUrl(): String {

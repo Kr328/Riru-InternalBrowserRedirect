@@ -2,6 +2,7 @@ package com.github.kr328.ibr
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import com.github.kr328.ibr.data.OnlineRuleRemote
 import com.github.kr328.ibr.data.RuleDatabase
