@@ -16,6 +16,7 @@ public class ServerInjector {
                     try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
                     Log.i(Constants.TAG, "Waiting selinux inject for 1s");
                 }
+                Log.i(Constants.TAG, "Injecting SystemServer");
                 ServiceManager.addService(ServiceName.SERVER, new RemoteService());
                 ServiceManager.addService(ServiceName.CLIENT, new ClientService());
             }

@@ -26,8 +26,8 @@ android {
         applicationId "com.github.kr328.ibr"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 11002
-        versionName "11.2"
+        versionCode 11003
+        versionName "11.3"
     }
 
     signingConfigs {
