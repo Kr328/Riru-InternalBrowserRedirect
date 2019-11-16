@@ -214,6 +214,7 @@ class AppListComponent(private val application: MainApplication) {
                             regexIgnore = it.urlIgnore
                             regexForce = it.urlForce
                         }})
+                ruleSet.tag = "Local"
             }
 
             if ( ruleSet.extras.contains("online") ) {
@@ -226,6 +227,8 @@ class AppListComponent(private val application: MainApplication) {
                             regexIgnore = it.urlIgnore
                             regexForce = it.urlForce
                         }})
+                ruleSet.tag = application.database.ruleSetDao()
+                        .queryOnlineRuleSet(packageName)?.tag ?: "Unknown"
             }
 
             RemoteConnection.connection.updateRuleSet(packageName, ruleSet)

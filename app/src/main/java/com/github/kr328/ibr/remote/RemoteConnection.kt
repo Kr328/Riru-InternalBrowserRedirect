@@ -1,11 +1,14 @@
 package com.github.kr328.ibr.remote
 
+import android.content.Context
+import android.os.Parcel
 import android.os.RemoteException
+import android.util.Log
+import com.github.kr328.ibr.Constants
 import com.github.kr328.ibr.compat.ServiceManager
 import com.github.kr328.ibr.compat.SystemProperties
-import com.github.kr328.ibr.remote.shared.IRemoteService
-import com.github.kr328.ibr.remote.shared.ServiceName
-import com.github.kr328.ibr.remote.shared.SharedVersion
+import com.github.kr328.ibr.remote.shared.*
+
 
 object RemoteConnection {
     private const val REDIRECT_SERVICE_STATUE_KEY = "sys.ibr.status"
@@ -28,8 +31,22 @@ object RemoteConnection {
     }
 
     private fun openRemoteConnection(): IRemoteService {
-        return IRemoteService.Stub.asInterface(ServiceManager.getService(ServiceName.SERVER))
-                ?: throw RemoteException("Unable to connect RemoteService")
+        val data = Parcel.obtain()
+        val reply = Parcel.obtain()
+
+        try {
+            val activity = ServiceManager.getService(Context.ACTIVITY_SERVICE)
+
+            data.writeInterfaceToken(IRemoteService::class.java.name)
+
+            activity.transact(ServiceHandle.SERVER, data, reply, 0)
+
+            return IRemoteService.Stub.asInterface(reply.readStrongBinder())
+                    ?: throw RemoteException("Unable to connect RemoteService")
+        } finally {
+            data.recycle()
+            reply.recycle()
+        }
     }
 
     enum class RCStatus {
@@ -46,7 +63,7 @@ object RemoteConnection {
 
     fun currentStatus(): RCStatus {
         return try {
-            if (RemoteConnection.privateConnection.version == SharedVersion.VERSION_INT)
+            if (privateConnection.version == SharedVersion.VERSION_INT)
                 RCStatus.RUNNING
             else
                 RCStatus.SERVICE_VERSION_NOT_MATCHES

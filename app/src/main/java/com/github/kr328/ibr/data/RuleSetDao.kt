@@ -40,4 +40,7 @@ interface RuleSetDao {
 
     @Query("SELECT * FROM online_rule_set WHERE package_name = :packageName")
     fun observerOnlineRuleSet(packageName: String): LiveData<OnlineRuleSetEntity?>
+
+    @Query("SELECT * FROM online_rule_set WHERE package_name = :packageName")
+    fun queryOnlineRuleSet(packageName: String): OnlineRuleSetEntity?
 }

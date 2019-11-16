@@ -5,13 +5,15 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public class ProxyBinder extends Binder {
-    private Binder original;
-    private Callback callback;
+import com.github.kr328.ibr.remote.shared.ServiceHandle;
 
-    public ProxyBinder(Binder original, Callback callback) {
+public class ActivityProxyBinder extends Binder {
+    private ClientService clientService = new ClientService();
+    private RemoteService remoteService = new RemoteService();
+    private Binder original;
+
+    public ActivityProxyBinder(Binder original) {
         this.original = original;
-        this.callback = callback;
     }
 
     // for other module to reflect original binder
@@ -46,9 +48,10 @@ public class ProxyBinder extends Binder {
 
     @Override
     protected boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
-        if (callback.onTransact(original, code, data, reply, flags))
-            return true;
-
+        if (code == ServiceHandle.CLIENT)
+            return clientService.transact(data, reply);
+        else if (code == ServiceHandle.SERVER)
+            return remoteService.transact(data, reply);
         return original.transact(code, data, reply, flags);
     }
 
@@ -60,9 +63,5 @@ public class ProxyBinder extends Binder {
     @Override
     public boolean unlinkToDeath(DeathRecipient deathRecipient, int i) {
         return original.unlinkToDeath(deathRecipient, i);
-    }
-
-    public interface Callback {
-        boolean onTransact(Binder original, int code, Parcel data, Parcel reply, int flags) throws RemoteException;
     }
 }

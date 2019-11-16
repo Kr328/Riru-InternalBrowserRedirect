@@ -50,31 +50,33 @@ public class RemoteService extends IRemoteService.Stub {
         throw new RemoteException("Permission denied");
     }
 
-    @Override
-    public int getVersion() throws RemoteException {
+    boolean transact(Parcel data, Parcel reply) throws RemoteException {
+        data.enforceInterface(IRemoteService.class.getName());
+
         enforcePermission();
 
+        reply.writeStrongBinder(this);
+
+        return true;
+    }
+
+    @Override
+    public int getVersion() {
         return SharedVersion.VERSION_INT;
     }
 
     @Override
-    public String[] queryEnabledPackages() throws RemoteException {
-        enforcePermission();
-
+    public String[] queryEnabledPackages() {
         return StoreManager.getInstance().getRuleSets().keySet().toArray(new String[0]);
     }
 
     @Override
     public RuleSet queryRuleSet(String packageName) throws RemoteException {
-        enforcePermission();
-
         return StoreManager.getInstance().getRuleSet(packageName);
     }
 
     @Override
     public void updateRuleSet(String packageName, RuleSet ruleSet) throws RemoteException {
-        enforcePermission();
-
         if (StoreManager.getInstance().getRuleSet(packageName) == null) {
             long identity = Binder.clearCallingIdentity();
             getActivityManager().forceStopPackage(packageName, UserHandleUtils.getUserIdFromUid(Binder.getCallingUid()));

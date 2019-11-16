@@ -22,7 +22,7 @@ class RuleSetCache {
 
         RuleSet result = cache.get(packageName);
         IClientService connection = ClientConnection.getConnection();
-        if (result == null && connection != null )
+        if (result == null && connection != null)
             return cache.put(packageName, connection.queryRuleSet(packageName));
 
         return result;

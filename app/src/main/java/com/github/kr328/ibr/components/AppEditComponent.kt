@@ -138,6 +138,7 @@ class AppEditComponent(private val application: MainApplication,
                                 }
                             })
                     ruleSet.extras.add("local")
+                    ruleSet.tag = "Local"
                 }
 
                 if (featureEnabled.online) {
@@ -152,6 +153,7 @@ class AppEditComponent(private val application: MainApplication,
                                 }
                             })
                     ruleSet.extras.add("online")
+                    ruleSet.tag = onlineRuleSet.value?.tag ?: "Unknown"
                 }
 
                 application.remoteService.updateRuleSet(packageName, ruleSet)

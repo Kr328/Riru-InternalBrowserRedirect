@@ -1,6 +1,6 @@
 id=riru_ibr
 name=Riru - InternalBrowserRedirect
-version=v11.3
-versionCode=11003
+version=v11.4
+versionCode=11004
 author=Kr328
 description=Redirect internal browser activity to ACTION_VIEW.

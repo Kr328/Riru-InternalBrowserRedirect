@@ -12,9 +12,6 @@ public class Constants {
     public static final Pattern PATTERN_CONFIG_FILE = Pattern.compile("rules.([a-zA-Z.]+).json");
     public static final String TEMPLATE_CONFIG_FILE_NAME = "rules.%s.json";
 
-    // Service Status
-    public static final String SCRIPT_SELINUX_POLICY_INJECT = "sys.ibr.injected";
-    public static final String SERVICE_STATUE_KEY = "sys.ibr.status";
     public static final String LAST_UPDATE_KEY = "sys.ibr.last_update";
 
     // Intent

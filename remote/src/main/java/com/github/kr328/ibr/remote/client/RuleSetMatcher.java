@@ -47,12 +47,16 @@ class RuleSetMatcher {
             case "extra":
                 Object nextObject = intent.getExtras();
                 for (String path : optional(uri.getPathSegments(), Collections.<String>emptyList())) {
+                    Uri data;
+
                     if (nextObject instanceof Bundle)
                         nextObject = ((Bundle) nextObject).get(path);
                     else if (nextObject instanceof Map)
                         nextObject = ((Map) nextObject).get(path);
+                    else if ((data = Uri.parse(optional(nextObject, "").toString())) != null)
+                        nextObject = data.getQueryParameter(path);
                     else {
-                        nextObject = "";
+                        nextObject = null;
                         break;
                     }
                 }

@@ -6,13 +6,6 @@ MODDIR=${0%/*}
 # This script will be executed in late_start service mode
 # More info in the main Magisk thread
 
-# SEPolicy Inject
-supolicy --live "allow system_server default_android_service service_manager *"
-supolicy --live "allow untrusted_app default_android_service service_manager *"
-supolicy --live "allow untrusted_app_27 default_android_service service_manager *"
-
-setprop sys.ibr.injected true
-
 # Logcat
 
 MODULES_ROOT="/data/misc/riru/modules"
@@ -25,7 +18,7 @@ LOGCAT_PID=$!
 
 while sleep 5
 do
-    if [[ -d "/sdcard/Android" ]];then
+    if [[ -d "/sdcard/Android" ]] && [[ `getprop sys.boot_completed` = "1" ]];then
         break
     fi
 done

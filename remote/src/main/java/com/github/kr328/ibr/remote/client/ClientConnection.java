@@ -1,10 +1,13 @@
 package com.github.kr328.ibr.remote.client;
 
+import android.content.Context;
+import android.os.IBinder;
+import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 
 import com.github.kr328.ibr.remote.shared.IClientService;
-import com.github.kr328.ibr.remote.shared.ServiceName;
+import com.github.kr328.ibr.remote.shared.ServiceHandle;
 
 class ClientConnection {
     private static IClientService connection;
@@ -17,9 +20,23 @@ class ClientConnection {
     }
 
     private static void openConnection() throws RemoteException {
-        connection = IClientService.Stub.asInterface(ServiceManager.getService(ServiceName.CLIENT));
+        IBinder activity = ServiceManager.getService(Context.ACTIVITY_SERVICE);
 
-        if (connection == null)
-            throw new RemoteException("Unable to connect system_server");
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
+
+        try {
+            data.writeInterfaceToken(IClientService.class.getName());
+
+            activity.transact(ServiceHandle.CLIENT, data, reply, 0);
+
+            IBinder client = reply.readStrongBinder();
+
+            if (client == null || (connection = IClientService.Stub.asInterface(client)) == null)
+                throw new RemoteException("Unable to open connection");
+        } finally {
+            data.recycle();
+            reply.recycle();
+        }
     }
 }
