@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.IInterface;
-import android.os.RemoteException;
 import android.util.Log;
 
 import com.github.kr328.ibr.remote.Constants;
@@ -18,14 +17,18 @@ import com.github.kr328.ibr.remote.proxy.IBinderProxy;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-public abstract class BaseClientActivityManagerProxy {
-    private static Method startActivity;
-    private static Method startActivityTask;
-    private static Method asBinder;
+abstract class BaseClientActivityManagerProxy {
+    private static final Method startActivity;
+    private static final Method startActivityTask;
+    private static final Method asBinder;
 
     static {
+        Method sa = null;
+        Method sat = null;
+        Method sb = null;
+
         try {
-            startActivity = IActivityManager.class.getMethod("startActivity",
+            sa = IActivityManager.class.getMethod("startActivity",
                     IApplicationThread.class, String.class, Intent.class,
                     String.class, IBinder.class, String.class, int.class,
                     int.class, ProfilerInfo.class, Bundle.class);
@@ -35,7 +38,7 @@ public abstract class BaseClientActivityManagerProxy {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             try {
-                startActivityTask = IActivityTaskManager.class.getMethod("startActivity",
+                sat = IActivityTaskManager.class.getMethod("startActivity",
                         IApplicationThread.class, String.class, Intent.class,
                         String.class, IBinder.class, String.class, int.class,
                         int.class, ProfilerInfo.class, Bundle.class);
@@ -45,13 +48,17 @@ public abstract class BaseClientActivityManagerProxy {
         }
 
         try {
-            asBinder = IInterface.class.getMethod("asBinder");
+            sb = IInterface.class.getMethod("asBinder");
         } catch (NoSuchMethodException e) {
             Log.e(Constants.TAG, "IInterface.asBinder", e);
         }
+
+        startActivity = sa;
+        startActivityTask = sat;
+        asBinder = sb;
     }
 
-    protected abstract void handleStartActivity(StartActivityPayloads payloads) throws RemoteException;
+    protected abstract void handleStartActivity(StartActivityPayloads payloads);
 
     IBinder proxy(String name, IBinder original) {
         switch (name) {

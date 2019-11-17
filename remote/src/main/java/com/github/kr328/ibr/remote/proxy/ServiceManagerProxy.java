@@ -14,7 +14,6 @@ import com.github.kr328.ibr.remote.Constants;
 
 import java.lang.reflect.Field;
 
-@SuppressWarnings("JavaReflectionMemberAccess")
 @SuppressLint("PrivateApi")
 public class ServiceManagerProxy implements IServiceManager {
     private static ServiceManagerProxy instance;
@@ -37,10 +36,6 @@ public class ServiceManagerProxy implements IServiceManager {
         }
 
         instance.callback = callback;
-    }
-
-    public static void install() throws ReflectiveOperationException {
-        install(new Callback());
     }
 
     private static IServiceManager getOriginalIServiceManager() throws ReflectiveOperationException {

@@ -1,7 +1,6 @@
 package com.github.kr328.ibr.remote.client;
 
 import android.app.ActivityThread;
-import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.os.RemoteException;
 import android.os.SystemProperties;
@@ -10,8 +9,6 @@ import android.util.Log;
 import com.github.kr328.ibr.remote.Constants;
 import com.github.kr328.ibr.remote.shared.IClientService;
 import com.github.kr328.ibr.remote.shared.RuleSet;
-
-import java.util.HashMap;
 
 class RuleSetCache {
     private RuleSet ruleSet;

@@ -6,11 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class FileUtils {
-    public static String readLines(String path) throws IOException {
-        return readLines(new File(path));
-    }
-
+class FileUtils {
     static String readLines(File file) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         StringBuilder builder = new StringBuilder();

@@ -16,7 +16,7 @@ import com.github.kr328.ibr.remote.shared.RuleSet;
 import com.github.kr328.ibr.remote.shared.SharedVersion;
 import com.github.kr328.ibr.remote.utils.UserHandleUtils;
 
-public class RemoteService extends IRemoteService.Stub {
+class RemoteService extends IRemoteService.Stub {
     private IPackageManager packageManager;
     private IActivityManager activityManager;
 
@@ -71,7 +71,7 @@ public class RemoteService extends IRemoteService.Stub {
     }
 
     @Override
-    public RuleSet queryRuleSet(String packageName) throws RemoteException {
+    public RuleSet queryRuleSet(String packageName) {
         return StoreManager.getInstance().getRuleSet(packageName);
     }
 

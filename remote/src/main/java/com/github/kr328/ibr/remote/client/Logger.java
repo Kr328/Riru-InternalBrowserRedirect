@@ -6,8 +6,8 @@ import android.os.Bundle;
 import java.util.Collection;
 import java.util.Map;
 
-public class Logger {
-    public static String log(String callingPackage, Intent intent) {
+class Logger {
+    static String log(String callingPackage, Intent intent) {
         return "Intent from " + callingPackage + "\n" +
                 "  Action: " + intent.getAction() + '\n' +
                 "  Category: " + intent.getCategories() + '\n' +
@@ -17,7 +17,7 @@ public class Logger {
                 "  Extra: " + log(intent.getExtras(), "    ");
     }
 
-    public static String log(Bundle bundle, String padding) {
+    private static String log(Bundle bundle, String padding) {
         if (bundle == null)
             return "null";
 
@@ -43,7 +43,7 @@ public class Logger {
         return sb.toString();
     }
 
-    public static String log(Collection collection, String padding) {
+    private static String log(Collection collection, String padding) {
         if (collection == null)
             return "null";
 
@@ -67,7 +67,7 @@ public class Logger {
         return sb.toString();
     }
 
-    public static String log(Map map, String padding) {
+    private static String log(Map map, String padding) {
         if (map == null)
             return "null";
 

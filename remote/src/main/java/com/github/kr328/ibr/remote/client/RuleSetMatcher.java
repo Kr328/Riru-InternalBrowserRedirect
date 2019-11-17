@@ -19,13 +19,13 @@ class RuleSetMatcher {
                 continue;
             if (uri == Uri.EMPTY)
                 continue;
-            if (!"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme()))
+            if (!"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme()) && !"content".equals(uri.getScheme()))
                 continue;
             if (filterUri(uri, rule))
                 continue;
-            return new Result(true, ruleSet.tag, rule.tag, uri);
+            return new Result(ruleSet.tag, rule.tag, uri);
         }
-        return new Result();
+        return null;
     }
 
     private static Uri parseIntentUrl(Intent intent, Uri uri) {
@@ -100,19 +100,14 @@ class RuleSetMatcher {
     }
 
     static class Result {
-        boolean matches;
         String ruleSetTag;
         String ruleTag;
         Uri uri;
 
-        Result(boolean matches, String ruleSetTag, String ruleTag, Uri uri) {
-            this.matches = matches;
+        Result(String ruleSetTag, String ruleTag, Uri uri) {
             this.ruleSetTag = ruleSetTag;
             this.ruleTag = ruleTag;
             this.uri = uri;
-        }
-
-        Result() {
         }
     }
 }

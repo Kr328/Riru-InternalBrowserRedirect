@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 class StoreManager {
-    private static StoreManager INSTANCE = new StoreManager();
+    private final static StoreManager INSTANCE = new StoreManager();
     private HashMap<String, RuleSet> ruleSets = new HashMap<>();
 
     private StoreManager() {

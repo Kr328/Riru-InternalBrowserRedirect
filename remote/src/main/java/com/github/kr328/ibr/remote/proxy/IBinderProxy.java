@@ -8,8 +8,8 @@ import android.os.RemoteException;
 import java.io.FileDescriptor;
 
 public class IBinderProxy implements IBinder {
-    private IBinder original;
-    private Callback callback;
+    private final IBinder original;
+    private final Callback callback;
 
     public IBinderProxy(IBinder original, Callback callback) {
         this.original = original;

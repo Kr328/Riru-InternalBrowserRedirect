@@ -8,11 +8,11 @@ import android.os.RemoteException;
 import com.github.kr328.ibr.remote.shared.ServiceHandle;
 
 public class ActivityProxyBinder extends Binder {
-    private ClientService clientService = new ClientService();
-    private RemoteService remoteService = new RemoteService();
-    private Binder original;
+    private final ClientService clientService = new ClientService();
+    private final RemoteService remoteService = new RemoteService();
+    private final Binder original;
 
-    public ActivityProxyBinder(Binder original) {
+    ActivityProxyBinder(Binder original) {
         this.original = original;
     }
 

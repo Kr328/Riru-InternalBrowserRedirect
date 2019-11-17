@@ -5,7 +5,7 @@ import android.os.Parcel;
 import com.github.kr328.ibr.remote.shared.IClientService;
 import com.github.kr328.ibr.remote.shared.RuleSet;
 
-public class ClientService extends IClientService.Stub {
+class ClientService extends IClientService.Stub {
     boolean transact(Parcel data, Parcel reply) {
         data.enforceInterface(IClientService.class.getName());
 

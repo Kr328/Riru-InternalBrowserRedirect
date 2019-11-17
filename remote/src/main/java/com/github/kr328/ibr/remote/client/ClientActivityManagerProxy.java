@@ -11,7 +11,7 @@ import com.github.kr328.ibr.remote.i18n.I18nFactory;
 import com.github.kr328.ibr.remote.shared.RuleSet;
 
 public class ClientActivityManagerProxy extends BaseClientActivityManagerProxy {
-    private RuleSetCache cache = new RuleSetCache();
+    private final RuleSetCache cache = new RuleSetCache();
 
     @Override
     protected void handleStartActivity(StartActivityPayloads payloads) {
@@ -34,7 +34,7 @@ public class ClientActivityManagerProxy extends BaseClientActivityManagerProxy {
 
             RuleSetMatcher.Result result = RuleSetMatcher.matches(ruleSet, payloads.intent);
 
-            if (result.matches) {
+            if (result != null) {
                 Log.i(Constants.TAG, "Rule " + result.ruleSetTag + "|" + result.ruleTag + " matches " + result.uri);
 
                 I18n i18n = I18nFactory.get();
