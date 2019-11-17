@@ -15,4 +15,5 @@ public class ActivityThread {
     public ContextImpl getSystemContext() {
         throw new IllegalArgumentException("Stub!");
     }
+    public Application getApplication() { throw new IllegalArgumentException("Stub!"); }
 }
