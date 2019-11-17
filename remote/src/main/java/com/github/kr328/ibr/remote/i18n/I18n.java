@@ -9,7 +9,7 @@ public class I18n {
             case STRING_INTERNAL_BROWSER:
                 return "Internal";
             case STRING_OPEN_LINK:
-                return "Open link...";
+                return "Open Link...";
         }
         return key;
     }

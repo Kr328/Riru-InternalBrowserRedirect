@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.github.kr328.ibr.remote.shared.Rule;
 import com.github.kr328.ibr.remote.shared.RuleSet;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
@@ -31,39 +32,48 @@ class RuleSetMatcher {
         if (!"intent".equals(uri.getScheme()))
             return Uri.EMPTY;
 
+        Object baseObject;
+
         switch (optional(uri.getHost(), "")) {
             case "action":
-                return Uri.parse(optional(intent.getAction(), ""));
+                baseObject = intent.getAction();
+                break;
             case "category":
-                for (String cat : optional(intent.getCategories(), Collections.<String>emptySet())) {
-                    Uri u = Uri.parse(cat);
-                    if ("http".equals(u.getScheme()) || "https".equals(u.getScheme()))
-                        return u;
-                }
-                return Uri.EMPTY;
+                baseObject = intent.getCategories();
+                break;
             case "data":
-                return optional(intent.getData(), Uri.EMPTY);
+                baseObject = intent.getData();
+                break;
             case "extras":
             case "extra":
-                Object nextObject = intent.getExtras();
-                for (String path : optional(uri.getPathSegments(), Collections.<String>emptyList())) {
-                    Uri data;
-
-                    if (nextObject instanceof Bundle)
-                        nextObject = ((Bundle) nextObject).get(path);
-                    else if (nextObject instanceof Map)
-                        nextObject = ((Map) nextObject).get(path);
-                    else if ((data = Uri.parse(optional(nextObject, "").toString())) != null)
-                        nextObject = data.getQueryParameter(path);
-                    else {
-                        nextObject = null;
-                        break;
-                    }
-                }
-                return Uri.parse(optional(nextObject, "").toString());
+                baseObject = intent.getExtras();
+                break;
             default:
                 return Uri.EMPTY;
         }
+
+        for (String path : optional(uri.getPathSegments(), Collections.<String>emptyList())) {
+            Uri data;
+
+            if (baseObject == null )
+                return Uri.EMPTY;
+            else if ( baseObject instanceof Collection )
+                baseObject = parseUriFromCollection((Collection) baseObject);
+            else if (baseObject instanceof Bundle)
+                baseObject = ((Bundle) baseObject).get(path);
+            else if (baseObject instanceof Map)
+                baseObject = ((Map) baseObject).get(path);
+            else if ( baseObject instanceof Uri )
+                baseObject = ((Uri) baseObject).getQueryParameter(path);
+            else if ((data = Uri.parse(baseObject.toString())) != null)
+                baseObject = data.getQueryParameter(path);
+            else {
+                baseObject = null;
+                break;
+            }
+        }
+
+        return Uri.parse(optional(baseObject, "").toString());
     }
 
     private static boolean filterUri(Uri uri, Rule rule) {
@@ -76,6 +86,17 @@ class RuleSetMatcher {
         if (o == null)
             return d;
         return o;
+    }
+
+    private static Uri parseUriFromCollection(Collection collection) {
+        for ( Object o : collection ) {
+            Uri u = Uri.parse(o.toString());
+
+            if ( u != null )
+                return u;
+        }
+
+        return Uri.EMPTY;
     }
 
     static class Result {
