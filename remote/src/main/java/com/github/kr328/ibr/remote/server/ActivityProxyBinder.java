@@ -24,7 +24,7 @@ public class ActivityProxyBinder extends Binder {
 
     @Override
     public IInterface queryLocalInterface(String descriptor) {
-        return null;
+        return original.queryLocalInterface(descriptor);
     }
 
     @Override
