@@ -49,3 +49,6 @@ See also [Documents](https://kr328.github.io/Riru-InternalBrowserRedirect-Rules/
 
 5. Pick riru-internal-browser-redirect.zip from module/build/outputs
 
+## TODO
+ - [ ] Short Resolve
+ - [ ] Force External Flag for Rule
