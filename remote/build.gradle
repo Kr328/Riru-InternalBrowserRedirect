@@ -1,17 +1,14 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
-
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
-        consumerProguardFiles 'consumer-rules.pro'
 
         externalNativeBuild {
             cmake {
@@ -38,6 +35,29 @@ android {
 }
 
 dependencies {
-    compileOnly project(":hideapi")
-    api project(":shared")
+    implementation project(":shared")
+    api project(":hideapi")
+}
+
+task createRemoteJar(type: Jar) {
+    from zipTree("$buildDir/outputs/apk/release/remote-release-unsigned.apk")
+    include "classes.dex"
+
+    destinationDirectory = file("$buildDir/outputs")
+    archiveFileName = "remote.jar"
+}
+
+task extractRemoteLibrary(type: Copy) {
+    from zipTree("$buildDir/outputs/apk/release/remote-release-unsigned.apk")
+    include "lib/**"
+    into "$buildDir/outputs/remote-library/"
+
+    eachFile {
+        path = path.replaceAll("^lib/", "")
+    }
+}
+
+afterEvaluate {
+    createRemoteJar.dependsOn assembleRelease
+    extractRemoteLibrary.dependsOn assembleRelease
 }

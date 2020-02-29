@@ -1,54 +1,11 @@
-apply plugin: 'java'
-apply plugin: 'rirutools.dex'
-apply plugin: 'rirutools.magisk'
+task magisk(type: Zip) {
+    from(project(":remote").file("build/outputs/starter.jar"))
 
-dex {
-    platform = "android-29"
-    buildTools = "29.0.2"
+    destinationDirectory = file("$buildDir/outputs")
+    archiveFileName = "riru-internal-browser-redirect.jar"
 }
 
-jar {
-    from zipTree(file("$buildDir/intermediates/remote-aar/classes.jar"))
-    from zipTree(file("$buildDir/intermediates/shared-aar/classes.jar"))
-}
-
-magisk {
-    output "$buildDir/outputs/riru-internal-browser-redirect.zip"
-    
-    zip.map(file("src/main/raw/magisk"), "/")
-    zip.map(file("$buildDir/outputs/dex/classes.jar"), "/system/framework/boot-internal-browser-redirect.jar")
-    zip.map(file("$buildDir/intermediates/remote-aar/jni/arm64-v8a") ,"/system/lib64")
-    zip.map(file("$buildDir/intermediates/remote-aar/jni/armeabi-v7a") ,"/system/lib")
-    zip.map(project(":app").file(project(":app").buildDir.absolutePath + "/outputs/apk/release/app-release.apk"), "/data/app.apk")
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-}
-
-task extractRemote(type: Copy) {
-    from zipTree(project(":remote").file(project(":remote").buildDir.absolutePath + "/outputs/aar/remote-release.aar"))
-    into file("$buildDir/intermediates/remote-aar")
-}
-
-task extractShared(type: Copy) {
-    from zipTree(project(":shared").file(project(":shared").buildDir.absolutePath + "/outputs/aar/shared-release.aar"))
-    into file("$buildDir/intermediates/shared-aar")
-}
-
-project(":remote").afterEvaluate {
-    extractRemote.dependsOn += project(":remote").tasks.getByName("assemble")
-    jar.dependsOn += extractRemote
-}
-
-project(":shared").afterEvaluate {
-    extractShared.dependsOn += project(":shared").tasks.getByName("assemble")
-    jar.dependsOn += extractShared
-}
-
-project.afterEvaluate {
-    magiskModule.dependsOn += project(":app").getTasks().getByName("assemble")
+gradle.projectsEvaluated {
+    magisk.dependsOn(project(":remote").tasks.getByName("assemble"))
+    magisk.dependsOn(project(":app").tasks.getByName("assemble"))
 }
