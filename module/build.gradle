@@ -1,11 +1,32 @@
 task magisk(type: Zip) {
-    from(project(":remote").file("build/outputs/starter.jar"))
+    from(project(":remote").file("build/outputs/boot-internal-browser-redirect.jar")) {
+        into "system/framework/"
+    }
+    from(project(":remote").fileTree("build/outputs/remote-library/armeabi-v7a")) {
+        include "*.so"
+        into "system/lib"
+    }
+    from(project(":remote").fileTree("build/outputs/remote-library/arm64-v8a")) {
+        include "*.so"
+        into "system/lib64"
+    }
+    from(project(":app").file("build/outputs/apk/release/app-release.apk")) {
+        rename {
+            "app.apk"
+        }
+    }
+    from(file("src/main/raw/magisk"))
 
     destinationDirectory = file("$buildDir/outputs")
-    archiveFileName = "riru-internal-browser-redirect.jar"
+    archiveFileName = "riru-internal-browser-redirect.zip"
+}
+
+task clean(type: Delete) {
+    delete buildDir
 }
 
 gradle.projectsEvaluated {
-    magisk.dependsOn(project(":remote").tasks.getByName("assemble"))
-    magisk.dependsOn(project(":app").tasks.getByName("assemble"))
+    magisk.dependsOn(project(":remote").tasks.getByName("extractRemoteLibrary"))
+    magisk.dependsOn(project(":remote").tasks.getByName("createRemoteJar"))
+    magisk.dependsOn(project(":app").tasks.getByName("assembleRelease"))
 }

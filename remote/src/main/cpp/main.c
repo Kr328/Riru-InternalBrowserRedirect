@@ -14,7 +14,7 @@
 #define EXPORT __attribute__((visibility("default")))
 
 #define DEX_PATH    "/system/framework/boot-internal-browser-redirect.jar"
-#define RULES_PATH  "/data/misc/riru/modules/internal_browser_redirect/userdata/rules.%s.json"
+#define RULES_PATH  "/data/misc/internal_browser_redirect/userdata/rules.%s.json"
 #define SERVICE_STATUE_KEY "sys.ibr.status"
 
 static int enable_inject;
